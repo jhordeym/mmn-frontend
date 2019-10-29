@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
+  logo = 'assets/travined-logo.jpeg';
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  validateBeforeSubmit() {
+
   }
 
 }

@@ -7,21 +7,24 @@
         <div id="formContent">
           <!-- Tabs Titles -->
 
-          <!-- Icon -->
+          <!-- Logo -->
           <div class="fadeIn first">
-            <img src="assets/travined-logo.jpeg" id="icon" alt="User Icon" />
+            <img [src]="logo" class="logo" alt="logo" />
           </div>
 
           <!-- Login Form -->
           <form>
-            <input type="text" id="login" class="fadeIn second" name="login" placeholder="Login">
-            <input type="text" id="password" class="fadeIn third" name="login" placeholder="Password">
-            <input type="submit" class="fadeIn fourth" value="Log In">
+            <input type="text" id="login" class="fadeIn second" name="login"
+              placeholder="{{ 'backoffice.login.1' | translate }}">
+            <input type="password" id="password" class="fadeIn third" name="login"
+              placeholder="{{ 'backoffice.login.2' | translate }}">
+            <input type="button" (click)="validateBeforeSubmit()" class="fadeIn fourth"
+              value="{{ 'backoffice.login.3' | translate }}">
           </form>
 
           <!-- Remind Passowrd -->
           <div id="formFooter">
-            <a class="underlineHover" href="#">Forgot Password?</a>
+            <a class="underlineHover" href="#">{{ 'backoffice.login.4' | translate }}</a>
           </div>
 
         </div>
