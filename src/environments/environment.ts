@@ -2,8 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+const APP_BASE_URL = 'localhost:8080/gateway';
+
 export const environment = {
-  production: false
+  mode: 'Production',
+  production: false,
+
+  languagePackServiceURL: APP_BASE_URL  + '/lang',
 };
 
 /*

@@ -8,10 +8,10 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuardService],
-   children: [
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-    { path: 'dashboard', component: DashboardComponent}
-  ]
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+      { path: 'dashboard', component: DashboardComponent}
+    ]
   },
   { path: 'signin', component: SigninComponent },
   { path: 'signup', component: SignupComponent },

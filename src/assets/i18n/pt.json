@@ -1,0 +1,9 @@
+{
+  "locale": "pt",
+  "dictionary": {
+    "backoffice.login.1": "Email",
+    "backoffice.login.2": "Senha",
+    "backoffice.login.3": "Entrar",
+    "backoffice.login.4": "Esqueceu a senha?"
+  }
+}
