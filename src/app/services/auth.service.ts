@@ -9,7 +9,7 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     // temporary solution
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('session');
     if (token) {
       return true;
     }

@@ -1,9 +1,43 @@
 {
   "locale": "en",
   "dictionary": {
-    "backoffice.login.1": "Email",
-    "backoffice.login.2": "Password",
-    "backoffice.login.3": "Signin",
-    "backoffice.login.4": "Forgot password?"
+    "app.name": "Travined",
+    "app.underConstruction": "This page is under construction...",
+
+    "nav.signin": "Signin",
+    "nav.signup": "Signup",
+
+    "signin.email": "Email or phone",
+    "signin.password": "Password",
+    "signin.button": "Signin",
+    "signin.newAccount": "Create a new account",
+    "signin.forgotPass": "Forgot password?",
+    "signin.invalidLogin": "Invalid login!",
+
+    "signup.title": "CREATE YOUR ACCOUNT",
+    "signup.tab1": "Refer",
+    "signup.tab2": "Account",
+    "signup.tab3": "Address",
+    "signup.tab4": "Billing",
+    "signup.tab5": "Confirmation",
+
+    "signup.name": "First name",
+    "signup.lastName": "Last name",
+    "signup.birthday": "Birthday",
+    "signup.email": "Email",
+    "signup.phone": "Phone",
+    "signup.password": "Password",
+    "signup.confirmPass": "Confirm password",
+
+    "signup.street": "Street",
+    "signup.city": "City",
+    "signup.state": "State",
+    "signup.zip": "Zip-code",
+    "signup.country": "Country",
+
+    "signup.nextButton": "Next",
+
+    "signup.acceptTerms": "By signing up, I accept the Terms & Privacy policies",
+    "signup.button": "Signup"
   }
 }

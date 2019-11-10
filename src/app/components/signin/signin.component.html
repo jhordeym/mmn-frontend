@@ -2,31 +2,39 @@
   Example at:
   https://bootsnipp.com/snippets/dldxB
 -->
-<div class="signin">
-    <div class="wrapper fadeInDown">
-        <div id="formContent">
-          <!-- Tabs Titles -->
+<div class="Signin">
+  <div class="Wrapper fadeInDown">
+    <div class="Signin-content">
+      <!-- Tabs Titles -->
 
-          <!-- Logo -->
-          <div class="fadeIn first">
-            <img [src]="logo" class="logo" alt="logo" />
-          </div>
-
-          <!-- Login Form -->
-          <form>
-            <input type="text" id="login" class="fadeIn second" name="login"
-              placeholder="{{ 'backoffice.login.1' | translate }}">
-            <input type="password" id="password" class="fadeIn third" name="login"
-              placeholder="{{ 'backoffice.login.2' | translate }}">
-            <input type="button" (click)="validateBeforeSubmit()" class="fadeIn fourth"
-              value="{{ 'backoffice.login.3' | translate }}">
-          </form>
-
-          <!-- Remind Passowrd -->
-          <div id="formFooter">
-            <a class="underlineHover" href="#">{{ 'backoffice.login.4' | translate }}</a>
-          </div>
-
-        </div>
+      <!-- Logo -->
+      <div class="fadeIn-first">
+        <img [src]="logo" class="Signin-logo" alt="logo" />
       </div>
+
+      <!-- Login Form -->
+      <form [formGroup]="loginForm">
+        <span class="Inline-error" *ngIf="unoutorizedMessage">
+          {{ 'signin.invalidLogin' | translate }}
+        </span>
+
+        <input type="text" id="login" class="fadeIn-second" formControlName="login"
+          placeholder="{{ 'signin.email' | translate }}">
+
+        <input type="password" id="password" class="fadeIn-third" formControlName="password"
+          placeholder="{{ 'signin.password' | translate }}">
+
+        <input type="button" class="fadeIn-fourth" [disabled]="!loginForm.valid" (click)="validateBeforeSubmit()"
+          value="{{ 'signin.button' | translate }}">
+      </form>
+
+      <!-- Footer -->
+      <div class="formFooter">
+        <a class="underlineHover" [routerLink]="['/signup']">{{ 'signin.newAccount' | translate }}</a>
+        <br>
+        <a class="underlineHover" [routerLink]="['/forgot']">{{ 'signin.forgotPass' | translate }}</a>
+      </div>
+
+    </div>
+  </div>
 </div>

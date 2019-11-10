@@ -1,11 +1,11 @@
-html, body {
-  background-color: #56baed;
-  font-family: "Poppins", sans-serif;
-  height: 100vh;
-  margin: 0px;
-  padding: 0px;
+@import 'src/scss/styles.scss';
+
+.App-nav-bar {
+  align-self: flex-start;
+  min-width: 100%;
+  max-height: 5hv;
 }
 
-.app-nav-bar {
-  height: 5hv;
+.Nav-logo {
+  max-height: 4vh;
 }

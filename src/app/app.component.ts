@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { I18NServiceProvider } from './providers/i18n-service.provider';
+import { environment as ENV } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -8,14 +9,15 @@ import { I18NServiceProvider } from './providers/i18n-service.provider';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'travined';
-  currentLang = 'en';
-  currentLangFlag = 'flag-icon flag-icon-us';
+  smallLogo = ENV.imageLogoSmall;
   supportedLangs = ['en', 'pt'];
   supportedLangsFlags = {
     en: 'flag-icon flag-icon-us',
-    pt: 'flag-icon flag-icon-pt'
+    pt: 'flag-icon flag-icon-br'
   };
+
+  currentLang = this.supportedLangs[0];
+  currentLangFlag = this.supportedLangsFlags[0];
 
   constructor(
     private translate: TranslateService,

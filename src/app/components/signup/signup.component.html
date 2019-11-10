@@ -1,3 +1,132 @@
-<p>
-  signup works!
-</p>
+<div class="Signup">
+  <div class="Wrapper fadeInDown">
+    <div class="Signup-content">
+      <!-- Title-->
+      <div class="formHeader">
+        <h2>{{ 'signup.title' | translate }}</h2>
+      </div>
+
+      <!-- Tabs -->
+      <ul class="nav nav-tabs" id="pills-tab" role="tablist">
+        <li *ngFor="let t of this.tabs" class="nav-item">
+          <a class="nav-link" [id]="t.id" attr.href="{{ '#'+t.contentId }}"
+            [ngClass]="{ 'active': t.active, 'disabled': t.disabled }" data-toggle="pill"
+            attr.aria-controls="{{ t.contentId }}" role="tab"
+            attr.aria-selected="{{ t.selected }}">{{ t.i18n | translate }}</a>
+        </li>
+      </ul>
+
+      <!-- Tabs content -->
+      <div class="tab-content" id="pills-tabContent">
+
+        <!-- Tab 1-->
+        <div class="tab-pane fade  show active" id="pills-lookup" role="tabpanel" aria-labelledby="pills-lookup-tab">
+          <span>
+            {{ 'app.underConstruction' | translate }}
+          </span>
+          <input type="button" class="fadeIn-fourth" [disabled]="false" (click)="goTo(1)"
+            value="{{ 'signup.nextButton' | translate }}">
+        </div>
+
+        <!-- Tab 2 -->
+        <div class="tab-pane fade" id="pills-account" role="tabpanel" aria-labelledby="pills-account-tab">
+
+          <!-- Signup Form -->
+          <form [formGroup]="signupForm">
+            <span class="Inline-error" *ngIf="unoutorizedMessage">
+              Invaid Input
+            </span>
+            <!-- <label>{{ 'signup.name' | translate }}</label> -->
+            <input type="text" class="fadeIn-first" formControlName="name"
+              placeholder="{{ 'signup.name' | translate }}">
+
+            <!-- <label>{{ 'signup.lastName' | translate }}</label> -->
+            <input type="text" class="fadeIn-first" formControlName="lastName"
+              placeholder="{{ 'signup.lastName' | translate }}">
+
+            <div class="birthday-group">
+              <input type="text" placeholder="{{ 'signup.birthday' | translate }} (yyyy-mm-dd)" formControlName="birthday" ngbDatepicker #d="ngbDatepicker"
+                (click)="d.toggle()">
+            </div>
+
+            <!-- <label>{{ 'signup.email' | translate }}</label> -->
+            <input type="text" class="fadeIn-first" formControlName="email"
+              placeholder="{{ 'signup.email' | translate }}">
+
+            <!-- <label>{{ 'signup.phone' | translate }}</label> -->
+            <input type="text" class="fadeIn-second" formControlName="phone"
+              placeholder="{{ 'signup.phone' | translate }}">
+
+            <!-- <label>{{ 'signup.password' | translate }}</label> -->
+            <input type="password" class="fadeIn-third" formControlName="password"
+              placeholder="{{ 'signup.password' | translate }}">
+
+            <!-- <label>{{ 'signup.confirmPass' | translate }}</label> -->
+            <input type="password" class="fadeIn-third" formControlName="confirmPassword"
+              placeholder="{{ 'signup.confirmPass' | translate }}">
+
+            <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid" (click)="goTo(2)"
+              value="{{ 'signup.nextButton' | translate }}">
+          </form>
+
+        </div>
+        <!-- Tab 3 -->
+        <div class="tab-pane fade" id="pills-address" role="tabpanel" aria-labelledby="pills-address-tab">
+
+          <!-- Signup Form -->
+          <form [formGroup]="signupAddressForm">
+            <span class="Inline-error" *ngIf="unoutorizedMessage">
+              Invaid Input
+            </span>
+            <!-- <label>{{ 'signup.name' | translate }}</label> -->
+            <input type="text" class="fadeIn-first" formControlName="street"
+              placeholder="{{ 'signup.street' | translate }}">
+
+            <!-- <label>{{ 'signup.lastName' | translate }}</label> -->
+            <input type="text" class="fadeIn-first" formControlName="city"
+              placeholder="{{ 'signup.city' | translate }}">
+
+            <!-- <label>{{ 'signup.email' | translate }}</label> -->
+            <input type="text" class="fadeIn-first" formControlName="state"
+              placeholder="{{ 'signup.state' | translate }}">
+
+            <!-- <label>{{ 'signup.phone' | translate }}</label> -->
+            <input type="text" class="fadeIn-second" formControlName="zip" placeholder="{{ 'signup.zip' | translate }}">
+
+            <!-- <label>{{ 'signup.password' | translate }}</label> -->
+            <input type="text" class="fadeIn-third" formControlName="country"
+              placeholder="{{ 'signup.country' | translate }}">
+
+            <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid || !signupAddressForm.valid"
+              (click)="goTo(3)" value="{{ 'signup.nextButton' | translate }}">
+          </form>
+
+        </div>
+        <!-- Tab 4 -->
+        <div class="tab-pane fade" id="pills-billing" role="tabpanel" aria-labelledby="pills-billing-tab">
+
+          <span>
+            {{ 'app.underConstruction' | translate }}
+          </span>
+
+          <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid" (click)="goTo(4)"
+            value="{{ 'signup.nextButton' | translate }}">
+        </div>
+        <!-- Tab 5-->
+        <div class="tab-pane fade" id="pills-confirmation" role="tabpanel" aria-labelledby="pills-confirmation-tab">
+
+          <div [formGroup]="signupConfirmForm">
+            <div class="terms">
+              <input type="checkbox" id="termsCheck" formControlName="acceptedTerms">
+              <label class="form-check-label" for="termsCheck">{{ 'signup.acceptTerms' | translate }}</label>
+            </div>
+
+            <input type="button" class="fadeIn-fourth"
+              [disabled]="!signupForm.valid || !signupAddressForm.valid || !signupConfirmForm.valid"
+              (click)="validateBeforeSubmit()" value="{{ 'signup.button' | translate }}">
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>

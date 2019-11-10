@@ -1,0 +1,10 @@
+@import 'src/scss/styles.scss';
+
+.SideBar {
+  // STRUCTURE
+  align-self: left;
+
+  &-content {
+    @include container(100%);
+  }
+}

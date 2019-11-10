@@ -1,5 +1,11 @@
-<nav class="app-nav-bar navbar navbar-expand-lg navbar-light bg-light rounded">
-  <a class="navbar-brand" href="#">Travined</a>
+<nav class="App-nav-bar navbar navbar-expand-lg navbar-light bg-light rounded">
+
+  <!-- LOGO -->
+  <a class="navbar-brand" [routerLink]="['/home']">
+    <img [src]="this.smallLogo" class="Nav-logo" alt="{{ 'app.name' | translate }}" />
+  </a>
+
+  <!-- TOGGLER -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09"
     aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -29,6 +35,16 @@
         </div>
       </li>
     </ul>
+    <div class="my-2 my-md-0">
+      <button class="btn btn-link">
+        <a class="underlineHover" [routerLink]="['/signin']"
+          routerLinkActive="router-link-active">{{ 'nav.signin' | translate }}</a>
+      </button>
+      <button class="btn btn-link">
+        <a class="underlineHover" [routerLink]="['/signup']"
+          routerLinkActive="router-link-active">{{ 'nav.signup' | translate }}</a>
+      </button>
+    </div>
     <!--
       <form class="form-inline my-2 my-md-0">
           <input class="form-control" type="text" placeholder="Search" aria-label="Search">
@@ -37,4 +53,6 @@
   </div>
 </nav>
 
-<router-outlet></router-outlet>
+<div class="outlet">
+    <router-outlet></router-outlet>
+</div>

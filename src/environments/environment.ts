@@ -1,21 +1,23 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
+const APP_BASE_URL = 'http://localhost:8080/gateway/';
+const IMG_PATH = 'assets/img/';
 
-const APP_BASE_URL = 'localhost:8080/gateway';
+const USE_MICROSERVICE = true;
+// each microservices individually
+const LANG_BASE_URL = 'http://localhost:8183/lang';
+const ACC_BASE_URL = 'http://localhost:8181/';
 
 export const environment = {
-  mode: 'Production',
+  mode: 'Dev',
   production: false,
 
-  languagePackServiceURL: APP_BASE_URL  + '/lang',
-};
+  // API
+  languagePackServiceURL:
+    (USE_MICROSERVICE ? LANG_BASE_URL : APP_BASE_URL) + 'lang',
+  accountServiceURL:
+    (USE_MICROSERVICE ? ACC_BASE_URL : APP_BASE_URL) + 'accounts',
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+  // Images
+  imageBg: IMG_PATH + 'bg-vector.png',
+  imageLogoBig: IMG_PATH + 'logo-big.jpeg',
+  imageLogoSmall: IMG_PATH + 'logo-small.png'
+};

@@ -1,9 +1,43 @@
 {
   "locale": "pt",
   "dictionary": {
-    "backoffice.login.1": "Email",
-    "backoffice.login.2": "Senha",
-    "backoffice.login.3": "Entrar",
-    "backoffice.login.4": "Esqueceu a senha?"
+    "app.name": "Travined",
+    "app.underConstruction": "Esta pagina está em construção...",
+
+    "nav.signin": "Entrar",
+    "nav.signup": "Registrar",
+
+    "signin.email": "Email ou celular",
+    "signin.password": "Senha",
+    "signin.button": "Entrar",
+    "signin.newAccount": "Criar uma conta nova",
+    "signin.forgotPass": "Esqueceu a senha?",
+    "signin.invalidLogin": "Login invalido!",
+
+    "signup.title": "CRIAR A TUA CONTA",
+    "signup.tab1": "Referenciador",
+    "signup.tab2": "Conta",
+    "signup.tab3": "Endereço",
+    "signup.tab4": "Pagamento",
+    "signup.tab5": "Confirmação",
+
+    "signup.name": "Primeiro nome",
+    "signup.lastName": "Sobrenome nome",
+    "signup.birthday": "Data de nascimento",
+    "signup.email": "Email",
+    "signup.phone": "Celular",
+    "signup.password": "Senha",
+    "signup.confirmPass": "Confirmar senha",
+
+    "signup.street": "Rua",
+    "signup.city": "Cidade",
+    "signup.state": "Estado",
+    "signup.zip": "Código postal",
+    "signup.country": "País",
+
+    "signup.nextButton": "Avançar",
+
+    "signup.acceptTerms": "Ao me registrar, declaro que estou ciente e aceito os Termos de Uso e Política de Privacidade",
+    "signup.button": "Registrar"
   }
 }
