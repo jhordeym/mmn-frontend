@@ -14,6 +14,10 @@ import { I18NServiceProvider } from './providers/i18n-service.provider';
 import { ForgotPassComponent } from './components/forgot-pass/forgot-pass.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { PaymentComponent } from './components/payment/payment.component';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
+import { UnderConstructionComponent } from './components/under-construction/under-construction.component';
+import { ConfirmAccountComponent } from './components/confirm-account/confirm-account.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -27,7 +31,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SignupComponent,
     DashboardComponent,
     HomeComponent,
-    ForgotPassComponent
+    ForgotPassComponent,
+    PaymentComponent,
+    ShoppingCartComponent,
+    UnderConstructionComponent,
+    ConfirmAccountComponent
   ],
   imports: [
     FormsModule,

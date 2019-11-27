@@ -21,11 +21,23 @@
 
         <!-- Tab 1-->
         <div class="tab-pane fade  show active" id="pills-lookup" role="tabpanel" aria-labelledby="pills-lookup-tab">
-          <span>
-            {{ 'app.underConstruction' | translate }}
-          </span>
-          <input type="button" class="fadeIn-fourth" [disabled]="false" (click)="goTo(1)"
-            value="{{ 'signup.nextButton' | translate }}">
+          <form [formGroup]="inviteForm">
+            <!-- Logo -->
+            <div class="fadeIn-first">
+              <img [src]="logo" class="Signup-logo" alt="logo" />
+            </div>
+
+            <!-- Token -->
+            <span>
+              <h3>{{ 'signup.invitePageTitle' | translate }}</h3>
+              <p>{{ 'signup.invitePageText' | translate }}</p>
+              <input type="text" class="fadeIn-first" placeholder="{{ 'signup.inviteToken' | translate }}"
+                formControlName="invite">
+            </span>
+
+            <input type="button" class="fadeIn-fourth" [disabled]="!inviteForm.valid" (click)="goTo(1)"
+              value="{{ 'signup.nextButton' | translate }}">
+          </form>
         </div>
 
         <!-- Tab 2 -->
@@ -36,82 +48,93 @@
             <span class="Inline-error" *ngIf="unoutorizedMessage">
               Invaid Input
             </span>
-            <!-- <label>{{ 'signup.name' | translate }}</label> -->
-            <input type="text" class="fadeIn-first" formControlName="name"
-              placeholder="{{ 'signup.name' | translate }}">
 
-            <!-- <label>{{ 'signup.lastName' | translate }}</label> -->
-            <input type="text" class="fadeIn-first" formControlName="lastName"
-              placeholder="{{ 'signup.lastName' | translate }}">
+            <span>
+              <!-- <label>{{ 'signup.name' | translate }}</label> -->
+              <input type="text" class="fadeIn-first" formControlName="name"
+                placeholder="{{ 'signup.name' | translate }}">
 
-            <div class="birthday-group">
-              <input type="text" placeholder="{{ 'signup.birthday' | translate }} (yyyy-mm-dd)" formControlName="birthday" ngbDatepicker #d="ngbDatepicker"
-                (click)="d.toggle()">
-            </div>
+              <!-- <label>{{ 'signup.lastName' | translate }}</label> -->
+              <input type="text" class="fadeIn-first" formControlName="lastName"
+                placeholder="{{ 'signup.lastName' | translate }}">
 
-            <!-- <label>{{ 'signup.email' | translate }}</label> -->
-            <input type="text" class="fadeIn-first" formControlName="email"
-              placeholder="{{ 'signup.email' | translate }}">
+              <div class="birthday-group">
+                <input type="date" formControlName="birthday" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
+              </div>
 
-            <!-- <label>{{ 'signup.phone' | translate }}</label> -->
-            <input type="text" class="fadeIn-second" formControlName="phone"
-              placeholder="{{ 'signup.phone' | translate }}">
+              <!-- <label>{{ 'signup.email' | translate }}</label> -->
+              <input type="text" class="fadeIn-first" formControlName="email"
+                placeholder="{{ 'signup.email' | translate }}">
 
-            <!-- <label>{{ 'signup.password' | translate }}</label> -->
-            <input type="password" class="fadeIn-third" formControlName="password"
-              placeholder="{{ 'signup.password' | translate }}">
+              <!-- <label>{{ 'signup.phone' | translate }}</label> -->
+              <input type="text" class="fadeIn-second" formControlName="phone"
+                placeholder="{{ 'signup.phone' | translate }}">
 
-            <!-- <label>{{ 'signup.confirmPass' | translate }}</label> -->
-            <input type="password" class="fadeIn-third" formControlName="confirmPassword"
-              placeholder="{{ 'signup.confirmPass' | translate }}">
+              <!-- <label>{{ 'signup.password' | translate }}</label> -->
+              <input type="password" class="fadeIn-third" formControlName="password"
+                placeholder="{{ 'signup.password' | translate }}">
 
-            <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid" (click)="goTo(2)"
-              value="{{ 'signup.nextButton' | translate }}">
+              <!-- <label>{{ 'signup.confirmPass' | translate }}</label> -->
+              <input type="password" class="fadeIn-third" formControlName="confirmPassword"
+                placeholder="{{ 'signup.confirmPass' | translate }}">
+
+              <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid" (click)="goTo(2)"
+                value="{{ 'signup.nextButton' | translate }}">
+            </span>
           </form>
 
         </div>
+
         <!-- Tab 3 -->
         <div class="tab-pane fade" id="pills-address" role="tabpanel" aria-labelledby="pills-address-tab">
 
-          <!-- Signup Form -->
+          <!-- Signup Address Form -->
           <form [formGroup]="signupAddressForm">
             <span class="Inline-error" *ngIf="unoutorizedMessage">
               Invaid Input
             </span>
             <!-- <label>{{ 'signup.name' | translate }}</label> -->
-            <input type="text" class="fadeIn-first" formControlName="street"
-              placeholder="{{ 'signup.street' | translate }}">
+            <span>
+              <input type="text" class="fadeIn-first" formControlName="street"
+                placeholder="{{ 'signup.street' | translate }}">
 
-            <!-- <label>{{ 'signup.lastName' | translate }}</label> -->
-            <input type="text" class="fadeIn-first" formControlName="city"
-              placeholder="{{ 'signup.city' | translate }}">
+              <!-- <label>{{ 'signup.lastName' | translate }}</label> -->
+              <input type="text" class="fadeIn-first" formControlName="city"
+                placeholder="{{ 'signup.city' | translate }}">
 
-            <!-- <label>{{ 'signup.email' | translate }}</label> -->
-            <input type="text" class="fadeIn-first" formControlName="state"
-              placeholder="{{ 'signup.state' | translate }}">
+              <!-- <label>{{ 'signup.email' | translate }}</label> -->
+              <input type="text" class="fadeIn-first" formControlName="state"
+                placeholder="{{ 'signup.state' | translate }}">
 
-            <!-- <label>{{ 'signup.phone' | translate }}</label> -->
-            <input type="text" class="fadeIn-second" formControlName="zip" placeholder="{{ 'signup.zip' | translate }}">
+              <!-- <label>{{ 'signup.phone' | translate }}</label> -->
+              <input type="text" class="fadeIn-second" formControlName="zip"
+                placeholder="{{ 'signup.zip' | translate }}">
 
-            <!-- <label>{{ 'signup.password' | translate }}</label> -->
-            <input type="text" class="fadeIn-third" formControlName="country"
-              placeholder="{{ 'signup.country' | translate }}">
+              <!-- <label>{{ 'signup.password' | translate }}</label> -->
+              <input type="text" class="fadeIn-third" formControlName="country"
+                placeholder="{{ 'signup.country' | translate }}">
 
-            <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid || !signupAddressForm.valid"
-              (click)="goTo(3)" value="{{ 'signup.nextButton' | translate }}">
+              <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid || !signupAddressForm.valid"
+                (click)="goTo(3)" value="{{ 'signup.nextButton' | translate }}">
+            </span>
           </form>
 
         </div>
+
         <!-- Tab 4 -->
         <div class="tab-pane fade" id="pills-billing" role="tabpanel" aria-labelledby="pills-billing-tab">
 
+          <!-- Payment -->
           <span>
-            {{ 'app.underConstruction' | translate }}
+            <div class="row align-items-center justify-content-center">
+              <app-payment [useSubscription]=false (completedSubscription)="receiveConfirmation($event)"></app-payment>
+            </div>
           </span>
 
-          <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid" (click)="goTo(4)"
+          <input type="button" class="fadeIn-fourth" [disabled]="!continueAfterPayment" (click)="goTo(4)"
             value="{{ 'signup.nextButton' | translate }}">
         </div>
+
         <!-- Tab 5-->
         <div class="tab-pane fade" id="pills-confirmation" role="tabpanel" aria-labelledby="pills-confirmation-tab">
 

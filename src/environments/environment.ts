@@ -1,4 +1,4 @@
-const APP_BASE_URL = 'http://localhost:8080/gateway/';
+const APP_BASE_URL = 'http://localhost:8080/api/';
 const IMG_PATH = 'assets/img/';
 
 const USE_MICROSERVICE = true;
@@ -9,12 +9,14 @@ const ACC_BASE_URL = 'http://localhost:8181/';
 export const environment = {
   mode: 'Dev',
   production: false,
+  useMock: true,
 
   // API
   languagePackServiceURL:
     (USE_MICROSERVICE ? LANG_BASE_URL : APP_BASE_URL) + 'lang',
   accountServiceURL:
     (USE_MICROSERVICE ? ACC_BASE_URL : APP_BASE_URL) + 'accounts',
+  paymentServiceURL: '',
 
   // Images
   imageBg: IMG_PATH + 'bg-vector.png',

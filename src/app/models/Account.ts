@@ -1,5 +1,5 @@
 import { Address } from './Address';
-import { AccountStatus } from './enum/AccountStatus';
+import { AccountStatus } from '../enum/AccountStatus';
 
 // tslint:disable-next-line: class-name
 export class Account {

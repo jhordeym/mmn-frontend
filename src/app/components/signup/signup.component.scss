@@ -4,7 +4,12 @@
   // STRUCTURE
 
   &-content {
-    @include container(650px);
+    @include container(1150px);
+  }
+
+  &-logo {
+    margin: 5%;
+    max-width: 30vh;
   }
 
   .formHeader {
@@ -33,6 +38,10 @@
     label {
       display: inline;
     }
+  }
+
+  .navs ul {
+    justify-content: center;
   }
 
   span {

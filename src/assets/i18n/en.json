@@ -14,6 +14,10 @@
     "signin.forgotPass": "Forgot password?",
     "signin.invalidLogin": "Invalid login!",
 
+    "signup.subTitle": "Select subscription:",
+    "signup.invitePageTitle": "Congratulations on joining the Travined family!",
+    "signup.invitePageText": "Enter your invite token below.",
+    "signup.inviteToken": "Invite token here",
     "signup.title": "CREATE YOUR ACCOUNT",
     "signup.tab1": "Refer",
     "signup.tab2": "Account",

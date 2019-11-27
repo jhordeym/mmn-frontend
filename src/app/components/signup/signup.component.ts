@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
+import { environment as ENV } from 'src/environments/environment';
 import {
   FormBuilder,
   Validators,
   FormGroup,
   AbstractControl
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Account } from 'src/app/models/Account';
 import { Address } from 'src/app/models/Address';
-import { AccountStatus } from 'src/app/models/enum/AccountStatus';
+import { AccountStatus } from 'src/app/enum/AccountStatus';
+import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
 
 @Component({
   selector: 'app-signup',
@@ -17,6 +19,8 @@ import { AccountStatus } from 'src/app/models/enum/AccountStatus';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
+  logo = ENV.imageLogoBig;
+
   tabs = [
     {
       id: 'pills-lookup-tab',
@@ -60,12 +64,20 @@ export class SignupComponent implements OnInit {
     }
   ];
 
+  inviteForm: any;
   signupForm: any;
   signupAddressForm: any;
   signupBillingForm: any;
   signupConfirmForm: any;
 
   unoutorizedMessage = false;
+  continueAfterPayment = false;
+
+  inviteToken = '';
+
+  get invite() {
+    return this.inviteForm.get('invite');
+  }
 
   get name() {
     return this.signupForm.get('name');
@@ -121,10 +133,32 @@ export class SignupComponent implements OnInit {
   }
 
   constructor(
+    private route: ActivatedRoute,
     private accountService: AccountService,
     private fb: FormBuilder,
-    private route: Router
-  ) {
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    // this.signupForm.valueChanges.subscribe(console.log);
+    // this.signupAddressForm.valueChanges.subscribe(console.log);
+
+    this.route.queryParams.subscribe(params => {
+      // tslint:disable-next-line: no-string-literal
+      this.inviteToken = params['inviteToken'];
+    });
+
+    this.inviteForm = this.fb.group({
+      invite: [
+        this.inviteToken,
+        [
+          Validators.required,
+          Validators.minLength(36),
+          Validators.maxLength(36)
+        ]
+      ]
+    });
+
     this.signupForm = this.fb.group(
       {
         name: ['', [Validators.required]],
@@ -154,11 +188,6 @@ export class SignupComponent implements OnInit {
       },
       { validators: [this.validateTerms] }
     );
-  }
-
-  ngOnInit() {
-    // this.signupForm.valueChanges.subscribe(console.log);
-    // this.signupAddressForm.valueChanges.subscribe(console.log);
   }
 
   validateDate(group: AbstractControl) {
@@ -211,7 +240,7 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  goTo(step: number) {
+  goTo(step) {
     const t = this.tabs[step];
     const element = document.getElementById(t.id);
     element.classList.remove('disabled');
@@ -222,7 +251,7 @@ export class SignupComponent implements OnInit {
     this.accountService.signup(account).subscribe(
       data => {
         this.unoutorizedMessage = false;
-        this.route.navigate(['']);
+        this.router.navigate(['']);
         // redirect to home page
         console.log(data);
       },
@@ -231,5 +260,10 @@ export class SignupComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  receiveConfirmation(event) {
+    this.continueAfterPayment =
+      event.status === PaypalTransactionStatus.Successful;
   }
 }

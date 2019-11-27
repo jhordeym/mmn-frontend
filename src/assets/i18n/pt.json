@@ -14,6 +14,10 @@
     "signin.forgotPass": "Esqueceu a senha?",
     "signin.invalidLogin": "Login invalido!",
 
+    "signup.subTitle": "Selecionar subscrição:",
+    "signup.invitePageTitle": "Parabéns ao se juntar à familia Travined!",
+    "signup.invitePageText": "Para continuar, por favor insira o seu convite  abaixo.",
+    "signup.inviteToken": "Seu convite aqui",
     "signup.title": "CRIAR A TUA CONTA",
     "signup.tab1": "Referenciador",
     "signup.tab2": "Conta",

@@ -1,0 +1,24 @@
+<div *ngIf="!paidFor">
+  <h2>{{ 'signup.subTitle' | translate}}</h2>
+
+  <div class="card-deck">
+    <div class="card mb-4" *ngFor="let item of products">
+      <!--<img src="..." class="card-img-top" alt="...">-->
+      <div class="card-body">
+        <h3 class="card-title">{{item.name}}</h3>
+      </div>
+      <div class="card-body">
+        <h1 class="card-subtitle">{{item.price}}$</h1>
+      </div>
+      <div class="card-body">
+        <div class="card-text" [innerHtml]="item.description"></div>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="selectSubscription(item)">Select</button>
+    </div>
+  </div>
+
+  <div #paypal></div>
+</div>
+<div *ngIf="paidFor">
+  {{ 'signup.initialSubSucessful' | translate }}
+</div>
