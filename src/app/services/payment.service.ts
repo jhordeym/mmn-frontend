@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../models/payment/Product';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment as ENV } from 'src/environments/environment';
 import { Observable, of } from 'rxjs';
 import { reject } from 'q';
 import { Payment } from '../models/payment/Payment';
+import { ShoppingCart } from '../models/payment/ShoppingCart';
 
 @Injectable({
   providedIn: 'root'
@@ -44,11 +45,16 @@ export class PaymentService {
   getAllSubscriptionProducts(): Promise<Product[]> {
     return ENV.useMock
       ? new Promise(resolve => resolve(this.mockProductList))
-      : this.http.get<Product[]>(`${ENV.accountServiceURL}/login`).toPromise();
+      : this.http
+          .get<Product[]>(`${ENV.paymentServiceURL}/products`)
+          .toPromise();
   }
 
-  persist(payment: Payment) {
-    throw new Error('Method not implemented.');
+  saveShoppingCart(ShoppingCart: ShoppingCart) {
+    return this.http.post<ShoppingCart>(
+      `${ENV.accountServiceURL}/shopping-cart`,
+      ShoppingCart
+    );
   }
 
   constructor(private http: HttpClient) {}

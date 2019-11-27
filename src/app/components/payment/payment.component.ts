@@ -152,7 +152,7 @@ export class PaymentComponent implements OnInit {
     this.shoppingCart.payment = payment;
     console.log(this.shoppingCart);
 
-    this.paymentService.persist(this.shoppingCart);
+    this.paymentService.saveShoppingCart(this.shoppingCart);
 
     // emit event to parent
     this.completedSubscription.emit({

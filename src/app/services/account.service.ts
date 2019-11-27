@@ -10,6 +10,7 @@ import { Account } from '../models/Account';
 })
 export class AccountService {
   debug = 'true';
+  inviteTokenLink = 'http://localhost:4200/signup?inviteToken=';
 
   constructor(private http: HttpClient) {}
 
@@ -18,9 +19,9 @@ export class AccountService {
   }
 
   public signup(account: Account): Observable<any> {
-    const params = new HttpParams().set('useMail', this.debug);
-    return this.http.post<Account>(`${ENV.accountServiceURL}`, account, {
-      params
+    return this.http.post<Account>(`${ENV.accountServiceURL}`, {
+      account: account,
+      link: this.inviteTokenLink
     });
   }
 
