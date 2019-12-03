@@ -18,7 +18,7 @@ export const environment = {
   accountServiceURL:
     (USE_MICROSERVICE ? ACC_BASE_URL : APP_BASE_URL) + 'accounts',
   paymentServiceURL:
-    (USE_MICROSERVICE ? LANG_BASE_URL : APP_BASE_URL) + 'payments',
+    (USE_MICROSERVICE ? PAYMENT_BASE_URL : APP_BASE_URL) + 'payments',
 
   // Images
   imageBg: IMG_PATH + 'bg-vector.png',

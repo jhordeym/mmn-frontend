@@ -11,7 +11,7 @@
         <h1 class="card-subtitle">{{item.price}}$</h1>
       </div>
       <div class="card-body">
-        <div class="card-text" [innerHtml]="item.description"></div>
+        <div class="card-text" [innerHtml]="item.description | translate"></div>
       </div>
       <button type="button" class="btn btn-primary" (click)="selectSubscription(item)">Select</button>
     </div>
