@@ -1,0 +1,11 @@
+@import 'src/scss/styles.scss';
+
+.Dashboard {
+  // STRUCTURE
+
+  &-content {
+    @include container(450px);
+  }
+
+  height: 100%;
+}

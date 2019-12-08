@@ -16,12 +16,20 @@ export const environment = {
   languagePackServiceURL:
     (USE_MICROSERVICE ? LANG_BASE_URL : APP_BASE_URL) + 'lang',
   accountServiceURL:
-    (USE_MICROSERVICE ? ACC_BASE_URL : APP_BASE_URL) + 'accounts',
+    (USE_MICROSERVICE ? ACC_BASE_URL : APP_BASE_URL) + 'accounts/accounts',
   paymentServiceURL:
     (USE_MICROSERVICE ? PAYMENT_BASE_URL : APP_BASE_URL) + 'payments',
 
   // Images
   imageBg: IMG_PATH + 'bg-vector.png',
   imageLogoBig: IMG_PATH + 'logo-big.jpeg',
-  imageLogoSmall: IMG_PATH + 'logo-small.png'
+  imageLogoSmall: IMG_PATH + 'logo-small.png',
+
+  imgCar: IMG_PATH + 'img-car.jpg',
+  imgCruises: IMG_PATH + 'img-cruises.jpg',
+  imgFlight: IMG_PATH + 'img-flight.jpg',
+  imgHome: IMG_PATH + 'img-home.jpg',
+  imgHotel: IMG_PATH + 'img-hotel.jpg',
+  imgMarketplace: IMG_PATH + 'img-marketplace.jpg',
+  imgWeeks: IMG_PATH + 'img-weeks.jpg'
 };

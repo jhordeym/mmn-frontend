@@ -4,19 +4,11 @@
   // STRUCTURE
 
   &-content {
-    @include container(450px);
+    @include container(650px);
   }
 
   &-logo {
     margin: 5%;
     width: 60%;
-  }
-
-  .formFooter {
-    background-color: $bg-gray;
-    border-top: 1px solid $very-light-primary;
-    padding: 25px;
-    text-align: center;
-    @include border-radius(0 0 10px 10px);
   }
 }

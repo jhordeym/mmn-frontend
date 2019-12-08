@@ -127,7 +127,8 @@
           <!-- Payment -->
           <span>
             <div class="row align-items-center justify-content-center">
-              <app-payment [useSubscription]=false (completedSubscription)="receiveConfirmation($event)"></app-payment>
+              <app-subscription-payment [useSubscription]=false (completedSubscription)="receiveConfirmation($event)">
+              </app-subscription-payment>
             </div>
           </span>
 
@@ -149,6 +150,11 @@
               (click)="validateBeforeSubmit()" value="{{ 'signup.button' | translate }}">
           </div>
 
+        </div>
+
+        <!-- Footer -->
+        <div class="formFooter">
+          <a class="underlineHover" [routerLink]="['/signin']">{{ 'signin.loginMsg' | translate }}</a>
         </div>
       </div>
     </div>

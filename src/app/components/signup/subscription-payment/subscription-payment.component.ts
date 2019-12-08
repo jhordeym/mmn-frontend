@@ -1,29 +1,28 @@
 import {
-  AfterViewChecked,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
-  ViewChild,
   Output,
-  EventEmitter
+  ViewChild
 } from '@angular/core';
+import { PaymentMethod } from 'src/app/enum/PaymentMethod';
+import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
 import { CartProduct } from 'src/app/models/payment/CartProduct';
+import { Payment } from 'src/app/models/payment/Payment';
 import { Product } from 'src/app/models/payment/Product';
 import { ShoppingCart } from 'src/app/models/payment/ShoppingCart';
 import { PaymentService } from 'src/app/services/payment.service';
-import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
-import { Payment } from 'src/app/models/payment/Payment';
-import { PaymentMethod } from 'src/app/enum/PaymentMethod';
 
 declare var paypal;
 
 @Component({
-  selector: 'app-payment',
-  templateUrl: './payment.component.html',
-  styleUrls: ['./payment.component.scss']
+  selector: 'app-subscription-payment',
+  templateUrl: './subscription-payment.component.html',
+  styleUrls: ['./subscription-payment.component.scss']
 })
-export class PaymentComponent implements OnInit {
+export class SubscriptionPaymentComponent implements OnInit {
   @Output() completedSubscription = new EventEmitter();
   @Input() 'useSubscription'?: boolean;
   @ViewChild('paypal') paypalElement: ElementRef;
@@ -141,7 +140,7 @@ export class PaymentComponent implements OnInit {
 
     this.paidFor = true;
     // persistOrderInBD
-    const units = order.purchase_units;
+    const units = order.purchase_units[0];
 
     const payment = new Payment();
     payment.id = units.reference_id;

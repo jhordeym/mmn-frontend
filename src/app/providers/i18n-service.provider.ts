@@ -17,9 +17,10 @@ export class I18NServiceProvider {
 
   public getTranslation(key: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.translateService
-        .get(key)
-        .subscribe(translated => resolve(translated), error => reject(error));
+      this.translateService.get(key).subscribe(
+        translated => resolve(translated),
+        error => reject(error)
+      );
     });
   }
 
@@ -30,11 +31,11 @@ export class I18NServiceProvider {
   public getLanguagePack(lang: string): Promise<JSON> {
     return new Promise((resolve, reject) => {
       this.conditionalLoadPack(lang).subscribe(
-        (data: I18NData) => {
+        data => {
           /* debug */
           // console.log(data);
-          this.languagePackLoaded = data.locale;
-          resolve(data.dictionary);
+          this.languagePackLoaded = lang;
+          resolve(data.dictionary ? data.dictionary : data);
         },
         error => {
           console.log(
@@ -52,7 +53,7 @@ export class I18NServiceProvider {
       : this.loadI18nLanguagePack(lang);
   }
 
-  private loadI18nLanguagePack(lang: string): Observable<any> {
+  private loadI18nLanguagePack(lang: string): Observable<I18NData> {
     return this.http.get<any>(`${ENV.languagePackServiceURL}/${lang}`);
   }
 

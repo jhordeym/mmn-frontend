@@ -57,6 +57,19 @@ h2.active {
   color: $warn;
 }
 
+.formHeader {
+  border-bottom: 1px solid $very-light-primary;
+  margin-bottom: 20px;
+}
+
+.formFooter {
+  background-color: $bg-gray;
+  border-top: 1px solid $very-light-primary;
+  padding: 25px;
+  text-align: center;
+  @include border-radius(0 0 10px 10px);
+}
+
 // GLOBAL ANIMATION CLASSES
 
 // Simple CSS3 Fade-in-down Animation

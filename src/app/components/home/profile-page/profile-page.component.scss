@@ -1,11 +1,11 @@
 @import 'src/scss/styles.scss';
 
-.Dashboard {
+.Profile {
   // STRUCTURE
 
   &-content {
     @include container(450px);
   }
 
-  height: 80vh;
+  height: 100%;
 }
