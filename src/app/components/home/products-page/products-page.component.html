@@ -3,16 +3,23 @@
     <h1>{{ 'home.productsTitle' | translate}}</h1>
     <!-- product cards -->
     <div class="card-deck">
-      <div class="card" *ngFor="let card of cards">
+      <div class="card mb-4" *ngFor="let card of cards">
         <img [src]="card.img" class="card-img-top" alt="card.title">
         <div class="card-body">
           <h5 class="card-title">{{ card.title | translate }}</h5>
           <p class="card-text">{{ card.text | translate }} </p>
         </div>
         <div class="card-footer">
-          <a class="underlineHover" (click)="navigateTo(card.link)">{{ 'product.goToLink' | translate }}</a>
+          <input type="button" class="underlineHover" (click)="navigateTo(card.link)"
+            value="{{ 'products.goToLink' | translate }}">
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!--  Translations
+        {{ 'products.flight.title' | translate }},
+        {{ 'products.flight.text' | translate }},
+        {{ 'products.goToLink' | translate }},
+-->

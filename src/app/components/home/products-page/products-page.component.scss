@@ -7,5 +7,29 @@
     @include container(450px);
   }
 
-  height: 100%;
+  .card-deck,
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card {
+    min-width: 25%;
+    max-width: 25%;
+  }
+
+  @media only screen and (max-width: 768px) {
+
+    /* For mobile phones: */
+    .card-deck {
+      display: block;
+    }
+
+    .card {
+      min-width: unset;
+      max-width: unset;
+      width: 100%;
+    }
+  }
 }

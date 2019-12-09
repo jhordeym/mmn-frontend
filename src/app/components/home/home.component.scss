@@ -3,8 +3,8 @@
 .Sidebar {
   align-self: left;
   background-color: white;
+  min-height: 100vh;
   border: 1px;
-  height: 100vh;
 
   &-content {
     display: flex;
@@ -12,7 +12,7 @@
 
   &-menu {
     background-color: $heavy-primary;
-    height: 100vh;
+    min-height: 100vh;
     min-width: 20vh;
   }
 
@@ -46,6 +46,7 @@
     &-menu {
       height: unset;
       width: 100%;
+      min-height: unset;
     }
   }
 
