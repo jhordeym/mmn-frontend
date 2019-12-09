@@ -1,6 +1,18 @@
 <div class="Productspage">
   <div class="Wrapper fadeInDown">
     <h1>{{ 'home.productsTitle' | translate}}</h1>
-    <app-under-construction></app-under-construction>
+    <!-- product cards -->
+    <div class="card-deck">
+      <div class="card" *ngFor="let card of cards">
+        <img [src]="card.img" class="card-img-top" alt="card.title">
+        <div class="card-body">
+          <h5 class="card-title">{{ card.title | translate }}</h5>
+          <p class="card-text">{{ card.text | translate }} </p>
+        </div>
+        <div class="card-footer">
+          <a class="underlineHover" (click)="navigateTo(card.link)">{{ 'product.goToLink' | translate }}</a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

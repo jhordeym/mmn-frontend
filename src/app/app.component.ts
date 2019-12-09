@@ -22,8 +22,9 @@ export class AppComponent {
   constructor(
     private translate: TranslateService,
     private i18NServiceProvider: I18NServiceProvider
-    ) {
-      this.setDefaultLang();
+  ) {
+    localStorage.clear();
+    this.setDefaultLang();
   }
 
   setDefaultLang() {
@@ -39,13 +40,22 @@ export class AppComponent {
   setLang(lang: string) {
     this.currentLang = lang;
     this.currentLangFlag = this.supportedLangs[this.currentLang];
-    this.i18NServiceProvider.getLanguagePack(lang)
-    .then(languagePack => {
-      this.translate.setTranslation(this.i18NServiceProvider.currentLanguagePackLoaded, languagePack);
-      this.translate.use(this.i18NServiceProvider.currentLanguagePackLoaded);
-      console.log(`Language Pack loaded from API was "${this.i18NServiceProvider.currentLanguagePackLoaded}"`);
-    }).catch(error => {
-      console.error(`Language Pack can not be loaded from API. Error ${error}`);
-    });
+    this.i18NServiceProvider
+      .getLanguagePack(lang)
+      .then(languagePack => {
+        this.translate.setTranslation(
+          this.i18NServiceProvider.currentLanguagePackLoaded,
+          languagePack
+        );
+        this.translate.use(this.i18NServiceProvider.currentLanguagePackLoaded);
+        console.log(
+          `Language Pack loaded from API was "${this.i18NServiceProvider.currentLanguagePackLoaded}"`
+        );
+      })
+      .catch(error => {
+        console.error(
+          `Language Pack can not be loaded from API. Error ${error}`
+        );
+      });
   }
 }

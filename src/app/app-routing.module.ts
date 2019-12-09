@@ -29,7 +29,7 @@ const routes: Routes = [
   { path: '**', redirectTo: '' }
 ];
 
-const config = { useHash: true, enableTracing: true };
+const config = { useHash: true, enableTracing: false };
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, config)],

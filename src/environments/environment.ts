@@ -7,10 +7,19 @@ const LANG_BASE_URL = 'http://localhost:8181/';
 const ACC_BASE_URL = 'http://localhost:8182/';
 const PAYMENT_BASE_URL = 'http://localhost:8182/';
 
+const SOR_API_URL = 'https://api.saveonuat.com';
+
+const SOR_REDIRECT_URL =
+  'https://members.travined.com/vacationclub/logincheck.aspx?Token=';
+
 export const environment = {
   mode: 'Dev',
   production: false,
   useMock: true,
+
+  sorApiUrl: SOR_API_URL + '/clubmembership',
+  sorApiUrlV2: SOR_REDIRECT_URL + '/v2/clubmembership',
+  sorRedirectUrl: SOR_REDIRECT_URL,
 
   // API
   languagePackServiceURL:
