@@ -9,6 +9,7 @@ import { ForgotPassComponent } from './components/signin/forgot-pass/forgot-pass
 import { ProfilePageComponent } from './components/home/profile-page/profile-page.component';
 import { SettingsPageComponent } from './components/home/settings-page/settings-page.component';
 import { ProductsPageComponent } from './components/home/products-page/products-page.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,11 @@ const routes: Routes = [
       { path: 'products', component: ProductsPageComponent },
       { path: 'settings', component: SettingsPageComponent }
     ]
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent,
+    canActivate: [AuthGuardService]
   },
   { path: 'signin', component: SigninComponent },
   { path: 'signup', component: SignupComponent },

@@ -11,8 +11,8 @@ import { ChangePass } from '../models/ChangePass';
 })
 export class AccountService {
   debug = 'true';
-  inviteTokenLink = 'http://localhost:4200/signup?inviteToken=';
-  recoverLink = 'http://localhost:4200/signup?inviteToken=';
+  inviteTokenLink = 'http://localhost:4200/#/signup?inviteToken=';
+  recoverLink = 'http://localhost:4200/#/recover?recoverToken=';
 
   constructor(private http: HttpClient) {}
 

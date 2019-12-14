@@ -40,7 +40,7 @@
   "subscriptions.pack.4.description": "<ul class=\"list-group list-group-flush\"> <li class=\"list-group-item\">✅ Mytrip360° Professional Affiliate Site with: </li> <li class=\"list-group-item\">✅ * Hotels</li> <li class=\"list-group-item\">✅ * Flights</li> <li class=\"list-group-item\">✅ * Rental Cars</li> <li class=\"list-group-item\">✅ * Cruises </li> <li class=\"list-group-item\">✅ * Homes </li> <li class=\"list-group-item\">✅ * Weeks </li> <li class=\"list-group-item\">✅ * Marketplace </li> <li class=\"list-group-item\"></li> <li class=\"list-group-item\">✅ 32 Passports to send</li> <li class=\"list-group-item\">✅ iDecide Interactive Sales System</li> <li class=\"list-group-item\">✅ 20% of referral - direct invitation</li> <li class=\"list-group-item\">✅ Travined Online Back Office MLM Management</li> <li class=\"list-group-item\">✅ 100% Passports Bonuses</li></ul>",
   "home.dashboardTitle": "Dashboard",
   "home.profileTitle": "Profile",
-  "home.productsTitle": "Products",
+  "home.productsTitle": "MyTrip 360º Products",
   "home.settingsTitle": "Settings",
   "signup.initialSubSucessful": "Thank you for your subscription!",
   "forgot.button": "Send recover email",
@@ -49,7 +49,6 @@
   "forgot.title": "Recover account",
   "forgot.email": "Email",
   "recover.successful": "We sent you an email to recover your account, please check your inbox!",
-  "products-car-title": "products.car.title",
   "products.hotel.title": "Hotel",
   "products.hotel.text": " ",
   "products.goToLink": "Go to",
@@ -62,5 +61,6 @@
   "products.home.title": "Houses",
   "products.home.text": " ",
   "products.weeks.title": "Weeks",
-  "products.weeks.text": " "
+  "products.weeks.text": " ",
+  "nav.logout": "Logout"
 }

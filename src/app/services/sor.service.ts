@@ -2,60 +2,48 @@ import { Injectable } from '@angular/core';
 import { environment as ENV } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export class SorToken {
-  public constructor(public token: string, public time: number) {}
-}
+import { SorLoginToken } from '../models/sor/SorLoginToken';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SorService {
   headers = new HttpHeaders();
-  constructor(private http: HttpClient) {
-    this.headers.set('x-saveon-username', 'myTrip53121');
-    this.headers.set('x-saveon-secret', 'o2m9je7tdjfrxrys');
-  }
+  constructor(private http: HttpClient) {}
 
-  public goTo(cardLink: string) {
-    const URL =
-      ENV.sorRedirectUrl + this.getToken() + '&RedirectURL=' + cardLink;
-    console.log(URL);
-    // window.open(URL, '_self');
-  }
-
-  sorLogin(): Observable<any> {
+  // BACKEND SERVICE
+  sorLoginToken(): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set('subscriptionId', '0');
     const httpOptions = {
-      headers: this.headers
+      headers: headers
     };
-    const apiusername = 'myTrip53121';
-    const apipassword = 'o2m9je7tdjfrxrys';
+
     const email = 'test1@gmail.com';
     const accountId = '7cd3db97-2f59-46f6-a91a-7812d40273a8';
+    const body = {
+      Email: email,
+      ContractNumber: accountId
+    };
+    console.log(body, httpOptions);
     return this.http.post<any>(
-      ENV.sorApiUrl + '/getlogintokennovalidation',
-      {
-        APIUsername: apiusername,
-        APIPassword: apipassword,
-        Email: email,
-        ContractNumber: accountId
-      },
+      ENV.reservationServiceURL + '/login',
+      body,
       httpOptions
     );
   }
 
-  getToken() {
-    let token: SorToken = this.getLSToken();
-    if (token && this.validateTime(token.time)) {
-      return token;
+  fetchTokenAndNavigate(cardLink): void {
+    let token: SorLoginToken = this.getCachedToken();
+    if (token && this.validateToken(token)) {
+      this.navigate(token.token, cardLink);
     } else {
-      return this.sorLogin().subscribe(
-        (data: string) => {
-          if (data.startsWith('LoginToken')) {
-            const newToken = data.split(':')[0];
-            console.log(newToken);
-            this.saveLSToken(newToken);
-            return newToken;
+      this.sorLoginToken().subscribe(
+        (data: SorLoginToken) => {
+          if (data) {
+            console.log(data);
+            this.saveTokenOnCache(data);
+            this.navigate(data.token, cardLink);
           }
         },
         error => console.log(error)
@@ -63,19 +51,23 @@ export class SorService {
     }
   }
 
-  validateTime(time: number) {
+  private navigate(token, cardLink): void {
+    const URL = ENV.sorRedirectUrl + token + '&RedirectURL=' + cardLink;
+    console.log(URL);
+    window.open(URL, '_blank');
+  }
+
+  private validateToken(token: SorLoginToken): boolean {
     // less than 10 min?
-    return new Date().getTime() - time < 600000;
+    return token.generateTimeMilis < token.expireTimeMilis;
   }
 
-  saveLSToken(token: string) {
-    let currentTime: number = new Date().getTime();
-    const sorToken = new SorToken(token, currentTime);
-
-    localStorage.setItem('sor-token', JSON.stringify(sorToken));
+  // CACHE
+  saveTokenOnCache(token: SorLoginToken) {
+    localStorage.setItem('sor-token', JSON.stringify(token));
   }
 
-  getLSToken(): SorToken {
+  getCachedToken(): SorLoginToken {
     const token: string = localStorage.getItem('sor-token');
     if (!token) return null;
     return JSON.parse(token);

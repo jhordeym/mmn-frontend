@@ -1,6 +1,11 @@
 <div class="Productspage">
   <div class="Wrapper fadeInDown">
+    <!-- Title -->
     <h1>{{ 'home.productsTitle' | translate}}</h1>
+    <!-- Logo -->
+    <div class="fadeIn-first">
+      <img [src]="logo" class="Productspage-logo" alt="logo" />
+    </div>
     <!-- product cards -->
     <div class="card-deck">
       <div class="card mb-4" *ngFor="let card of cards">
@@ -10,7 +15,7 @@
           <p class="card-text">{{ card.text | translate }} </p>
         </div>
         <div class="card-footer">
-          <input type="button" class="underlineHover" (click)="navigateTo(card.link)"
+          <input type="button" class="productButton underlineHover" (click)="navigateTo(card.link)"
             value="{{ 'products.goToLink' | translate }}">
         </div>
       </div>

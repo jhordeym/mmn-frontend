@@ -7,6 +7,11 @@
     @include container(450px);
   }
 
+  &-logo {
+    margin: 5%;
+    width: 100%;
+  }
+
   .card-deck,
   .card-footer {
     display: flex;
@@ -17,6 +22,12 @@
   .card {
     min-width: 25%;
     max-width: 25%;
+  }
+
+  .productButton {
+    text-align: center;
+    width: 100%;
+    padding: 20px 10px;
   }
 
   @media only screen and (max-width: 768px) {

@@ -30,11 +30,11 @@ export class SigninComponent implements OnInit {
   }
 
   constructor(
-    private account: AccountService,
-    private fb: FormBuilder,
-    private route: Router
+    private accountService: AccountService,
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
-    this.loginForm = this.fb.group({
+    this.loginForm = this.formBuilder.group({
       login: ['', [Validators.required, Validators.minLength(6)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
@@ -52,11 +52,11 @@ export class SigninComponent implements OnInit {
   }
 
   doLogin(login: Login) {
-    this.account.login(login).subscribe(
+    this.accountService.login(login).subscribe(
       data => {
         this.unoutorizedMessage = false;
-        this.account.saveSession(data);
-        this.route.navigate(['']);
+        this.accountService.saveSession(data);
+        this.router.navigate(['']);
         // redirect to home page
         console.log(data);
       },

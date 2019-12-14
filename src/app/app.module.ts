@@ -20,6 +20,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { SubscriptionPaymentComponent } from './components/signup/subscription-payment/subscription-payment.component';
 import { UnderConstructionComponent } from './components/under-construction/under-construction.component';
 import { I18NServiceProvider } from './providers/i18n-service.provider';
+import { LogoutComponent } from './components/logout/logout.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -40,7 +41,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ConfirmAccountComponent,
     ProfilePageComponent,
     ProductsPageComponent,
-    SettingsPageComponent
+    SettingsPageComponent,
+    LogoutComponent
   ],
   imports: [
     FormsModule,

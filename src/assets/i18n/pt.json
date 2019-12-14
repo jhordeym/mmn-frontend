@@ -40,7 +40,7 @@
   "subscriptions.pack.4.description": "<ul class=\"list-group list-group-flush\"> <li class=\"list-group-item\">✅ Mytrip360° Professional Affiliate Site with: </li> <li class=\"list-group-item\">✅ * Hotels</li> <li class=\"list-group-item\">✅ * Flights</li> <li class=\"list-group-item\">✅ * Rental Cars</li> <li class=\"list-group-item\">✅ * Cruises </li> <li class=\"list-group-item\">✅ * Homes </li> <li class=\"list-group-item\">✅ * Weeks </li> <li class=\"list-group-item\">✅ * Marketplace </li> <li class=\"list-group-item\"></li> <li class=\"list-group-item\">✅ 32 Passports to send</li> <li class=\"list-group-item\">✅ iDecide Interactive Sales System</li> <li class=\"list-group-item\">✅ 20% of referral - direct invitation</li> <li class=\"list-group-item\">✅ Travined Online Back Office MLM Management</li> <li class=\"list-group-item\">✅ 100% Passports Bonuses</li></ul>",
   "home.dashboardTitle": "Painel principal",
   "home.profileTitle": "Perfil",
-  "home.productsTitle": "Produtos",
+  "home.productsTitle": "Produtos MyTrip 360º ",
   "home.settingsTitle": "Configurações",
   "signup.initialSubSucessful": "Obrigado pela sua subscrição!",
   "forgot.button": "Enviar email de recupração",
@@ -60,5 +60,7 @@
   "products.home.title": "Casas",
   "products.home.text": " ",
   "products.weeks.title": "Semanas",
-  "products.weeks.text": " "
+  "products.weeks.text": " ",
+  "products.flight.text": " ",
+  "nav.logout": "Sair"
 }

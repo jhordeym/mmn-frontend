@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { I18NServiceProvider } from './providers/i18n-service.provider';
 import { environment as ENV } from 'src/environments/environment';
+import { AccountService } from './services/account.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,7 @@ import { environment as ENV } from 'src/environments/environment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  loggedIn = false;
   smallLogo = ENV.imageLogoSmall;
   supportedLangs = ['en', 'pt'];
   supportedLangsFlags = {
@@ -20,16 +22,16 @@ export class AppComponent {
   currentLangFlag = this.supportedLangsFlags[0];
 
   constructor(
-    private translate: TranslateService,
+    private translateService: TranslateService,
+    private accountService: AccountService,
     private i18NServiceProvider: I18NServiceProvider
   ) {
-    localStorage.clear();
     this.setDefaultLang();
   }
 
   setDefaultLang() {
-    this.translate.setDefaultLang(this.currentLang);
-    const browserLang = this.translate.getBrowserLang();
+    this.translateService.setDefaultLang(this.currentLang);
+    const browserLang = this.translateService.getBrowserLang();
     if (this.supportedLangs.includes(browserLang)) {
       this.currentLang = browserLang;
       this.currentLangFlag = this.supportedLangs[this.currentLang];
@@ -43,11 +45,13 @@ export class AppComponent {
     this.i18NServiceProvider
       .getLanguagePack(lang)
       .then(languagePack => {
-        this.translate.setTranslation(
+        this.translateService.setTranslation(
           this.i18NServiceProvider.currentLanguagePackLoaded,
           languagePack
         );
-        this.translate.use(this.i18NServiceProvider.currentLanguagePackLoaded);
+        this.translateService.use(
+          this.i18NServiceProvider.currentLanguagePackLoaded
+        );
         console.log(
           `Language Pack loaded from API was "${this.i18NServiceProvider.currentLanguagePackLoaded}"`
         );
@@ -57,5 +61,13 @@ export class AppComponent {
           `Language Pack can not be loaded from API. Error ${error}`
         );
       });
+  }
+
+  onChangeOfRoutes(event) {
+    if (this.accountService.getSession()) {
+      this.loggedIn = true;
+    } else {
+      this.loggedIn = false;
+    }
   }
 }

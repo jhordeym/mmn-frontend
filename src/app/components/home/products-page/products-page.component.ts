@@ -12,6 +12,7 @@ export class Card {
   styleUrls: ['./products-page.component.scss']
 })
 export class ProductsPageComponent implements OnInit {
+  logo = ENV.myTripLogo;
   cards = new Array<Card>();
   constructor(private sorService: SorService) {
     this.cards.push(
@@ -57,6 +58,6 @@ export class ProductsPageComponent implements OnInit {
   ngOnInit() {}
 
   navigateTo(cardLink) {
-    this.sorService.goTo(cardLink);
+    this.sorService.fetchTokenAndNavigate(cardLink);
   }
 }
