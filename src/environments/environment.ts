@@ -34,7 +34,7 @@ export const environment = {
   imageBg: IMG_PATH + 'bg-vector.png',
   imageLogoBig: IMG_PATH + 'logo-big.jpeg',
   imageLogoSmall: IMG_PATH + 'logo-small.png',
-  myTripLogo: IMG_PATH + 'myTrip360.png',
+  myTripLogo: IMG_PATH + 'mytrip.png',
 
   imgCar: IMG_PATH + 'img-car.jpg',
   imgCruises: IMG_PATH + 'img-cruises.jpg',

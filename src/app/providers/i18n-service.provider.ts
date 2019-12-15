@@ -3,16 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { environment as ENV } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { I18NData } from '../models/I18NData';
+import { I18nData } from '../models/translation/i18nData';
+import { I18nService } from '../services/i18n.service';
+import { I18nDto } from '../models/translation/i18nDto';
 
 @Injectable()
 export class I18NServiceProvider {
   languagePackLoaded = 'en';
-  useMock = true;
 
   constructor(
     public http: HttpClient,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private i18nService: I18nService
   ) {}
 
   public getTranslation(key: string): Promise<string> {
@@ -30,34 +32,40 @@ export class I18NServiceProvider {
 
   public getLanguagePack(lang: string): Promise<JSON> {
     return new Promise((resolve, reject) => {
-      this.conditionalLoadPack(lang).subscribe(
-        data => {
-          /* debug */
-          // console.log(data);
+      this.loadI18nLanguagePack(lang).subscribe(
+        (data) => {
           this.languagePackLoaded = lang;
-          resolve(data.dictionary ? data.dictionary : data);
+          resolve(data.dictionary);
         },
         error => {
-          console.log(
-            `Error trying to get the language pack for the language "${lang}" from the server.`
+          /* retry with mock */
+          this.loadI18nLanguagePackFromMock(lang).subscribe(
+            mockData => {
+              this.languagePackLoaded = lang;
+              console.log(
+                `Error trying to get the language pack for the language "${lang}" from the server => fallback to mock.`
+              );
+              resolve(mockData);
+            },
+            mockError => {
+              console.log(
+                `Error trying to get the language pack for the language "${lang}" from the server and from mock.`
+              );
+              reject(mockError);
+            }
           );
-          reject(error);
         }
       );
     });
   }
 
-  private conditionalLoadPack(lang: string): Observable<any> {
-    return this.useMock
-      ? this.loadI18nLanguagePackFromMock(lang)
-      : this.loadI18nLanguagePack(lang);
-  }
-
-  private loadI18nLanguagePack(lang: string): Observable<I18NData> {
-    return this.http.get<any>(`${ENV.languagePackServiceURL}/${lang}`);
+  private loadI18nLanguagePack(lang: string): Observable<any> {
+    console.log('loading lang pack ' + lang + ' from server');
+    return this.i18nService.by(lang);
   }
 
   private loadI18nLanguagePackFromMock(lang: string): Observable<any> {
+    console.log('loading lang pack ' + lang + ' from mock');
     return this.http.get<any>(`assets/i18n/${lang}.json`);
   }
 }

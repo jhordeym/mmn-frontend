@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment as ENV } from 'src/environments/environment';
 import { SorService } from 'src/app/services/sor.service';
+import { AccountService } from 'src/app/services/account.service';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 
 export class Card {
   public constructor(public img, public title, public text, public link) {}
@@ -12,9 +14,16 @@ export class Card {
   styleUrls: ['./products-page.component.scss']
 })
 export class ProductsPageComponent implements OnInit {
+  @ViewChild(ModalComponent) modalElement: ModalComponent;
+  modalTitle = "";
+  modalContent = "";
+
   logo = ENV.myTripLogo;
+  account = null;
   cards = new Array<Card>();
-  constructor(private sorService: SorService) {
+  constructor(
+    private sorService: SorService,
+    private accountService: AccountService) {
     this.cards.push(
       new Card(
         ENV.imgHotel,
@@ -55,9 +64,27 @@ export class ProductsPageComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.account = this.accountService.getSession();
+  }
 
-  navigateTo(cardLink) {
-    this.sorService.fetchTokenAndNavigate(cardLink);
+  navigateTo(cardLink: string) {
+    this.modalTitle = "Loading ..."
+    this.modalContent = "<div style=\"text-align:center\" class=\"spinner-border text-primary\" role=\"status\">\r\n  <span class=\"sr-only\">Loading...<\/span>\r\n<\/div>"
+
+    this.modalElement.open();
+
+    this.sorService.fetchTokenAndNavigate(this.account, cardLink)
+    .then(callingResult => {
+      if(callingResult === 'success') {
+        this.modalTitle = "Redirecting to MyTrip360º...";
+        this.modalContent = "Redirecting to MyTrip360º, a new page should pop up soon!";
+      }
+    })
+    .catch(error => {
+      this.modalTitle = "Error connecting to MyTrip360º";
+      this.modalContent = "<p>Error connecting to MyTrip360º. Please contact our support team.</p>";
+      this.modalContent += ""
+    });
   }
 }

@@ -21,6 +21,7 @@ import { SubscriptionPaymentComponent } from './components/signup/subscription-p
 import { UnderConstructionComponent } from './components/under-construction/under-construction.component';
 import { I18NServiceProvider } from './providers/i18n-service.provider';
 import { LogoutComponent } from './components/logout/logout.component';
+import { ModalComponent } from './shared/components/modal/modal.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -42,7 +43,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ProfilePageComponent,
     ProductsPageComponent,
     SettingsPageComponent,
-    LogoutComponent
+    LogoutComponent,
+    ModalComponent
   ],
   imports: [
     FormsModule,

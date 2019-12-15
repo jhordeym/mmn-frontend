@@ -3,6 +3,7 @@ import { environment as ENV } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SorLoginToken } from '../models/sor/SorLoginToken';
+import { Account } from '../models/Account';
 
 @Injectable({
   providedIn: 'root'
@@ -12,46 +13,51 @@ export class SorService {
   constructor(private http: HttpClient) {}
 
   // BACKEND SERVICE
-  sorLoginToken(): Observable<any> {
+  sorLoginToken(account: Account): Observable<SorLoginToken> {
     let headers = new HttpHeaders();
     headers = headers.set('subscriptionId', '0');
     const httpOptions = {
       headers: headers
     };
 
-    const email = 'test1@gmail.com';
-    const accountId = '7cd3db97-2f59-46f6-a91a-7812d40273a8';
     const body = {
-      Email: email,
-      ContractNumber: accountId
+      Email: account.email,
+      ContractNumber: account.id
     };
     console.log(body, httpOptions);
-    return this.http.post<any>(
+    return this.http.post<SorLoginToken>(
       ENV.reservationServiceURL + '/login',
       body,
       httpOptions
     );
   }
 
-  fetchTokenAndNavigate(cardLink): void {
+  public fetchTokenAndNavigate(account: Account, cardLink: string): Promise<any> {
     let token: SorLoginToken = this.getCachedToken();
-    if (token && this.validateToken(token)) {
-      this.navigate(token.token, cardLink);
-    } else {
-      this.sorLoginToken().subscribe(
-        (data: SorLoginToken) => {
-          if (data) {
-            console.log(data);
-            this.saveTokenOnCache(data);
-            this.navigate(data.token, cardLink);
+    return new Promise((resolve, reject) => {
+      if (token && this.validateToken(token)) {
+        this.navigate(token.token, cardLink);
+        resolve('success');
+      } else {
+        this.sorLoginToken(account).subscribe(
+          (data: SorLoginToken) => {
+            if (data) {
+              console.log(data);
+              this.saveTokenOnCache(data);
+              resolve('success');
+              this.navigate(data.token, cardLink);
+            }
+          },
+          error => {
+            reject(error);
+            console.log(error)
           }
-        },
-        error => console.log(error)
-      );
-    }
+        );
+      }
+    });
   }
 
-  private navigate(token, cardLink): void {
+  private navigate(token: string, cardLink: string): void {
     const URL = ENV.sorRedirectUrl + token + '&RedirectURL=' + cardLink;
     console.log(URL);
     window.open(URL, '_blank');
@@ -63,7 +69,7 @@ export class SorService {
   }
 
   // CACHE
-  saveTokenOnCache(token: SorLoginToken) {
+  saveTokenOnCache(token: SorLoginToken): void {
     localStorage.setItem('sor-token', JSON.stringify(token));
   }
 

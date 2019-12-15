@@ -12,10 +12,11 @@ import { AccountService } from './services/account.service';
 export class AppComponent {
   loggedIn = false;
   smallLogo = ENV.imageLogoSmall;
-  supportedLangs = ['en', 'pt'];
+  supportedLangs = ['en', 'pt', 'es'];
   supportedLangsFlags = {
     en: 'flag-icon flag-icon-us',
-    pt: 'flag-icon flag-icon-br'
+    pt: 'flag-icon flag-icon-br',
+    es: 'flag-icon flag-icon-es'
   };
 
   currentLang = this.supportedLangs[0];
