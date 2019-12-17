@@ -3,6 +3,7 @@ import { environment as ENV } from 'src/environments/environment';
 import { SorService } from 'src/app/services/sor.service';
 import { AccountService } from 'src/app/services/account.service';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
+import { Account } from 'src/app/models/Account';
 
 export class Card {
   public constructor(public img, public title, public text, public link) {}
@@ -19,7 +20,7 @@ export class ProductsPageComponent implements OnInit {
   modalContent = "";
 
   logo = ENV.myTripLogo;
-  account = null;
+  account : Account;
   cards = new Array<Card>();
   constructor(
     private sorService: SorService,
@@ -73,8 +74,8 @@ export class ProductsPageComponent implements OnInit {
     this.modalContent = "<div style=\"text-align:center\" class=\"spinner-border text-primary\" role=\"status\">\r\n  <span class=\"sr-only\">Loading...<\/span>\r\n<\/div>"
 
     this.modalElement.open();
-
-    this.sorService.fetchTokenAndNavigate(this.account, cardLink)
+    const subscriptionId = '0';
+    this.sorService.fetchTokenAndNavigate(subscriptionId, this.account, cardLink)
     .then(callingResult => {
       if(callingResult === 'success') {
         this.modalTitle = "Redirecting to MyTrip360º...";

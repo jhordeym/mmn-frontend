@@ -62,5 +62,9 @@
   "products.weeks.title": "Semanas",
   "products.weeks.text": " ",
   "products.flight.text": " ",
-  "nav.logout": "Dejar"
+  "nav.logout": "Dejar",
+  "home.translationsTitle": "Traducciones",
+  "profile.creationDate": "Fecha de creacion",
+  "profile.accountStatus": "Estado de la cuenta",
+  "profile.accountRole": "Papel"
 }

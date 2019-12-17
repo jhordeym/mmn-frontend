@@ -5,16 +5,15 @@ import { Observable } from 'rxjs';
 import { Login } from '../models/Login';
 import { Account } from '../models/Account';
 import { ChangePass } from '../models/ChangePass';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   debug = 'true';
-  inviteTokenLink = 'http://localhost:4200/#/signup?inviteToken=';
-  recoverLink = 'http://localhost:4200/#/recover?recoverToken=';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   public login(login: Login): Observable<any> {
     return this.http.post<Login>(`${ENV.accountServiceURL}/login`, login);
@@ -23,14 +22,14 @@ export class AccountService {
   public signup(account: Account): Observable<any> {
     return this.http.post<Account>(`${ENV.accountServiceURL}`, {
       account: account,
-      link: this.inviteTokenLink
+      link: ENV.inviteTokenLink
     });
   }
 
   public forgot(email: string) {
     const changepass = new ChangePass();
     changepass.email = email;
-    changepass.link = this.recoverLink;
+    changepass.link = ENV.recoverLink;
     const requestOptions: Object = {
       responseType: 'text'
     };
@@ -41,12 +40,15 @@ export class AccountService {
     );
   }
 
-  saveSession(object: any) {
-    localStorage.setItem('session', object);
+  // CACHE
+  saveSession(account: Account): void {
+    localStorage.setItem('session', JSON.stringify(account));
   }
 
-  getSession() {
-    return localStorage.getItem('session');
+  getSession(): Account {
+    const account: string = localStorage.getItem('session');
+    if (!account) return null;
+    return JSON.parse(account);
   }
 
   logout() {

@@ -11,9 +11,9 @@ import { Observable } from 'rxjs';
 export class I18nService {
   constructor(private http: HttpClient) {}
 
-  public allDto(): Observable<Array<I18nDto>> {
+  public allData(): Observable<Array<I18nData>> {
     return this.http
-      .get<Array<I18nDto>>(`${ENV.languagePackServiceURL}`);
+      .get<Array<I18nData>>(`${ENV.languagePackServiceURL}`);
   }
 
   public by(lang: string): Observable<I18nDto> {

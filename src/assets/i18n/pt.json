@@ -62,5 +62,9 @@
   "products.weeks.title": "Semanas",
   "products.weeks.text": " ",
   "products.flight.text": " ",
-  "nav.logout": "Sair"
+  "nav.logout": "Sair",
+  "home.translationsTitle": "Traduções",
+  "profile.creationDate": "Data de Criação",
+  "profile.accountStatus": "Estado da conta",
+  "profile.accountRole": "Cargo"
 }

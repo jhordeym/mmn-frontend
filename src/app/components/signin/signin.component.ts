@@ -9,6 +9,7 @@ import {
   Validators
 } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
+import { Account } from 'src/app/models/Account';
 
 @Component({
   selector: 'app-signin',
@@ -53,11 +54,15 @@ export class SigninComponent implements OnInit {
 
   doLogin(login: Login) {
     this.accountService.login(login).subscribe(
-      data => {
-        this.unoutorizedMessage = false;
-        this.accountService.saveSession(data);
-        this.router.navigate(['']);
-        // redirect to home page
+      (data : Account) => {
+        if(data){
+          this.unoutorizedMessage = false;
+          this.accountService.saveSession(data);
+          // redirect to home page
+          this.router.navigate(['']);
+        } else {
+          this.unoutorizedMessage = true;
+        }
         console.log(data);
       },
       error => {

@@ -1,5 +1,5 @@
 export enum ShoppingCartStatus {
-  Created,
-  Confirmed,
-  Error
+  Created = "Created",
+  Confirmed = "Confirmed",
+  Error = "Error"
 }

@@ -7,7 +7,6 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ConfirmAccountComponent } from './components/confirm-account/confirm-account.component';
 import { ForgotPassComponent } from './components/signin/forgot-pass/forgot-pass.component';
 import { DashboardPageComponent } from './components/home/dashboard-page/dashboard-page.component';
 import { HomeComponent } from './components/home/home.component';
@@ -22,6 +21,9 @@ import { UnderConstructionComponent } from './components/under-construction/unde
 import { I18NServiceProvider } from './providers/i18n-service.provider';
 import { LogoutComponent } from './components/logout/logout.component';
 import { ModalComponent } from './shared/components/modal/modal.component';
+import { LanguageConfigComponent } from './components/home/settings-page/language-config/language-config.component';
+import { ChangePasswordComponent } from './components/from-mail/change-password/change-password.component';
+import { ConfirmAccountComponent } from './components/from-mail/confirm-account/confirm-account.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -44,7 +46,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ProductsPageComponent,
     SettingsPageComponent,
     LogoutComponent,
-    ModalComponent
+    ModalComponent,
+    LanguageConfigComponent,
+    ChangePasswordComponent
   ],
   imports: [
     FormsModule,

@@ -47,7 +47,7 @@ export class SubscriptionPaymentComponent implements OnInit {
     cartProduct.price = item.price;
     const cartProducts = new Array<CartProduct>(cartProduct);
     this.shoppingCart.products = cartProducts;
-    console.log(this.shoppingCart);
+    // console.log(this.shoppingCart);
 
     this.addPaypalButton();
   }
@@ -143,13 +143,15 @@ export class SubscriptionPaymentComponent implements OnInit {
     const units = order.purchase_units[0];
 
     const payment = new Payment();
-    payment.id = units.reference_id;
+    payment.id = order.id;
     payment.method = PaymentMethod.Paypal;
     payment.value = units.amount.value;
     payment.currency_code = units.amount.currency_code;
+    // caching payment
+    this.paymentService.savePaymentCache(payment);
 
     this.shoppingCart.payment = payment;
-    console.log(this.shoppingCart);
+    // console.log(this.shoppingCart);
 
     this.paymentService.saveShoppingCart(this.shoppingCart);
 

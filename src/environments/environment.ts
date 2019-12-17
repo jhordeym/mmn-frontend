@@ -9,6 +9,8 @@ const PAYMENT_BASE_URL = 'http://localhost:8182/';
 const MAIL_BASE_URL = '...';
 const SOR_BASE_URL = 'http://localhost:8190/';
 
+const FRONTENDBASE_URL = 'http://localhost:4200/#/'
+
 const SOR_REDIRECT_URL =
   'http://memberstravined.saveonuat.com/vacationclub/logincheck.aspx?Token=';
 
@@ -28,8 +30,12 @@ export const environment = {
     (USE_MICROSERVICE ? PAYMENT_BASE_URL : APP_BASE_URL) + 'payments/payments',
   mailServiceURL: (USE_MICROSERVICE ? MAIL_BASE_URL : APP_BASE_URL) + 'mail/',
   reservationServiceURL:
-    (USE_MICROSERVICE ? LANG_BASE_URL : APP_BASE_URL) + 'reservation/sor',
+    (USE_MICROSERVICE ? SOR_BASE_URL : APP_BASE_URL) + 'reservation/sor',
 
+
+  // EMAIL
+  inviteTokenLink: FRONTENDBASE_URL + 'signup?inviteToken=',
+  recoverLink: FRONTENDBASE_URL + 'recover?recoverToken=',
   // Images
   imageBg: IMG_PATH + 'bg-vector.png',
   imageLogoBig: IMG_PATH + 'logo-big.jpeg',

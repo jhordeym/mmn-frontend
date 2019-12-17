@@ -1,7 +1,7 @@
 export enum AccountStatus {
-  New,
-  Authenticated,
-  WaitingPasswordRecovery,
-  Recovered,
-  Canceled
+  New = "New",
+  Authenticated = "Authenticated",
+  WaitingPasswordRecovery = "WaitingPasswordRecovery",
+  Recovered = "Recovered",
+  Canceled = "Canceled"
 }

@@ -12,6 +12,7 @@ import { Account } from 'src/app/models/Account';
 import { Address } from 'src/app/models/Address';
 import { AccountStatus } from 'src/app/enum/AccountStatus';
 import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
+import { SorService } from 'src/app/services/sor.service';
 
 @Component({
   selector: 'app-signup',
@@ -20,6 +21,8 @@ import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
 })
 export class SignupComponent implements OnInit {
   logo = ENV.imageLogoBig;
+
+  countries_list = [];
 
   tabs = [
     {
@@ -135,6 +138,7 @@ export class SignupComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private accountService: AccountService,
+    private sorService: SorService,
     private fb: FormBuilder,
     private router: Router
   ) {}
@@ -142,6 +146,9 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
     // this.signupForm.valueChanges.subscribe(console.log);
     // this.signupAddressForm.valueChanges.subscribe(console.log);
+
+    const localized = this.sorService.getCountriesList();
+    this.countries_list = Object.values(localized);
 
     this.route.queryParams.subscribe(params => {
       // tslint:disable-next-line: no-string-literal
@@ -249,11 +256,22 @@ export class SignupComponent implements OnInit {
 
   doSignup(account: Account) {
     this.accountService.signup(account).subscribe(
-      data => {
-        this.unoutorizedMessage = false;
-        this.router.navigate(['']);
+      (accountData: Account) => {
+        if (accountData) {
+          this.unoutorizedMessage = false;
+          this.sorService.sorLoginToken('0', accountData).subscribe(
+            sorData => {
+              console.log('sor data', sorData);
+            },
+            sorError => {
+              console.log('sor error', sorError);
+            }
+          );
+          this.router.navigate(['']);
+        }
+
         // redirect to home page
-        console.log(data);
+        console.log(accountData);
       },
       error => {
         this.unoutorizedMessage = true;

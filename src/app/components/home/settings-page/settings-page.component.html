@@ -2,5 +2,6 @@
   <div class="Wrapper fadeInDown">
     <h1>{{ 'home.settingsTitle' | translate}}</h1>
     <app-under-construction></app-under-construction>
+    <app-language-config *ngIf="isAdmin()"></app-language-config>
   </div>
 </div>

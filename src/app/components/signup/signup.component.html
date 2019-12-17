@@ -59,11 +59,12 @@
                 placeholder="{{ 'signup.lastName' | translate }}">
 
               <div class="birthday-group">
-                <input type="date" formControlName="birthday" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
+                <input type="date" formControlName="birthday" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()"
+                [minDate]="{year: 1920, month: 1, day: 1}"/>
               </div>
 
               <!-- <label>{{ 'signup.email' | translate }}</label> -->
-              <input type="text" class="fadeIn-first" formControlName="email"
+              <input type="email" class="fadeIn-first" formControlName="email"
                 placeholder="{{ 'signup.email' | translate }}">
 
               <!-- <label>{{ 'signup.phone' | translate }}</label> -->
@@ -93,26 +94,29 @@
             <span class="Inline-error" *ngIf="unoutorizedMessage">
               Invaid Input
             </span>
-            <!-- <label>{{ 'signup.name' | translate }}</label> -->
             <span>
               <input type="text" class="fadeIn-first" formControlName="street"
                 placeholder="{{ 'signup.street' | translate }}">
 
-              <!-- <label>{{ 'signup.lastName' | translate }}</label> -->
               <input type="text" class="fadeIn-first" formControlName="city"
                 placeholder="{{ 'signup.city' | translate }}">
 
-              <!-- <label>{{ 'signup.email' | translate }}</label> -->
               <input type="text" class="fadeIn-first" formControlName="state"
                 placeholder="{{ 'signup.state' | translate }}">
 
-              <!-- <label>{{ 'signup.phone' | translate }}</label> -->
               <input type="text" class="fadeIn-second" formControlName="zip"
                 placeholder="{{ 'signup.zip' | translate }}">
 
-              <!-- <label>{{ 'signup.password' | translate }}</label> -->
+              <div class="form-group">
+                <select class="form-control text-center" id="country" formControlName="country">
+                  <option disabled selected>{{ 'signup.country' | translate }}</option>
+                  <option *ngFor="let c of countries_list" [value]="c"> {{ c }}</option>
+                </select>
+              </div>
+              <!--
               <input type="text" class="fadeIn-third" formControlName="country"
                 placeholder="{{ 'signup.country' | translate }}">
+              -->
 
               <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid || !signupAddressForm.valid"
                 (click)="goTo(3)" value="{{ 'signup.nextButton' | translate }}">

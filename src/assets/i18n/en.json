@@ -62,5 +62,9 @@
   "products.home.text": " ",
   "products.weeks.title": "Weeks",
   "products.weeks.text": " ",
-  "nav.logout": "Logout"
+  "nav.logout": "Logout",
+  "home.translationsTitle": "Translations",
+  "profile.creationDate": "Creation Date",
+  "profile.accountStatus": "Account Status",
+  "profile.accountRole": "Role"
 }

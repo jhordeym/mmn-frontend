@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment as ENV } from 'src/environments/environment';
 import { Product } from '../models/payment/Product';
 import { ShoppingCart } from '../models/payment/ShoppingCart';
+import { Payment } from '../models/payment/Payment';
 
 @Injectable({
   providedIn: 'root'
@@ -51,4 +52,15 @@ export class PaymentService {
   }
 
   constructor(private http: HttpClient) {}
+
+  // CACHE
+  savePaymentCache(payment: Payment): void {
+    localStorage.setItem('subscription', JSON.stringify(payment));
+  }
+
+  getPaymentCache(): Payment {
+    const token: string = localStorage.getItem('subscription');
+    if (!token) return null;
+    return JSON.parse(token);
+  }
 }

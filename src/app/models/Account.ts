@@ -14,6 +14,7 @@ export class Account {
   address?: Address;
   email?: string;
   phone?: string;
+  role: string;
   password?: string;
   accountStatus: AccountStatus;
   creationDate?: string;

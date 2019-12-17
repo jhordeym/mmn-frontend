@@ -2,9 +2,27 @@
 
 .Dashboard {
   // STRUCTURE
+  // border: 1px solid black;
 
   &-content {
-    @include container(450px);
+    @include container(100vh);
   }
 
+  form {
+    // border: 1px solid red;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .form-group {
+    // border: 1px solid green;
+    flex-basis: 32%;
+    margin: 5px;
+  }
+
+  .form-group:last-child {
+    flex-basis: 98%;
+  }
 }

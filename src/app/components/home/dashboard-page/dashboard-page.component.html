@@ -1,6 +1,53 @@
+<div *ngIf="isNewAccount()" class="alert alert-warning text-center" role="alert">
+  Your account is still not active, please activate with the link we sent to your email
+</div>
+
 <div class="Dashboard">
   <div class="Wrapper fadeInDown">
     <h1>{{ 'home.dashboardTitle' | translate}}</h1>
     <app-under-construction></app-under-construction>
+
+    <!-- Perfil Form -->
+    <form [formGroup]="dashboardForm" class="text-center">
+      <span class="Inline-error" *ngIf="false">
+        {{ 'signin.invalidLogin' | translate }}
+      </span>
+
+      <div class="form-group">
+        <label for="name">{{ 'signup.name' | translate }}</label>
+        <br>
+        <input type="text" id="name" formControlName="name">
+      </div>
+      <div class="form-group">
+        <label for="email">{{ 'signup.email' | translate }}</label>
+        <br>
+        <input type="text" id="email" formControlName="email">
+      </div>
+      <div class="form-group">
+        <label for="phone">{{ 'signup.phone' | translate }}</label>
+        <br>
+        <input type="text" id="phone" formControlName="phone">
+      </div>
+      <div class="form-group">
+        <label for="accountStatus">{{ 'profile.accountStatus' | translate }}</label>
+        <br>
+        <input type="text" id="accountStatus" formControlName="accountStatus">
+      </div>
+      <div class="form-group">
+        <label for="role">{{ 'profile.accountRole' | translate }}</label>
+        <br>
+        <input type="text" id="role" formControlName="role">
+      </div>
+      <div class="form-group">
+        <label for="creationDate">{{ 'profile.creationDate' | translate }}</label>
+        <br>
+        <input type="text" id="creationDate" formControlName="creationDate">
+      </div>
+      <div class="form-group">
+        <label for="inviteToken">{{ 'signup.inviteToken' | translate }}</label>
+        <br>
+        <input type="text" id="inviteToken" formControlName="inviteToken">
+      </div>
+    </form>
   </div>
 </div>

@@ -147,7 +147,9 @@ input[type=reset]:enabled {
   @include transform(0.95s)
 }
 
+select,
 input[type=text],
+input[type=email],
 input[type=password],
 input[type=date] {
   background-color: $very-light-gray;
@@ -175,7 +177,9 @@ input[type=date]::-webkit-calendar-picker-indicator {
   display: none;
 }
 
+select:focus,
 input[type=text]:focus,
+input[type=email]:focus,
 input[type=password]:focus,
 input[type=date]:focus {
   color: $light;
@@ -184,6 +188,7 @@ input[type=date]:focus {
 }
 
 input[type=text]:placeholder,
+input[type=email]:placeholder,
 input[type=password]:placeholder,
 input[type=date]:placeholder {
   color: $dark;
