@@ -66,5 +66,6 @@
   "home.translationsTitle": "Translations",
   "profile.creationDate": "Creation Date",
   "profile.accountStatus": "Account Status",
-  "profile.accountRole": "Role"
+  "profile.accountRole": "Role",
+  "warning.accountNotActive": "Your account is still not active, please activate with the link we sent to your email"
 }
