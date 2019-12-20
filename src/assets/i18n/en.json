@@ -67,5 +67,7 @@
   "profile.creationDate": "Creation Date",
   "profile.accountStatus": "Account Status",
   "profile.accountRole": "Role",
-  "warning.accountNotActive": "Your account is still not active, please activate with the link we sent to your email"
+  "warning.accountNotActive": "Your account is still not active, please activate with the link we sent to your email",
+  "singup.birthday": "Date of birth",
+  "signup.subscribeNewsletter": "Allow us to keep you update with our email newsletter feed"
 }

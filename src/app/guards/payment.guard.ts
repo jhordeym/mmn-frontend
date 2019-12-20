@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { PaymentService } from '../services/payment.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService implements CanActivate {
-  constructor(public auth: AuthService, public router: Router) {}
+export class PaymentGuard implements CanActivate {
+  constructor(public payment: PaymentService, public router: Router) {}
 
   canActivate(): boolean {
-    if (!this.auth.isAuthenticated()) {
+    if (!this.payment.paymentActive()) {
       this.router.navigate(['signin']);
     }
     return true;

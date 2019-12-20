@@ -1,4 +1,5 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -16,7 +17,7 @@ import { SettingsPageComponent } from './components/home/settings-page/settings-
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
-import { SubscriptionPaymentComponent } from './components/signup/subscription-payment/subscription-payment.component';
+import { SubscriptionPaymentComponent } from './components/signin/payment-validation/subscription-payment/subscription-payment.component';
 import { UnderConstructionComponent } from './components/under-construction/under-construction.component';
 import { I18NServiceProvider } from './providers/i18n-service.provider';
 import { LogoutComponent } from './components/logout/logout.component';
@@ -24,6 +25,9 @@ import { ModalComponent } from './shared/components/modal/modal.component';
 import { LanguageConfigComponent } from './components/home/settings-page/language-config/language-config.component';
 import { ChangePasswordComponent } from './components/from-mail/change-password/change-password.component';
 import { ConfirmAccountComponent } from './components/from-mail/confirm-account/confirm-account.component';
+import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
+import { PaymentValidationComponent } from './components/signin/payment-validation/payment-validation.component';
+import { LogoComponent } from './components/logo/logo.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -48,9 +52,13 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     LogoutComponent,
     ModalComponent,
     LanguageConfigComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    TermsAndConditionsComponent,
+    PaymentValidationComponent,
+    LogoComponent
   ],
   imports: [
+    PdfViewerModule,
     FormsModule,
     NgbModule,
     ReactiveFormsModule,

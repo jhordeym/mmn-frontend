@@ -1,18 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from 'src/app/services/account.service';
-import { environment as ENV } from 'src/environments/environment';
-import {
-  FormBuilder,
-  Validators,
-  FormGroup,
-  AbstractControl
-} from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AccountStatus } from 'src/app/enum/AccountStatus';
 import { Account } from 'src/app/models/Account';
 import { Address } from 'src/app/models/Address';
-import { AccountStatus } from 'src/app/enum/AccountStatus';
-import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
+import { AccountService } from 'src/app/services/account.service';
 import { SorService } from 'src/app/services/sor.service';
+import { environment as ENV } from 'src/environments/environment';
 
 @Component({
   selector: 'app-signup',
@@ -50,14 +44,6 @@ export class SignupComponent implements OnInit {
       selected: false
     },
     {
-      id: 'pills-billing-tab',
-      i18n: 'signup.tab4',
-      contentId: 'pills-billing',
-      active: false,
-      disabled: true,
-      selected: false
-    },
-    {
       id: 'pills-confirmation-tab',
       i18n: 'signup.tab5',
       contentId: 'pills-confirmation',
@@ -70,7 +56,6 @@ export class SignupComponent implements OnInit {
   inviteForm: any;
   signupForm: any;
   signupAddressForm: any;
-  signupBillingForm: any;
   signupConfirmForm: any;
 
   unoutorizedMessage = false;
@@ -135,6 +120,10 @@ export class SignupComponent implements OnInit {
     return this.signupConfirmForm.get('acceptedTerms');
   }
 
+  get subscribeNewsletter() {
+    return this.signupConfirmForm.get('subscribeNewsletter');
+  }
+
   constructor(
     private route: ActivatedRoute,
     private accountService: AccountService,
@@ -160,8 +149,8 @@ export class SignupComponent implements OnInit {
         this.inviteToken,
         [
           Validators.required,
-          Validators.minLength(36),
-          Validators.maxLength(36)
+          Validators.minLength(48),
+          Validators.maxLength(48)
         ]
       ]
     });
@@ -187,11 +176,10 @@ export class SignupComponent implements OnInit {
       country: ['', [Validators.required]]
     });
 
-    this.signupBillingForm = this.fb.group({});
-
     this.signupConfirmForm = this.fb.group(
       {
-        acceptedTerms: [null, [Validators.required]]
+        acceptedTerms: [null, [Validators.required]],
+        subscribeNewsletter: [null]
       },
       { validators: [this.validateTerms] }
     );
@@ -247,41 +235,47 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  goTo(step) {
-    const t = this.tabs[step];
-    const element = document.getElementById(t.id);
+  goTo(step: number) {
+    const tab = this.tabs[step];
+    const element = document.getElementById(tab.id);
     element.classList.remove('disabled');
     element.click();
   }
 
-  doSignup(account: Account) {
+  private doSignup(account: Account): void {
     this.accountService.signup(account).subscribe(
       (accountData: Account) => {
+        console.log(
+          'TCL: SignupComponent -> doSignup -> accountData',
+          accountData
+        );
         if (accountData) {
           this.unoutorizedMessage = false;
           this.sorService.sorLoginToken('0', accountData).subscribe(
             sorData => {
-              console.log('sor data', sorData);
+              console.log(
+                'TCL: SignupComponent -> doSignup -> sorData',
+                sorData
+              );
+              this.router.navigate(['payment-validation']);
             },
             sorError => {
-              console.log('sor error', sorError);
+              this.unoutorizedMessage = true;
+              console.log(
+                'TCL: SignupComponent -> doSignup -> sorError',
+                sorError
+              );
             }
           );
-          this.router.navigate(['']);
         }
-
-        // redirect to home page
-        console.log(accountData);
       },
-      error => {
+      accountError => {
         this.unoutorizedMessage = true;
-        console.log(error);
+        console.log(
+          'TCL: SignupComponent -> doSignup -> accountError',
+          accountError
+        );
       }
     );
-  }
-
-  receiveConfirmation(event) {
-    this.continueAfterPayment =
-      event.status === PaypalTransactionStatus.Successful;
   }
 }

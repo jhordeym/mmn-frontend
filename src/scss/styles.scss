@@ -161,10 +161,21 @@ input[type=date] {
   display: inline-block;
   font-size: 16px;
   margin: 5px;
+  height: 7vh;
   width: 85%;
   border: 2px solid #f6f6f6;
   @include transform(0.5s);
   @include border-radius(5px);
+}
+
+
+.form-selector {
+  padding: unset;
+  text-align-last: center;
+  text-align: center;
+  -ms-text-align-last: center;
+  -moz-text-align-last: center;
+  text-align-last: center;
 }
 
 input[type=date]::-webkit-inner-spin-button {
@@ -187,6 +198,7 @@ input[type=date]:focus {
   border-bottom: 2px solid $other-primary;
 }
 
+select::placeholder,
 input[type=text]:placeholder,
 input[type=email]:placeholder,
 input[type=password]:placeholder,

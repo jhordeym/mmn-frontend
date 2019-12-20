@@ -53,6 +53,10 @@ export class PaymentService {
 
   constructor(private http: HttpClient) {}
 
+  paymentActive() {
+    return this.getPaymentCache() ? true : false;
+  }
+
   // CACHE
   savePaymentCache(payment: Payment): void {
     localStorage.setItem('subscription', JSON.stringify(payment));

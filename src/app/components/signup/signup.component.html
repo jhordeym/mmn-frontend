@@ -23,9 +23,7 @@
         <div class="tab-pane fade  show active" id="pills-lookup" role="tabpanel" aria-labelledby="pills-lookup-tab">
           <form [formGroup]="inviteForm">
             <!-- Logo -->
-            <div class="fadeIn-first">
-              <img [src]="logo" class="Signup-logo" alt="logo" />
-            </div>
+            <app-logo size="45vh"></app-logo>
 
             <!-- Token -->
             <span>
@@ -60,7 +58,7 @@
 
               <div class="birthday-group">
                 <input type="date" formControlName="birthday" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()"
-                [minDate]="{year: 1920, month: 1, day: 1}"/>
+                  [minDate]="{year: 1920, month: 1, day: 1}" placeholder="{{ 'singup.birthday' | translate }}" />
               </div>
 
               <!-- <label>{{ 'signup.email' | translate }}</label> -->
@@ -108,7 +106,7 @@
                 placeholder="{{ 'signup.zip' | translate }}">
 
               <div class="form-group">
-                <select class="form-control text-center" id="country" formControlName="country">
+                <select class="form-control form-selector" id="country" formControlName="country">
                   <option disabled selected>{{ 'signup.country' | translate }}</option>
                   <option *ngFor="let c of countries_list" [value]="c"> {{ c }}</option>
                 </select>
@@ -125,28 +123,21 @@
 
         </div>
 
-        <!-- Tab 4 -->
-        <div class="tab-pane fade" id="pills-billing" role="tabpanel" aria-labelledby="pills-billing-tab">
-
-          <!-- Payment -->
-          <span>
-            <div class="row align-items-center justify-content-center">
-              <app-subscription-payment [useSubscription]=false (completedSubscription)="receiveConfirmation($event)">
-              </app-subscription-payment>
-            </div>
-          </span>
-
-          <input type="button" class="fadeIn-fourth" [disabled]="!continueAfterPayment" (click)="goTo(4)"
-            value="{{ 'signup.nextButton' | translate }}">
-        </div>
-
         <!-- Tab 5-->
         <div class="tab-pane fade" id="pills-confirmation" role="tabpanel" aria-labelledby="pills-confirmation-tab">
 
           <div [formGroup]="signupConfirmForm">
             <div class="terms">
-              <input type="checkbox" id="termsCheck" formControlName="acceptedTerms">
-              <label class="form-check-label" for="termsCheck">{{ 'signup.acceptTerms' | translate }}</label>
+              <app-terms-and-conditions></app-terms-and-conditions>
+
+              <input type="checkbox" class="termsCheckBox" id="termsCheck" formControlName="acceptedTerms">
+              <label class="form-check-label" class="termsLabel"
+                for="termsCheck">{{ 'signup.acceptTerms' | translate }}</label>
+
+              <br>
+              <input type="checkbox" class="termsCheckBox" id="termsCheck" formControlName="subscribeNewsletter">
+              <label class="form-check-label" class="termsLabel"
+                for="termsCheck">{{ 'signup.subscribeNewsletter' | translate }}</label>
             </div>
 
             <input type="button" class="fadeIn-fourth"
@@ -158,6 +149,7 @@
 
         <!-- Footer -->
         <div class="formFooter">
+
           <a class="underlineHover" [routerLink]="['/signin']">{{ 'signin.loginMsg' | translate }}</a>
         </div>
       </div>

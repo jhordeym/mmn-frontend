@@ -67,5 +67,7 @@
   "profile.creationDate": "Data de Criação",
   "profile.accountStatus": "Estado da conta",
   "profile.accountRole": "Cargo",
-  "warning.accountNotActive": "Sua conta ainda não está ativa, ative com o link que enviamos para seu e-mail"
+  "warning.accountNotActive": "Sua conta ainda não está ativa, ative com o link que enviamos para seu e-mail",
+  "singup.birthday": "Data de Nascimento",
+  "signup.subscribeNewsletter": "Permita-nos mantê-lo atualizado com o nosso feed de boletins por e-mail"
 }

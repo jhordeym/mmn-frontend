@@ -46,16 +46,13 @@ export class AppComponent {
     this.i18NServiceProvider
       .getLanguagePack(lang)
       .then(languagePack => {
-        this.translateService.setTranslation(
-          this.i18NServiceProvider.currentLanguagePackLoaded,
-          languagePack
-        );
-        this.translateService.use(
-          this.i18NServiceProvider.currentLanguagePackLoaded
-        );
-        console.log(
-          `Language Pack loaded from API was "${this.i18NServiceProvider.currentLanguagePackLoaded}"`
-        );
+        this.i18NServiceProvider
+          .getCurrentLanguagePackLoaded()
+          .subscribe(lang => {
+            this.translateService.setTranslation(lang, languagePack);
+            this.translateService.use(lang);
+            console.log(`Language Pack loaded from API was "${lang}"`);
+          });
       })
       .catch(error => {
         console.error(
