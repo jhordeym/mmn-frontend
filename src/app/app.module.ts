@@ -3,7 +3,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
@@ -28,6 +28,7 @@ import { ConfirmAccountComponent } from './components/from-mail/confirm-account/
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { PaymentValidationComponent } from './components/signin/payment-validation/payment-validation.component';
 import { LogoComponent } from './components/logo/logo.component';
+import { UsersConfigComponent } from './components/home/settings-page/users-config/users-config.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -55,7 +56,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ChangePasswordComponent,
     TermsAndConditionsComponent,
     PaymentValidationComponent,
-    LogoComponent
+    LogoComponent,
+    UsersConfigComponent
   ],
   imports: [
     PdfViewerModule,

@@ -7,6 +7,7 @@ import { Address } from 'src/app/models/Address';
 import { AccountService } from 'src/app/services/account.service';
 import { SorService } from 'src/app/services/sor.service';
 import { environment as ENV } from 'src/environments/environment';
+import { iif } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -59,6 +60,10 @@ export class SignupComponent implements OnInit {
   signupConfirmForm: any;
 
   unoutorizedMessage = false;
+  invalidTokenMSG = false;
+  accountAlreadyExistsMSG = false;
+  sorErrorMsg = false;
+
   continueAfterPayment = false;
 
   inviteToken = '';
@@ -168,6 +173,9 @@ export class SignupComponent implements OnInit {
       { validators: [this.validatePasswords, this.validateDate] }
     );
 
+    /** DEBUG */
+    this.signupForm.valueChanges.subscribe(data => console.debug(data));
+
     this.signupAddressForm = this.fb.group({
       street: ['', [Validators.required]],
       city: ['', [Validators.required]],
@@ -203,18 +211,11 @@ export class SignupComponent implements OnInit {
     return pass === confirm ? null : { invalid: true };
   }
 
-  getStep(n: number) {
-    return this.accountService.getRegisterStep(n);
-  }
+  /** ACTUAL METHODS */
 
   validateBeforeSubmit() {
     if (this.signupForm.valid && this.signupAddressForm.valid) {
-      const address = new Address();
-      address.street = this.street.value;
-      address.city = this.city.value;
-      address.state = this.state.value;
-      address.zip = this.zip.value;
-      address.country = this.country.value;
+      const address = new Address(this.signupAddressForm.values);
       const account = new Account();
       account.name = this.name.value;
       account.lastName = this.lastName.value;
@@ -235,6 +236,49 @@ export class SignupComponent implements OnInit {
     }
   }
 
+  // step 1
+  verifyToken() {
+    this.accountService
+      .verifyInviteToken(this.invite.value)
+      .then((data: string) => {
+        if (data) {
+          console.log(data);
+          this.saveStep(1, data);
+          this.goTo(1);
+        } else {
+          this.invalidTokenMSG = true;
+        }
+      })
+      .catch(error => {
+        this.invalidTokenMSG = true;
+        console.log(error);
+      });
+  }
+
+  // step 2
+  verifyAccount() {
+    const account = new Account(this.signupForm.values);
+    console.log('TCL: SignupComponent -> verifyAccount -> account', account);
+    this.goTo(2);
+  }
+
+  verifyAccountAddress() {
+    const address = new Address(this.signupAddressForm.values);
+    console.log(
+      'TCL: SignupComponent -> verifyAccountAddress -> address',
+      address
+    );
+    this.goTo(3);
+  }
+
+  getStep(step: number) {
+    return this.accountService.getRegisterStep(step);
+  }
+
+  saveStep(step: number, data) {
+    return this.accountService.saveRegisterStep(step, data);
+  }
+
   goTo(step: number) {
     const tab = this.tabs[step];
     const element = document.getElementById(tab.id);
@@ -250,14 +294,16 @@ export class SignupComponent implements OnInit {
           accountData
         );
         if (accountData) {
-          this.unoutorizedMessage = false;
+          this.accountAlreadyExistsMSG = false;
           this.sorService.sorLoginToken('0', accountData).subscribe(
             sorData => {
               console.log(
                 'TCL: SignupComponent -> doSignup -> sorData',
                 sorData
               );
-              this.router.navigate(['payment-validation']);
+              if (sorData) {
+                this.router.navigate(['payment-validation']);
+              }
             },
             sorError => {
               this.unoutorizedMessage = true;
@@ -270,7 +316,7 @@ export class SignupComponent implements OnInit {
         }
       },
       accountError => {
-        this.unoutorizedMessage = true;
+        this.accountAlreadyExistsMSG = true;
         console.log(
           'TCL: SignupComponent -> doSignup -> accountError',
           accountError

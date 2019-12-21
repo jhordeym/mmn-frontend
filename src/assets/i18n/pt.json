@@ -69,5 +69,10 @@
   "profile.accountRole": "Cargo",
   "warning.accountNotActive": "Sua conta ainda não está ativa, ative com o link que enviamos para seu e-mail",
   "singup.birthday": "Data de Nascimento",
-  "signup.subscribeNewsletter": "Permita-nos mantê-lo atualizado com o nosso feed de boletins por e-mail"
+  "signup.subscribeNewsletter": "Permita-nos mantê-lo atualizado com o nosso feed de boletins por e-mail",
+  "home.usersTittle": "Usuários",
+  "errors.invalidToken": "Token inválido",
+  "errors.invalidInput": "Input inválido",
+  "errors.sorErrorMsg": "Erro ao criar a sua conta na plataforma de reservas, tente novamente",
+  "errors.alreadyExists": "Conta já existe"
 }

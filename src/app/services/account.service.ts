@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment as ENV } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Login } from '../models/Login';
@@ -15,15 +15,37 @@ export class AccountService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  public login(login: Login): Observable<any> {
+  public login(login: Login): Observable<Account | any> {
     return this.http.post<Login>(`${ENV.accountServiceURL}/login`, login);
   }
 
-  public signup(account: Account): Observable<any> {
+  public listAll(): Observable<Array<Account> | any> {
+    return this.http.get<Array<Account>>(`${ENV.accountServiceURL}`);
+  }
+
+  public signup(account: Account): Observable<Account | any> {
     return this.http.post<Account>(`${ENV.accountServiceURL}`, {
       account: account,
       link: ENV.inviteTokenLink
     });
+  }
+
+  public exists(account: Account): Observable<any> {
+    return this.http.post<any>(`${ENV.accountServiceURL}`, account);
+  }
+
+  public verifyInviteToken(token: string): Promise<string> {
+    return this.http
+      .post(
+        `${ENV.accountServiceURL}/invite/verify-token`,
+        {
+          inviteToken: token
+        },
+        {
+          responseType: 'text'
+        }
+      )
+      .toPromise();
   }
 
   public forgot(email: string) {
@@ -56,10 +78,12 @@ export class AccountService {
   }
 
   saveRegisterStep(step: number, data: any) {
-    localStorage.saveItem('register-step-' + step, data);
+    localStorage.setItem(`register-step-${step}`, JSON.stringify(data));
   }
 
   getRegisterStep(step: number) {
-    return localStorage.getItem('register-step-' + step);
+    const data = localStorage.getItem(`register-step-${step}`);
+    if (!data) return null;
+    return JSON.parse(data);
   }
 }
