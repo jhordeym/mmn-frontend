@@ -1,4 +1,4 @@
-const APP_BASE_URL = 'http://52.247.221.35:8080/api/';
+const APP_BASE_URL = 'https://10.0.0.5:8080/api/';
 const IMG_PATH = 'assets/img/';
 
 const USE_MICROSERVICE = false;
@@ -10,7 +10,7 @@ const MAIL_BASE_URL = '...';
 const SOR_BASE_URL = 'http://localhost:8190/';
 
 // http
-const FRONTENDBASE_URL = 'http://login.travined.com/#/'
+const FRONTENDBASE_URL = 'https://login.travined.com:8080/#/'
 // https
 //const FRONTENDBASE_URL = 'https://login.travined.com/#/'
 
