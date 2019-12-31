@@ -7,8 +7,10 @@ export class Product {
   id?: string;
   name?: string;
   description?: string;
-  category?: string;
-  imageUrl?: string;
+  renovation?: string;
   price?: number;
   priceTC?: number;
+  params?: Array<{ param: string; value: string }>;
+  category?: string;
+  imageUrl?: string;
 }

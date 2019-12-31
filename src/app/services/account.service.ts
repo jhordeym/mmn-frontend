@@ -56,10 +56,35 @@ export class AccountService {
       responseType: 'text'
     };
     return this.http.post<string>(
-      `${ENV.accountServiceURL}/forgot`,
+      `${ENV.accountServiceURL}/pass/forgot`,
       changepass,
       requestOptions
     );
+  }
+
+  public mailForgot(token: string): Observable<Account> {
+    return this.http.get<Account>(`${ENV.accountServiceURL}/mail/recover`, {
+      params: {
+        token: token
+      }
+    });
+  }
+
+  public mailConfirm(id: string): Observable<Account> {
+    const requestOptions: Object = {
+      responseType: 'text'
+    };
+    return this.http.get<Account>(`${ENV.accountServiceURL}/mail/confirm`, {
+      params: {
+        id: id
+      }
+    });
+  }
+
+  public changePass(newPass: string): Observable<any> {
+    const account: Account = this.getAccountRecover();
+    account.password = newPass;
+    return this.http.put<any>(`${ENV.accountServiceURL}/pass/update`, account);
   }
 
   // CACHE
@@ -67,8 +92,18 @@ export class AccountService {
     localStorage.setItem('session', JSON.stringify(account));
   }
 
+  saveRecover(account: Account): void {
+    localStorage.setItem('accountRecover', JSON.stringify(account));
+  }
+
   getSession(): Account {
     const account: string = localStorage.getItem('session');
+    if (!account) return null;
+    return JSON.parse(account);
+  }
+
+  getAccountRecover(): Account {
+    const account: string = localStorage.getItem('accountRecover');
     if (!account) return null;
     return JSON.parse(account);
   }

@@ -74,5 +74,12 @@
   "errors.invalidToken": "Token inválido",
   "errors.invalidInput": "Input inválido",
   "errors.sorErrorMsg": "Erro ao criar a sua conta na plataforma de reservas, tente novamente",
-  "errors.alreadyExists": "Conta já existe"
+  "errors.alreadyExists": "Conta já existe",
+  "errors.doesNotExist": "A conta não existe",
+  "info.accountRecovering": "Recuperando sua conta ...",
+  "changePass.newPassword": "Nova senha",
+  "changePass.confirmPass": "Confirme a nova senha",
+  "changePass.button": "Alterar passe",
+  "changePass.successful": "Senha alterada com sucesso",
+  "changePass.title": "Mudar senha"
 }

@@ -17,7 +17,7 @@ const SOR_REDIRECT_URL =
 export const environment = {
   mode: 'Dev',
   production: false,
-  useMock: true,
+  useMock: false,
 
   sorRedirectUrl: SOR_REDIRECT_URL,
 
@@ -27,7 +27,7 @@ export const environment = {
   accountServiceURL:
     (USE_MICROSERVICE ? ACC_BASE_URL : APP_BASE_URL) + 'accounts/accounts',
   paymentServiceURL:
-    (USE_MICROSERVICE ? PAYMENT_BASE_URL : APP_BASE_URL) + 'payments/payments',
+    (USE_MICROSERVICE ? PAYMENT_BASE_URL : APP_BASE_URL) + 'payments',
   mailServiceURL: (USE_MICROSERVICE ? MAIL_BASE_URL : APP_BASE_URL) + 'mail/',
   reservationServiceURL:
     (USE_MICROSERVICE ? SOR_BASE_URL : APP_BASE_URL) + 'reservation/sor',

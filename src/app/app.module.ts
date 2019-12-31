@@ -29,6 +29,7 @@ import { TermsAndConditionsComponent } from './components/terms-and-conditions/t
 import { PaymentValidationComponent } from './components/signin/payment-validation/payment-validation.component';
 import { LogoComponent } from './components/logo/logo.component';
 import { UsersConfigComponent } from './components/home/settings-page/users-config/users-config.component';
+import { RecoverAccountComponent } from './components/from-mail/recover-account/recover-account.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -57,7 +58,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     TermsAndConditionsComponent,
     PaymentValidationComponent,
     LogoComponent,
-    UsersConfigComponent
+    UsersConfigComponent,
+    RecoverAccountComponent
   ],
   imports: [
     PdfViewerModule,

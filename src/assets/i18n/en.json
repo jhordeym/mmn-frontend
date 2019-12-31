@@ -74,5 +74,12 @@
   "errors.invalidToken": "Invaid Token",
   "errors.invalidInput": "Invalid Input",
   "errors.alreadyExists": "Account already exists",
-  "errors.sorErrorMsg": "Error creating your account in reservation platform"
+  "errors.sorErrorMsg": "Error creating your account in reservation platform",
+  "errors.doesNotExist": "Account doesn't exist",
+  "info.accountRecovering": "Recovering your account...",
+  "changePass.newPassword": "New Password",
+  "changePass.confirmPass": "Confirm new password",
+  "changePass.button": "Change pass",
+  "changePass.successful": "Password changed successfuly",
+  "changePass.title": "Change Password"
 }

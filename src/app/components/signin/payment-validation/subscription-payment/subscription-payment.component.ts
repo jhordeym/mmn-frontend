@@ -153,11 +153,19 @@ export class SubscriptionPaymentComponent implements OnInit {
     this.shoppingCart.payment = payment;
     // console.log(this.shoppingCart);
 
-    this.paymentService.saveShoppingCart(this.shoppingCart);
-
-    // emit event to parent
-    this.completedSubscription.emit({
-      status: PaypalTransactionStatus.Successful
-    });
+    this.paymentService.saveShoppingCart(this.shoppingCart).subscribe(
+      data => {
+        if (data) {
+          // emit event to parent
+          this.completedSubscription.emit({
+            status: PaypalTransactionStatus.Successful
+          });
+        }
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 }

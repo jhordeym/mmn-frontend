@@ -74,5 +74,12 @@
   "errors.invalidToken": "Simbolo no valido",
   "errors.invalidInput": "entrada inválida",
   "errors.alreadyExists": "la cuenta ya existe",
-  "errors.sorErrorMsg": "Error al crear su cuenta en la plataforma de reservas"
+  "errors.sorErrorMsg": "Error al crear su cuenta en la plataforma de reservas",
+  "errors.doesNotExist": "La cuenta no existe",
+  "info.accountRecovering": "Recuperando su cuenta ...",
+  "changePass.newPassword": "Nueva contraseña",
+  "changePass.confirmPass": "Confirmar nueva contraseña",
+  "changePass.button": "Cambiar pase",
+  "changePass.successful": "Contraseña cambiada con éxito",
+  "changePass.title": "Cambia la contraseña"
 }

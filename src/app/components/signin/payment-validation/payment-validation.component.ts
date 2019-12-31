@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
 import { Router } from '@angular/router';
+import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
   selector: 'app-payment-validation',
@@ -10,30 +11,24 @@ import { Router } from '@angular/router';
 export class PaymentValidationComponent implements OnInit {
   continueAfterPayment = false;
 
-  constructor(private router: Router) {}
+  constructor(private paymentService: PaymentService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const monthlyPayment = this.paymentService._getMonthlyPayment();
+    if(monthlyPayment) {
+      this.goToHome();
+    }
+  }
 
   receiveConfirmation(event) {
     this.continueAfterPayment =
       event.status === PaypalTransactionStatus.Successful;
+    this.paymentService._saveMonthlyPayment(this.continueAfterPayment);
   }
 
   goToHome() {
     this.router.navigate(['']);
   }
 
-  private _getPayment() {
-    const monthlyPayment: string = localStorage.getItem('monthlyPayment');
-    if (!monthlyPayment) return null;
-    return JSON.parse(monthlyPayment);
-  }
 
-  private _savePayment() {
-    const monthlyPayment = {
-      date: new Date(),
-      paymentStatus: this.continueAfterPayment
-    };
-    localStorage.setItem('monthlyPayment', JSON.stringify(monthlyPayment));
-  }
 }

@@ -12,6 +12,11 @@
       </div>
 
       <div *ngIf="!successful">
+        <!-- ERROR -->
+        <span class="Inline-error" *ngIf="accountDoesntExistMSG">
+          {{ 'errors.doesNotExist' | translate }}
+        </span>
+
         <!-- Login Form -->
         <form [formGroup]="forgotForm">
           <input type="text" id="email" class="fadeIn-second" formControlName="email"
