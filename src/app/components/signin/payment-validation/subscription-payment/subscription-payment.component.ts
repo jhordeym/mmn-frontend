@@ -14,6 +14,10 @@ import { Payment } from 'src/app/models/payment/Payment';
 import { Product } from 'src/app/models/payment/Product';
 import { ShoppingCart } from 'src/app/models/payment/ShoppingCart';
 import { PaymentService } from 'src/app/services/payment.service';
+import { ShoppingCartStatus } from 'src/app/enum/ShoppingCartStatus';
+import { ShoppingType } from 'src/app/enum/ShoppingType';
+import { AccountService } from 'src/app/services/account.service';
+import { Account } from 'src/app/models/Account';
 
 declare var paypal;
 
@@ -30,13 +34,16 @@ export class SubscriptionPaymentComponent implements OnInit {
   products: Product[];
   paidFor = false;
   shoppingCart: ShoppingCart;
+  account: Account;
 
-  constructor(private paymentService: PaymentService) {}
+  constructor(private paymentService: PaymentService, private accountService: AccountService) {}
 
   ngOnInit() {
     this.paymentService.getAllSubscriptionProducts().then(prods => {
       this.products = prods;
     });
+
+    this.account = this.accountService.getSession();
   }
 
   selectSubscription(item: Product) {
@@ -149,11 +156,13 @@ export class SubscriptionPaymentComponent implements OnInit {
     payment.currency_code = units.amount.currency_code;
     // caching payment
     this.paymentService.savePaymentCache(payment);
-
-    this.shoppingCart.payment = payment;
+    this.shoppingCart.shoppingCartStatus = ShoppingCartStatus.Confirmed;
+    this.shoppingCart.shoppingType = ShoppingType.Subscription;
+    this.shoppingCart.accountId = this.account.id;
+    payment.shoppingCart = this.shoppingCart;
     // console.log(this.shoppingCart);
 
-    this.paymentService.saveShoppingCart(this.shoppingCart).subscribe(
+    this.paymentService.savePayment(payment).subscribe(
       data => {
         if (data) {
           // emit event to parent

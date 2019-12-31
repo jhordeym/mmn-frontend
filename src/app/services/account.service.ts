@@ -26,7 +26,7 @@ export class AccountService {
   public signup(account: Account): Observable<Account | any> {
     return this.http.post<Account>(`${ENV.accountServiceURL}`, {
       account: account,
-      link: ENV.inviteTokenLink
+      link: ENV.confirmAccountLink
     });
   }
 

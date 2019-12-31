@@ -5,6 +5,7 @@ import { Product } from '../models/payment/Product';
 import { ShoppingCart } from '../models/payment/ShoppingCart';
 import { Payment } from '../models/payment/Payment';
 import { PaymentMockService } from './payment.mock.service';
+import { Subscription } from '../models/payment/Subscription';
 
 @Injectable({
   providedIn: 'root'
@@ -57,11 +58,11 @@ export class PaymentService {
   }
 
   // CACHE
-  savePaymentCache(payment: Payment): void {
+  savePaymentCache(payment: (Payment | Subscription)): void {
     localStorage.setItem('subscription', JSON.stringify(payment));
   }
 
-  getPaymentCache(): Payment {
+  getPaymentCache(): Payment | Subscription {
     const token: string = localStorage.getItem('subscription');
     if (!token) return null;
     return JSON.parse(token);

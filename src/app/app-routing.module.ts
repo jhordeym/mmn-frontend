@@ -14,6 +14,7 @@ import { PaymentGuard } from './guards/payment.guard';
 import { PaymentValidationComponent } from './components/signin/payment-validation/payment-validation.component';
 import { RecoverAccountComponent } from './components/from-mail/recover-account/recover-account.component';
 import { ChangePasswordComponent } from './components/from-mail/change-password/change-password.component';
+import { ConfirmAccountComponent } from './components/from-mail/confirm-account/confirm-account.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
     path: 'payment-validation',
     component: PaymentValidationComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'account-confirm',
+    component: ConfirmAccountComponent,
   },
   {
     path: 'recover',

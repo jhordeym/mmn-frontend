@@ -81,5 +81,7 @@
   "changePass.confirmPass": "Confirm new password",
   "changePass.button": "Change pass",
   "changePass.successful": "Password changed successfuly",
-  "changePass.title": "Change Password"
+  "changePass.title": "Change Password",
+  "info.accountConfirming": "Confirming account...",
+  "info.accountConfirmed": "Account confirmed!"
 }

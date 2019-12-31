@@ -34,6 +34,7 @@ export const environment = {
 
 
   // EMAIL
+  confirmAccountLink: FRONTENDBASE_URL + 'account-confirm?token=',
   inviteTokenLink: FRONTENDBASE_URL + 'signup?inviteToken=',
   recoverLink: FRONTENDBASE_URL + 'recover?recoverToken=',
   // Images

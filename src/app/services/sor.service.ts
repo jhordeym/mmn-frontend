@@ -6,12 +6,16 @@ import { SorLoginToken } from '../models/sor/SorLoginToken';
 import { Account } from '../models/Account';
 import { SorAccount } from '../models/sor/SorAccount';
 import * as i18nIsoCountries from 'i18n-iso-countries';
+import { SorResponse } from '../models/sor/SorResponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SorService {
+
+  createErrorMsgs = ["An error has occurred.", "A user with email admin@travined.com is already a member of this club."];
   headers = new HttpHeaders();
+
   constructor(private http: HttpClient) {
     i18nIsoCountries.registerLocale(require("i18n-iso-countries/langs/en.json"));
   }
@@ -21,7 +25,7 @@ export class SorService {
   }
 
   // BACKEND SERVICE
-  public sorCreate(subscriptionId: string, account: Account): Observable<SorAccount>{
+  public sorCreate(subscriptionId: string, account: Account, referalId: string, password: string): Observable<SorResponse>{
     let headers = new HttpHeaders();
     headers = headers.set('subscriptionId', subscriptionId);
     const httpOptions = {
@@ -29,11 +33,11 @@ export class SorService {
     };
 
     const body = new SorAccount(
-      account.email, account.id, account.password, account.name, account.lastName,
-      account.address.street, account.address.city, 'PT', account.phone, '9', null
+      account.email, account.id, password, account.name, account.lastName,
+      account.address.street, account.address.city, 'PT', account.phone, '9', referalId
     )
     console.log(body, httpOptions);
-    return this.http.post<SorAccount>(
+    return this.http.post<SorResponse>(
       ENV.reservationServiceURL + '/create',
       body,
       httpOptions

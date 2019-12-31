@@ -81,5 +81,7 @@
   "changePass.confirmPass": "Confirmar nueva contraseña",
   "changePass.button": "Cambiar pase",
   "changePass.successful": "Contraseña cambiada con éxito",
-  "changePass.title": "Cambia la contraseña"
+  "changePass.title": "Cambia la contraseña",
+  "info.accountConfirming": "Su cuenta ha sido confirmada!",
+  "info.accountConfirmed": "Cuenta confirmada!"
 }

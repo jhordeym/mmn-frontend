@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, timer } from 'rxjs';
+import { delayWhen, map, retryWhen, tap } from 'rxjs/operators';
 import { AccountStatus } from 'src/app/enum/AccountStatus';
 import { Account } from 'src/app/models/Account';
 import { Address } from 'src/app/models/Address';
+import { SorResponse } from 'src/app/models/sor/SorResponse';
 import { AccountService } from 'src/app/services/account.service';
 import { SorService } from 'src/app/services/sor.service';
 import { environment as ENV } from 'src/environments/environment';
-import { iif } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -59,10 +61,12 @@ export class SignupComponent implements OnInit {
   signupAddressForm: any;
   signupConfirmForm: any;
 
+  referId: string = null;
+
   unoutorizedMessage = false;
   invalidTokenMSG = false;
   accountAlreadyExistsMSG = false;
-  sorErrorMsg = false;
+  sorErrorMSG = false;
 
   continueAfterPayment = false;
 
@@ -174,7 +178,7 @@ export class SignupComponent implements OnInit {
     );
 
     /** DEBUG */
-    this.signupForm.valueChanges.subscribe(data => console.debug(data));
+    this.signupForm.valueChanges.subscribe(data => console.info(data));
 
     this.signupAddressForm = this.fb.group({
       street: ['', [Validators.required]],
@@ -215,20 +219,26 @@ export class SignupComponent implements OnInit {
 
   validateBeforeSubmit() {
     if (this.signupForm.valid && this.signupAddressForm.valid) {
-      const address = new Address(this.signupAddressForm.values);
+      const address = new Address();
+      address.street = this.street.value;
+      address.city = this.city.value;
+      address.state = this.state.value;
+      address.country = this.country.value;
+      address.zip = this.zip.value;
       const account = new Account();
       account.name = this.name.value;
       account.lastName = this.lastName.value;
       account.email = this.email.value;
       account.phone = this.phone.value;
       account.password = this.password.value;
-      const birthday = new Date();
-      birthday.setFullYear(
-        this.birthday.value.year,
-        this.birthday.value.month,
-        this.birthday.value.number
+      const birthDate = new Date(this.birthday.value);
+      console.log(
+        'BIRTHDAY FORM -> ',
+        this.birthday.value,
+        '... DATE -> ',
+        birthDate
       );
-      account.birthday = birthday;
+      account.birthDate = birthDate;
       account.address = address;
       account.accountStatus = AccountStatus.New;
       console.log(account);
@@ -242,6 +252,7 @@ export class SignupComponent implements OnInit {
       .verifyInviteToken(this.invite.value)
       .then((data: string) => {
         if (data) {
+          this.referId = data;
           console.log(data);
           this.saveStep(1, data);
           this.goTo(1);
@@ -294,25 +305,48 @@ export class SignupComponent implements OnInit {
           accountData
         );
         if (accountData) {
+          this.accountService.saveSession(accountData);
           this.accountAlreadyExistsMSG = false;
-          this.sorService.sorLoginToken('0', accountData).subscribe(
-            sorData => {
-              console.log(
-                'TCL: SignupComponent -> doSignup -> sorData',
-                sorData
-              );
-              if (sorData) {
+          this.sorService
+            .sorCreate('0', accountData, this.referId, this.password.value)
+            .pipe(
+              map((val: SorResponse) => {
+                if (
+                  val &&
+                  this.sorService.createErrorMsgs.indexOf(val['message']) !== -1
+                ) {
+                  return val;
+                } else {
+                  throw val;
+                }
+              }),
+              retryWhen((errors: Observable<any>) =>
+                errors.pipe(
+                  // log error
+                  tap(val => {
+                    this.sorErrorMSG = true;
+                    console.log(val)}),
+                  // delay 1sec
+                  delayWhen(val => timer(5000))
+                )
+              )
+            )
+            .subscribe(
+              (sorData: SorResponse) => {
+                console.log(
+                  'TCL: SignupComponent -> doSignup -> sorData',
+                  sorData
+                );
                 this.router.navigate(['payment-validation']);
+              },
+              sorError => {
+                this.sorErrorMSG = true;
+                console.log(
+                  'TCL: SignupComponent -> doSignup -> sorError',
+                  sorError
+                );
               }
-            },
-            sorError => {
-              this.unoutorizedMessage = true;
-              console.log(
-                'TCL: SignupComponent -> doSignup -> sorError',
-                sorError
-              );
-            }
-          );
+            );
         }
       },
       accountError => {
