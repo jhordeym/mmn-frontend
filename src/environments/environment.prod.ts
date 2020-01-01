@@ -1,4 +1,4 @@
-const APP_BASE_URL = 'https://10.0.0.5:8080/api/';
+const APP_BASE_URL = 'https://backend.travined.com:8080/api/';
 const IMG_PATH = 'assets/img/';
 
 const USE_MICROSERVICE = false;
@@ -36,6 +36,7 @@ export const environment = {
     (USE_MICROSERVICE ? SOR_BASE_URL : APP_BASE_URL) + 'reservation/sor',
 
   // EMAIL
+  confirmAccountLink: FRONTENDBASE_URL + 'account-confirm?token=',
   inviteTokenLink: FRONTENDBASE_URL + 'signup?inviteToken=',
   recoverLink: FRONTENDBASE_URL + 'recover?recoverToken=',
   // Images
