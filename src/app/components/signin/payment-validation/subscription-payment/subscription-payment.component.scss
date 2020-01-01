@@ -1,10 +1,35 @@
 @import 'src/scss/styles.scss';
 
-.card-title {
-  height: 8vh !important;
+
+
+.card-deck {
+  display: flex;
+  justify-content: center;
 }
 
-.card-body {}
+.card {
+  min-width: 50%;
+  max-width: 50%;
+}
+
+.card-title {
+  flex: 1 1 auto;
+  min-height: 10vh;
+  text-align: center;
+  vertical-align: middle;
+  margin: 1rem 0;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-body {
+  display: flex
+}
 
 .card-text {
   text-align: left;
@@ -27,4 +52,20 @@
 ::ng-deep .card:hover .list-group-item {
   color: white;
   background: $medium-primary !important;
+}
+
+@media only screen and (max-width: 768px) {
+
+  /* For mobile phones: */
+  .card-deck {
+    display: block;
+    border: 1px solid red;
+  }
+
+  .card {
+    margin: 1rem auto;
+    min-width: unset;
+    max-width: unset;
+    width: 90%;
+  }
 }
