@@ -1,4 +1,4 @@
-const APP_BASE_URL = 'http://52.247.221.35:8080/api/';
+const APP_BASE_URL = 'https://backend.travined.com:8080/api/';
 const IMG_PATH = 'assets/img/';
 
 const USE_MICROSERVICE = false;
@@ -10,7 +10,7 @@ const MAIL_BASE_URL = '...';
 const SOR_BASE_URL = 'http://localhost:8190/';
 
 // http
-const FRONTENDBASE_URL = 'http://login.travined.com/#/'
+const FRONTENDBASE_URL = 'https://login.travined.com:8080/#/'
 // https
 //const FRONTENDBASE_URL = 'https://login.travined.com/#/'
 
@@ -30,12 +30,13 @@ export const environment = {
   accountServiceURL:
     (USE_MICROSERVICE ? ACC_BASE_URL : APP_BASE_URL) + 'accounts/accounts',
   paymentServiceURL:
-    (USE_MICROSERVICE ? PAYMENT_BASE_URL : APP_BASE_URL) + 'payments/payments',
+    (USE_MICROSERVICE ? PAYMENT_BASE_URL : APP_BASE_URL) + 'payments',
   mailServiceURL: (USE_MICROSERVICE ? MAIL_BASE_URL : APP_BASE_URL) + 'mail/',
   reservationServiceURL:
     (USE_MICROSERVICE ? SOR_BASE_URL : APP_BASE_URL) + 'reservation/sor',
 
   // EMAIL
+  confirmAccountLink: FRONTENDBASE_URL + 'account-confirm?token=',
   inviteTokenLink: FRONTENDBASE_URL + 'signup?inviteToken=',
   recoverLink: FRONTENDBASE_URL + 'recover?recoverToken=',
   // Images

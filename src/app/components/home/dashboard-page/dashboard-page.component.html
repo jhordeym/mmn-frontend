@@ -1,5 +1,5 @@
 <div *ngIf="isNewAccount()" class="alert alert-warning text-center" role="alert">
-  Your account is still not active, please activate with the link we sent to your email
+  {{ 'warning.accountNotActive' | translate}}
 </div>
 
 <div class="Dashboard">
@@ -47,6 +47,42 @@
         <label for="inviteToken">{{ 'signup.inviteToken' | translate }}</label>
         <br>
         <input type="text" id="inviteToken" formControlName="inviteToken">
+
+        <!-- AddToAny BEGIN -->
+        <div>
+          <a href="https://www.addtoany.com/share#url=https%3A%2F%2Fmembers.travined.com%2F%23%2Fsignup%3FinviteToken%3D&amp;title=Travined"
+            target="_blank"><img src="https://static.addtoany.com/buttons/a2a.svg" width="32" height="32"
+              style="background-color:royalblue"></a>
+          <a href="https://www.addtoany.com/add_to/copy_link?linkurl=https%3A%2F%2Fmembers.travined.com%2F%23%2Fsignup%3FinviteToken%3D&amp;linkname=Travined"
+            target="_blank"><img src="https://static.addtoany.com/buttons/link.svg" width="32" height="32"
+              style="background-color:royalblue"></a>
+          <a href="https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fmembers.travined.com%2F%23%2Fsignup%3FinviteToken%3D&amp;linkname=Travined"
+            target="_blank"><img src="https://static.addtoany.com/buttons/facebook.svg" width="32" height="32"
+              style="background-color:royalblue"></a>
+          <a href="https://www.addtoany.com/add_to/facebook_messenger?linkurl=https%3A%2F%2Fmembers.travined.com%2F%23%2Fsignup%3FinviteToken%3D&amp;linkname=Travined"
+            target="_blank"><img src="https://static.addtoany.com/buttons/facebook_messenger.svg" width="32" height="32"
+              style="background-color:royalblue"></a>
+          <a href="https://www.addtoany.com/add_to/whatsapp?linkurl=https%3A%2F%2Fmembers.travined.com%2F%23%2Fsignup%3FinviteToken%3D&amp;linkname=Travined"
+            target="_blank"><img src="https://static.addtoany.com/buttons/whatsapp.svg" width="32" height="32"
+              style="background-color:royalblue"></a>
+          <a href="https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2Fmembers.travined.com%2F%23%2Fsignup%3FinviteToken%3D&amp;linkname=Travined"
+            target="_blank"><img src="https://static.addtoany.com/buttons/twitter.svg" width="32" height="32"
+              style="background-color:royalblue"></a>
+          <a href="https://www.addtoany.com/add_to/email?linkurl=https%3A%2F%2Fmembers.travined.com%2F%23%2Fsignup%3FinviteToken%3D&amp;linkname=Travined"
+            target="_blank"><img src="https://static.addtoany.com/buttons/email.svg" width="32" height="32"
+              style="background-color:royalblue"></a>
+          <a href="https://www.addtoany.com/add_to/google_gmail?linkurl=https%3A%2F%2Fmembers.travined.com%2F%23%2Fsignup%3FinviteToken%3D&amp;linkname=Travined"
+            target="_blank"><img src="https://static.addtoany.com/buttons/gmail.svg" width="32" height="32"
+              style="background-color:royalblue"></a>
+          <a href="https://www.addtoany.com/add_to/telegram?linkurl=https%3A%2F%2Fmembers.travined.com%2F%23%2Fsignup%3FinviteToken%3D&amp;linkname=Travined"
+            target="_blank"><img src="https://static.addtoany.com/buttons/telegram.svg" width="32" height="32"
+              style="background-color:royalblue"></a>
+          <a href="https://www.addtoany.com/add_to/outlook_com?linkurl=https%3A%2F%2Fmembers.travined.com%2F%23%2Fsignup%3FinviteToken%3D&amp;linkname=Travined"
+            target="_blank"><img src="https://static.addtoany.com/buttons/outlook_com.svg" width="32" height="32"
+              style="background-color:royalblue"></a>
+        </div>
+        <!-- AddToAny END -->
+
       </div>
     </form>
   </div>

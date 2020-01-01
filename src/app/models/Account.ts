@@ -10,7 +10,7 @@ export class Account {
   id?: string;
   name?: string;
   lastName?: string;
-  birthday?: Date;
+  birthDate?: Date;
   address?: Address;
   email?: string;
   phone?: string;

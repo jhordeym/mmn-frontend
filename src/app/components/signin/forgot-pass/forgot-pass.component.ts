@@ -15,7 +15,8 @@ export class ForgotPassComponent implements OnInit {
   logo = ENV.imageLogoBig;
 
   forgotForm: any;
-  successful = false;
+  successful: boolean = false;
+  accountDoesntExistMSG: boolean = false;
 
   get email() {
     return this.forgotForm.get('email');
@@ -48,6 +49,9 @@ export class ForgotPassComponent implements OnInit {
         }
       },
       error => {
+        if (error.status === 409) {
+          this.accountDoesntExistMSG = true;
+        }
         this.successful = false;
         console.log(error);
       }

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from 'src/app/services/account.service';
+import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { environment as ENV } from 'src/environments/environment';
 
 @Component({
   selector: 'app-change-password',
@@ -6,10 +10,63 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent implements OnInit {
+  logo = ENV.imageLogoBig;
 
-  constructor() { }
+  forgotForm: any;
+  successful: boolean = false;
+  accountDoesntExistMSG: boolean = false;
 
-  ngOnInit() {
+  get password() {
+    return this.forgotForm.get('password');
   }
 
+  get repeatPass() {
+    return this.forgotForm.get('repeatPass');
+  }
+
+  validatePasswords(group: AbstractControl) {
+    const pass = group.get('password').value;
+    const confirm = group.get('confirmPassword').value;
+    return pass === confirm ? null : { invalid: true };
+  }
+
+  constructor(
+    private accountService: AccountService,
+    private fb: FormBuilder,
+    private route: Router
+  ) {
+    this.forgotForm = this.fb.group(
+      {
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', [Validators.required]]
+      },
+      { validators: [this.validatePasswords] }
+    );
+  }
+
+  ngOnInit() {}
+
+  validateBeforeSubmit() {
+    if (this.forgotForm.valid) {
+      this.changePass(this.password.value);
+    }
+  }
+
+  changePass(changePass: string) {
+    this.accountService.changePass(changePass).subscribe(
+      (data: string) => {
+        if (data) {
+          this.successful = true;
+        }
+        console.log(data);
+      },
+      error => {
+        if (error.status === 409) {
+          this.accountDoesntExistMSG = true;
+        }
+        this.successful = false;
+        console.log(error);
+      }
+    );
+  }
 }

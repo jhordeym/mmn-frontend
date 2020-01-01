@@ -15,25 +15,52 @@ export class DashboardPageComponent implements OnInit {
   dashboardForm: any;
   disable = true;
 
+  url = 'http://localhost:4200/#/signup?inviteToken=';
+
+  get inviteToken() {
+    return this.dashboardForm.get('inviteToken');
+  }
+
   constructor(
     private accountService: AccountService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {
     this.dashboardForm = this.formBuilder.group({
-      name: [{value:'', disabled:true}, [Validators.required, Validators.minLength(1)]],
-      email: [{value:'', disabled:true}, [Validators.required, Validators.minLength(1)]],
-      phone: [{value:'', disabled:true}, [Validators.required, Validators.minLength(1)]],
-      accountStatus: [{value:'', disabled:true}, [Validators.required, Validators.minLength(1)]],
-      role: [{value:'', disabled:true}, [Validators.required, Validators.minLength(1)]],
-      creationDate: [{value:'', disabled:true}, [Validators.required, Validators.minLength(1)]],
-      inviteToken: [{value:'', disabled:true}, [Validators.required, Validators.minLength(1)]],
+      name: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(1)]
+      ],
+      email: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(1)]
+      ],
+      phone: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(1)]
+      ],
+      accountStatus: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(1)]
+      ],
+      role: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(1)]
+      ],
+      creationDate: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(1)]
+      ],
+      inviteToken: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(1)]
+      ]
     });
   }
 
   ngOnInit() {
     this.account = this.accountService.getSession();
-    this.dashboardForm.patchValue(this.account)
+    this.dashboardForm.patchValue(this.account);
     // console.log(this.account);
   }
 

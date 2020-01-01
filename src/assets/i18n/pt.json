@@ -66,5 +66,22 @@
   "home.translationsTitle": "Traduções",
   "profile.creationDate": "Data de Criação",
   "profile.accountStatus": "Estado da conta",
-  "profile.accountRole": "Cargo"
+  "profile.accountRole": "Cargo",
+  "warning.accountNotActive": "Sua conta ainda não está ativa, ative com o link que enviamos para seu e-mail",
+  "singup.birthday": "Data de Nascimento",
+  "signup.subscribeNewsletter": "Permita-nos mantê-lo atualizado com o nosso feed de boletins por e-mail",
+  "home.usersTittle": "Usuários",
+  "errors.invalidToken": "Token inválido",
+  "errors.invalidInput": "Input inválido",
+  "errors.sorErrorMsg": "Erro ao criar a sua conta na plataforma de reservas, tente novamente",
+  "errors.alreadyExists": "Conta já existe",
+  "errors.doesNotExist": "A conta não existe",
+  "info.accountRecovering": "Recuperando sua conta ...",
+  "changePass.newPassword": "Nova senha",
+  "changePass.confirmPass": "Confirme a nova senha",
+  "changePass.button": "Alterar passe",
+  "changePass.successful": "Senha alterada com sucesso",
+  "changePass.title": "Mudar senha",
+  "info.accountConfirming": "Sua conta foi confirmada!",
+  "info.accountConfirmed": "Conta confirmada!"
 }

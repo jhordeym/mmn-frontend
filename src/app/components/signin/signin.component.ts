@@ -59,7 +59,7 @@ export class SigninComponent implements OnInit {
           this.unoutorizedMessage = false;
           this.accountService.saveSession(data);
           // redirect to home page
-          this.router.navigate(['']);
+          this.router.navigate(['payment-validation']);
         } else {
           this.unoutorizedMessage = true;
         }

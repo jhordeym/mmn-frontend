@@ -66,5 +66,22 @@
   "home.translationsTitle": "Translations",
   "profile.creationDate": "Creation Date",
   "profile.accountStatus": "Account Status",
-  "profile.accountRole": "Role"
+  "profile.accountRole": "Role",
+  "warning.accountNotActive": "Your account is still not active, please activate with the link we sent to your email",
+  "singup.birthday": "Date of birth",
+  "signup.subscribeNewsletter": "Allow us to keep you update with our email newsletter feed",
+  "home.usersTittle": "Users",
+  "errors.invalidToken": "Invaid Token",
+  "errors.invalidInput": "Invalid Input",
+  "errors.alreadyExists": "Account already exists",
+  "errors.sorErrorMsg": "Error creating your account in reservation platform",
+  "errors.doesNotExist": "Account doesn't exist",
+  "info.accountRecovering": "Recovering your account...",
+  "changePass.newPassword": "New Password",
+  "changePass.confirmPass": "Confirm new password",
+  "changePass.button": "Change pass",
+  "changePass.successful": "Password changed successfuly",
+  "changePass.title": "Change Password",
+  "info.accountConfirming": "Confirming account...",
+  "info.accountConfirmed": "Account confirmed!"
 }

@@ -1,18 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from 'src/app/services/account.service';
-import { environment as ENV } from 'src/environments/environment';
-import {
-  FormBuilder,
-  Validators,
-  FormGroup,
-  AbstractControl
-} from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, timer } from 'rxjs';
+import { delayWhen, map, retryWhen, tap } from 'rxjs/operators';
+import { AccountStatus } from 'src/app/enum/AccountStatus';
 import { Account } from 'src/app/models/Account';
 import { Address } from 'src/app/models/Address';
-import { AccountStatus } from 'src/app/enum/AccountStatus';
-import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
+import { SorResponse } from 'src/app/models/sor/SorResponse';
+import { AccountService } from 'src/app/services/account.service';
 import { SorService } from 'src/app/services/sor.service';
+import { environment as ENV } from 'src/environments/environment';
 
 @Component({
   selector: 'app-signup',
@@ -50,14 +47,6 @@ export class SignupComponent implements OnInit {
       selected: false
     },
     {
-      id: 'pills-billing-tab',
-      i18n: 'signup.tab4',
-      contentId: 'pills-billing',
-      active: false,
-      disabled: true,
-      selected: false
-    },
-    {
       id: 'pills-confirmation-tab',
       i18n: 'signup.tab5',
       contentId: 'pills-confirmation',
@@ -70,10 +59,15 @@ export class SignupComponent implements OnInit {
   inviteForm: any;
   signupForm: any;
   signupAddressForm: any;
-  signupBillingForm: any;
   signupConfirmForm: any;
 
+  referId: string = null;
+
   unoutorizedMessage = false;
+  invalidTokenMSG = false;
+  accountAlreadyExistsMSG = false;
+  sorErrorMSG = false;
+
   continueAfterPayment = false;
 
   inviteToken = '';
@@ -135,6 +129,10 @@ export class SignupComponent implements OnInit {
     return this.signupConfirmForm.get('acceptedTerms');
   }
 
+  get subscribeNewsletter() {
+    return this.signupConfirmForm.get('subscribeNewsletter');
+  }
+
   constructor(
     private route: ActivatedRoute,
     private accountService: AccountService,
@@ -160,8 +158,8 @@ export class SignupComponent implements OnInit {
         this.inviteToken,
         [
           Validators.required,
-          Validators.minLength(36),
-          Validators.maxLength(36)
+          Validators.minLength(48),
+          Validators.maxLength(48)
         ]
       ]
     });
@@ -179,6 +177,9 @@ export class SignupComponent implements OnInit {
       { validators: [this.validatePasswords, this.validateDate] }
     );
 
+    /** DEBUG */
+    this.signupForm.valueChanges.subscribe(data => console.info(data));
+
     this.signupAddressForm = this.fb.group({
       street: ['', [Validators.required]],
       city: ['', [Validators.required]],
@@ -187,11 +188,10 @@ export class SignupComponent implements OnInit {
       country: ['', [Validators.required]]
     });
 
-    this.signupBillingForm = this.fb.group({});
-
     this.signupConfirmForm = this.fb.group(
       {
-        acceptedTerms: [null, [Validators.required]]
+        acceptedTerms: [null, [Validators.required]],
+        subscribeNewsletter: [null]
       },
       { validators: [this.validateTerms] }
     );
@@ -215,9 +215,7 @@ export class SignupComponent implements OnInit {
     return pass === confirm ? null : { invalid: true };
   }
 
-  getStep(n: number) {
-    return this.accountService.getRegisterStep(n);
-  }
+  /** ACTUAL METHODS */
 
   validateBeforeSubmit() {
     if (this.signupForm.valid && this.signupAddressForm.valid) {
@@ -225,21 +223,22 @@ export class SignupComponent implements OnInit {
       address.street = this.street.value;
       address.city = this.city.value;
       address.state = this.state.value;
-      address.zip = this.zip.value;
       address.country = this.country.value;
+      address.zip = this.zip.value;
       const account = new Account();
       account.name = this.name.value;
       account.lastName = this.lastName.value;
       account.email = this.email.value;
       account.phone = this.phone.value;
       account.password = this.password.value;
-      const birthday = new Date();
-      birthday.setFullYear(
-        this.birthday.value.year,
-        this.birthday.value.month,
-        this.birthday.value.number
+      const birthDate = new Date(this.birthday.value);
+      console.log(
+        'BIRTHDAY FORM -> ',
+        this.birthday.value,
+        '... DATE -> ',
+        birthDate
       );
-      account.birthday = birthday;
+      account.birthDate = birthDate;
       account.address = address;
       account.accountStatus = AccountStatus.New;
       console.log(account);
@@ -247,41 +246,116 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  goTo(step) {
-    const t = this.tabs[step];
-    const element = document.getElementById(t.id);
+  // step 1
+  verifyToken() {
+    this.accountService
+      .verifyInviteToken(this.invite.value)
+      .then((data: string) => {
+        if (data) {
+          this.referId = data;
+          console.log(data);
+          this.saveStep(1, data);
+          this.goTo(1);
+        } else {
+          this.invalidTokenMSG = true;
+        }
+      })
+      .catch(error => {
+        this.invalidTokenMSG = true;
+        console.log(error);
+      });
+  }
+
+  // step 2
+  verifyAccount() {
+    const account = new Account(this.signupForm.values);
+    console.log('TCL: SignupComponent -> verifyAccount -> account', account);
+    this.goTo(2);
+  }
+
+  verifyAccountAddress() {
+    const address = new Address(this.signupAddressForm.values);
+    console.log(
+      'TCL: SignupComponent -> verifyAccountAddress -> address',
+      address
+    );
+    this.goTo(3);
+  }
+
+  getStep(step: number) {
+    return this.accountService.getRegisterStep(step);
+  }
+
+  saveStep(step: number, data) {
+    return this.accountService.saveRegisterStep(step, data);
+  }
+
+  goTo(step: number) {
+    const tab = this.tabs[step];
+    const element = document.getElementById(tab.id);
     element.classList.remove('disabled');
     element.click();
   }
 
-  doSignup(account: Account) {
+  private doSignup(account: Account): void {
     this.accountService.signup(account).subscribe(
       (accountData: Account) => {
+        console.log(
+          'TCL: SignupComponent -> doSignup -> accountData',
+          accountData
+        );
         if (accountData) {
-          this.unoutorizedMessage = false;
-          this.sorService.sorLoginToken('0', accountData).subscribe(
-            sorData => {
-              console.log('sor data', sorData);
-            },
-            sorError => {
-              console.log('sor error', sorError);
-            }
-          );
-          this.router.navigate(['']);
+          this.accountService.saveSession(accountData);
+          this.accountAlreadyExistsMSG = false;
+          this.sorService
+            .sorCreate('0', accountData, this.referId, this.password.value)
+            .pipe(
+              map((val: SorResponse) => {
+                if (
+                  val &&
+                  this.sorService.createErrorMsgs.indexOf(val['message']) !== -1
+                ) {
+                  return val;
+                } else {
+                  throw val;
+                }
+              }),
+              retryWhen((errors: Observable<any>) =>
+                errors.pipe(
+                  // log error
+                  tap(val => {
+                    this.sorErrorMSG = true;
+                    console.log(val)}),
+                  // delay 1sec
+                  delayWhen(val => timer(5000))
+                )
+              )
+            )
+            .subscribe(
+              (sorData: SorResponse) => {
+                console.log(
+                  'TCL: SignupComponent -> doSignup -> sorData',
+                  sorData
+                );
+                this.router.navigate(['payment-validation']);
+              },
+              sorError => {
+                this.sorErrorMSG = true;
+                console.log(
+                  'TCL: SignupComponent -> doSignup -> sorError',
+                  sorError
+                );
+              }
+            );
         }
-
-        // redirect to home page
-        console.log(accountData);
       },
-      error => {
-        this.unoutorizedMessage = true;
-        console.log(error);
+      accountError => {
+        this.accountAlreadyExistsMSG = true;
+        console.log(
+          'TCL: SignupComponent -> doSignup -> accountError',
+          accountError
+        );
       }
     );
-  }
-
-  receiveConfirmation(event) {
-    this.continueAfterPayment =
-      event.status === PaypalTransactionStatus.Successful;
   }
 }
