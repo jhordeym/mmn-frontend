@@ -3,7 +3,7 @@
 <div class="text-center">
   <h2>{{ 'home.translationsTitle' | translate}}</h2>
   <div *ngIf="showError()" class="alert alert-warning text-center" role="alert">
-    Translations could not be loaded from backend
+    {{ 'errors.translationNotLoaded' | translate }}
   </div>
 </div>
 

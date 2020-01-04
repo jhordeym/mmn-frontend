@@ -60,9 +60,10 @@
                 placeholder="{{ 'signup.lastName' | translate }}">
 
               <div class="birthday-group">
-                <input type="text" class="datepicker" onfocus="(this.type='date')" formControlName="birthday"
+                <input type="text" class="datepicker" formControlName="birthday" data-toggle="tooltip"
                   ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" [minDate]="{year: 1920, month: 1, day: 1}"
-                  placeholder="{{ 'singup.birthday' | translate }}" />
+                  maxlength="10"
+                  placeholder="{{ 'signup.birthday' | translate }}" />
               </div>
               <!--
               <div class="birthday-group">
@@ -70,12 +71,6 @@
                   placeholder="{{ 'singup.birthday' | translate }}" />
               </div>
               -->
-
-              <script type="application/javascript">
-                $('.datepicker').datepicker({
-                  format: 'dd/mm/yyyy'
-                });
-              </script>
 
 
               <!-- <label>{{ 'signup.email' | translate }}</label> -->
@@ -152,7 +147,6 @@
             <span class="Inline-error" *ngIf="sorErrorMSG">
               {{ 'errors.sorErrorMsg' | translate }}
             </span>
-
 
             <div class="terms">
               <app-terms-and-conditions></app-terms-and-conditions>

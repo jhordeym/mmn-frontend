@@ -6,6 +6,7 @@ import { ShoppingCart } from '../models/payment/ShoppingCart';
 import { Payment } from '../models/payment/Payment';
 import { PaymentMockService } from './payment.mock.service';
 import { Subscription } from '../models/payment/Subscription';
+import { Account } from '../models/Account';
 
 @Injectable({
   providedIn: 'root'
@@ -52,8 +53,20 @@ export class PaymentService {
     );
   }
 
+  private getSession(): Account {
+    const account: string = localStorage.getItem('session');
+    if (!account) return null;
+    return JSON.parse(account);
+  }
+
   // GUARD
   paymentActive() {
+    const account: Account = this.getSession();
+    if(account) {
+      if(account.role ===  'ADMIN' || account.role === 'INFLUENCER') {
+        return true;
+      }
+    }
     return this.getPaymentCache() ? true : false;
   }
 

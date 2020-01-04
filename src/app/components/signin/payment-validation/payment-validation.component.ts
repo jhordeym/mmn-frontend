@@ -12,6 +12,7 @@ import { Account } from 'src/app/models/Account';
 })
 export class PaymentValidationComponent implements OnInit {
   continueAfterPayment = false;
+  account: Account;
 
   constructor(
     private accountService: AccountService,
@@ -20,8 +21,8 @@ export class PaymentValidationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const account: Account = this.accountService.getSession();
-    this.paymentService.findLatestSubscriptionBy(account.id).subscribe(
+    this.account = this.accountService.getSession();
+    this.paymentService.findLatestSubscriptionBy(this.account.id).subscribe(
       res => {
         if (res) {
           const currentDate = new Date();
@@ -51,5 +52,9 @@ export class PaymentValidationComponent implements OnInit {
 
   goToHome() {
     this.router.navigate(['']);
+  }
+
+  isAdminOrInfluencer() {
+    return this.account.role ===  'ADMIN' || this.account.role === 'INFLUENCER';
   }
 }

@@ -13,7 +13,8 @@ import { SorResponse } from '../models/sor/SorResponse';
 })
 export class SorService {
 
-  createErrorMsgs = ["An error has occurred.", "A user with email admin@travined.com is already a member of this club."];
+  alreadyExistMsg = ["A user with email admin@travined.com is already a member of this club."];
+  createErrorMsgs = "An error has occurred.";
   headers = new HttpHeaders();
 
   constructor(private http: HttpClient) {
@@ -25,7 +26,7 @@ export class SorService {
   }
 
   // BACKEND SERVICE
-  public sorCreate(subscriptionId: string, account: Account, referalId: string, password: string): Observable<SorResponse>{
+  public sorCreate(subscriptionId: string, account: Account, password: string): Observable<SorResponse>{
     let headers = new HttpHeaders();
     headers = headers.set('subscriptionId', subscriptionId);
     const httpOptions = {
@@ -34,7 +35,7 @@ export class SorService {
 
     const body = new SorAccount(
       account.email, account.id, password, account.name, account.lastName,
-      account.address.street, account.address.city, 'PT', account.phone, '9', referalId
+      account.address.street, account.address.city, 'PT', account.phone, '9', null
     )
     console.log(body, httpOptions);
     return this.http.post<SorResponse>(

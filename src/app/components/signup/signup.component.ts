@@ -308,12 +308,12 @@ export class SignupComponent implements OnInit {
           this.accountService.saveSession(accountData);
           this.accountAlreadyExistsMSG = false;
           this.sorService
-            .sorCreate('0', accountData, this.referId, this.password.value)
+            .sorCreate('0', accountData, this.password.value)
             .pipe(
               map((val: SorResponse) => {
+                console.log('SOR RESPONSE', val);
                 if (
-                  val &&
-                  this.sorService.createErrorMsgs.indexOf(val['message']) !== -1
+                  val && this.sorService.createErrorMsgs != val['Message']
                 ) {
                   return val;
                 } else {
@@ -343,7 +343,6 @@ export class SignupComponent implements OnInit {
                 this.sorErrorMSG = true;
                 console.log(
                   'TCL: SignupComponent -> doSignup -> sorError',
-                  sorError
                 );
               }
             );

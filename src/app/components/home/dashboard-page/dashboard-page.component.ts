@@ -15,10 +15,12 @@ export class DashboardPageComponent implements OnInit {
   dashboardForm: any;
   disable = true;
 
-  url = 'http://localhost:4200/#/signup?inviteToken=';
-
   get inviteToken() {
     return this.dashboardForm.get('inviteToken');
+  }
+
+  get linkUrl() {
+    return 'https%3A%2F%2Flogin.travined.com%3A8080%2F%23%2Fsignup%3FinviteToken%3D' + this.inviteToken.value + '&title=Travined';
   }
 
   constructor(

@@ -18,9 +18,9 @@ const SOR_REDIRECT_URL =
   'http://members.travined.com/vacationclub/logincheck.aspx?Token=';
 
 export const environment = {
-  mode: 'Dev',
+  mode: 'Production',
   production: false,
-  useMock: true,
+  useMock: false,
 
   sorRedirectUrl: SOR_REDIRECT_URL,
 

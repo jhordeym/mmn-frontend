@@ -1,7 +1,7 @@
 <div class="text-center">
   <h2>{{ 'home.usersTittle' | translate}}</h2>
   <div *ngIf="showError()" class="alert alert-warning text-center" role="alert">
-    Users could not be loaded from backend
+    {{ 'errors.usersNotLoaded' | translate }}
   </div>
 </div>
 
@@ -10,7 +10,7 @@
     <div class="card-header" [attr.id]="'headingOne'">
       <button class="btn btn-link" type="button" data-toggle="collapse" [attr.data-target]="'#collapseOne'"
         aria-expanded="false" [attr.aria-controls]="'collapseOne'">
-        <span>List of users</span>
+        <span>{{ 'list.users' | translate }}</span>
       </button>
     </div>
 
@@ -26,6 +26,7 @@
               <th scope="col">name</th>
               <th scope="col">lastName</th>
               <th scope="col">accountStatus</th>
+              <th scope="col">accountRole</th>
               <th scope="col">creationDate</th>
             </tr>
           </thead>
@@ -37,6 +38,7 @@
               <td>{{ user.name }}</td>
               <td>{{ user.lastName }}</td>
               <td>{{ user.accountStatus }}</td>
+              <td>{{ user.role }}</td>
               <td>{{ user.creationDate }}</td>
             </tr>
           </tbody>

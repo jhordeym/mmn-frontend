@@ -30,6 +30,7 @@ import { PaymentValidationComponent } from './components/signin/payment-validati
 import { LogoComponent } from './components/logo/logo.component';
 import { UsersConfigComponent } from './components/home/settings-page/users-config/users-config.component';
 import { RecoverAccountComponent } from './components/from-mail/recover-account/recover-account.component';
+import { NgbDateCustomParserFormatter } from './NgbDateCustomParserFormatter';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -77,7 +78,15 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     })
   ],
-  providers: [I18NServiceProvider],
+  providers: [
+    I18NServiceProvider,
+    {
+      provide: NgbDateParserFormatter,
+      useFactory: () => {
+        return new NgbDateCustomParserFormatter('DD-MM-YYYY');
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
