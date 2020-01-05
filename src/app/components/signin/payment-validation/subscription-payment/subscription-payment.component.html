@@ -2,13 +2,16 @@
   <h2>{{ 'signup.subTitle' | translate}}</h2>
 
   <div class="card-deck">
-    <div class="card mb-4" *ngFor="let item of products">
+    <div *ngIf="!products">
+      <span class="Inline-error">
+        {{ 'errors.loadingProducts' | translate }}
+      </span>
+    </div>
+    <div class="card" *ngFor="let item of products">
       <!--<img src="..." class="card-img-top" alt="...">-->
-      <div class="card-body">
-        <h3 class="card-title">{{item.name}}</h3>
-      </div>
-      <div class="card-body">
-        <h1 class="card-subtitle">{{item.price}}$</h1>
+      <div class="card-header">
+        <h3 class="card-title" [innerHTML]="item.name"></h3>
+        <h1 class="card-subtitle">$ {{item.price}}</h1>
       </div>
       <div class="card-body">
         <div class="card-text" [innerHtml]="item.description | translate"></div>
@@ -20,5 +23,6 @@
   <div #paypal></div>
 </div>
 <div *ngIf="paidFor">
-  {{ 'signup.initialSubSucessful' | translate }}
+  <app-logo size="50vh"></app-logo>
+  <h1>{{ 'signup.initialSubSucessful' | translate }}</h1>
 </div>

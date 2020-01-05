@@ -4,63 +4,93 @@ import { environment as ENV } from 'src/environments/environment';
 import { Product } from '../models/payment/Product';
 import { ShoppingCart } from '../models/payment/ShoppingCart';
 import { Payment } from '../models/payment/Payment';
+import { PaymentMockService } from './payment.mock.service';
+import { Subscription } from '../models/payment/Subscription';
+import { Account } from '../models/Account';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
-  private mockProductList = [
-    new Product({
-      name: 'Travined Explorer',
-      description: 'subscriptions.pack.1.description',
-      price: 59.99,
-      priceTC: 45
-    }),
-    new Product({
-      name: 'Travined Explorer ⭐⭐⭐',
-      description: 'subscriptions.pack.2.description',
-      price: 299.99,
-      priceTC: 225
-    }),
-    new Product({
-      name: 'Travined Explorer ⭐⭐⭐⭐',
-      description: 'subscriptions.pack.3.description',
-      price: 499.99,
-      priceTC: 375
-    }),
-    new Product({
-      name: 'Travined Explorer ⭐⭐⭐⭐⭐',
-      description: 'subscriptions.pack.4.description',
-      price: 799.99,
-      priceTC: 600
-    })
-  ];
+  constructor(
+    private http: HttpClient,
+    private mockService: PaymentMockService
+  ) {}
 
-  getAllSubscriptionProducts(): Promise<Product[]> {
+  public getAllSubscriptionProducts(): Promise<Product[]> {
     return ENV.useMock
-      ? new Promise(resolve => resolve(this.mockProductList))
+      ? new Promise(resolve => resolve(this.mockService.mockProductList))
+      : this.http
+          .get<Product[]>(`${ENV.paymentServiceURL}/subscription-products`)
+          .toPromise();
+  }
+
+  public getAllProducts(): Promise<Product[]> {
+    return ENV.useMock
+      ? new Promise(resolve => resolve(this.mockService.mockProductList))
       : this.http
           .get<Product[]>(`${ENV.paymentServiceURL}/products`)
           .toPromise();
   }
 
-  saveShoppingCart(ShoppingCart: ShoppingCart) {
+  public saveShoppingCart(ShoppingCart: ShoppingCart) {
     return this.http.post<ShoppingCart>(
-      `${ENV.accountServiceURL}/shopping-cart`,
+      `${ENV.paymentServiceURL}/shopping-cart`,
       ShoppingCart
     );
   }
 
-  constructor(private http: HttpClient) {}
+  public savePayment(payment: Payment) {
+    return this.http.post<Payment>(
+      `${ENV.paymentServiceURL}/payments`,
+      payment
+    );
+  }
+
+  public findLatestSubscriptionBy(accountId: string) {
+    return this.http.get<any>(
+      `${ENV.paymentServiceURL}/subscriptions/${accountId}`
+    );
+  }
+
+  private getSession(): Account {
+    const account: string = localStorage.getItem('session');
+    if (!account) return null;
+    return JSON.parse(account);
+  }
+
+  // GUARD
+  paymentActive(account: Account) {
+    if (account) {
+      if (['ADMIN', 'INVESTOR', 'AMBASSADOR'].indexOf(account.role) != -1) {
+        return true;
+      }
+    }
+    return this.getPaymentCache() ? true : false;
+  }
 
   // CACHE
-  savePaymentCache(payment: Payment): void {
+  savePaymentCache(payment: Payment | Subscription): void {
     localStorage.setItem('subscription', JSON.stringify(payment));
   }
 
-  getPaymentCache(): Payment {
+  getPaymentCache(): Payment | Subscription {
     const token: string = localStorage.getItem('subscription');
     if (!token) return null;
     return JSON.parse(token);
+  }
+
+  _getMonthlyPayment() {
+    const monthlyPayment: string = localStorage.getItem('monthlyPayment');
+    if (!monthlyPayment) return null;
+    return JSON.parse(monthlyPayment);
+  }
+
+  _saveMonthlyPayment(paymentStatus) {
+    const monthlyPayment = {
+      date: new Date(),
+      paymentStatus: paymentStatus
+    };
+    localStorage.setItem('monthlyPayment', JSON.stringify(monthlyPayment));
   }
 }

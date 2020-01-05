@@ -1,0 +1,20 @@
+<div class="PaymentValidation">
+  <div class="Wrapper fadeInDown">
+    <div class="PaymentValidation-content">
+      <!-- Payment -->
+      <span>
+        <div class="alert alert-info" role="alert" *ngIf="isAdminOrInfluencer()">
+          {{ 'info.paymentAdmin' | translate }}
+        </div>
+
+        <div class="row align-items-center justify-content-center">
+          <app-subscription-payment [useSubscription]=false (completedSubscription)="receiveConfirmation($event)">
+          </app-subscription-payment>
+        </div>
+      </span>
+
+      <input type="button" class="fadeIn-fourth" [disabled]="!continueAfterPayment && !isAdminOrInfluencer()" (click)="goToHome()"
+        value="{{ 'signup.nextButton' | translate }}">
+    </div>
+  </div>
+</div>

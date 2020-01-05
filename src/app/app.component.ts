@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { I18NServiceProvider } from './providers/i18n-service.provider';
 import { environment as ENV } from 'src/environments/environment';
 import { AccountService } from './services/account.service';
+import { CachingService } from './services/caching.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,7 @@ export class AppComponent {
 
   constructor(
     private translateService: TranslateService,
-    private accountService: AccountService,
+    private cachingService: CachingService,
     private i18NServiceProvider: I18NServiceProvider
   ) {
     this.setDefaultLang();
@@ -46,16 +47,13 @@ export class AppComponent {
     this.i18NServiceProvider
       .getLanguagePack(lang)
       .then(languagePack => {
-        this.translateService.setTranslation(
-          this.i18NServiceProvider.currentLanguagePackLoaded,
-          languagePack
-        );
-        this.translateService.use(
-          this.i18NServiceProvider.currentLanguagePackLoaded
-        );
-        console.log(
-          `Language Pack loaded from API was "${this.i18NServiceProvider.currentLanguagePackLoaded}"`
-        );
+        this.i18NServiceProvider
+          .getCurrentLanguagePackLoaded()
+          .subscribe(lang => {
+            this.translateService.setTranslation(lang, languagePack);
+            this.translateService.use(lang);
+            console.log(`Language Pack loaded from API was "${lang}"`);
+          });
       })
       .catch(error => {
         console.error(
@@ -65,7 +63,7 @@ export class AppComponent {
   }
 
   onChangeOfRoutes(event) {
-    if (this.accountService.getSession()) {
+    if (this.cachingService.getSession()) {
       this.loggedIn = true;
     } else {
       this.loggedIn = false;

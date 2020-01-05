@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuardService } from './guards/auth-guard.service';
+import { AuthGuard } from './guards/auth.guard';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { HomeComponent } from './components/home/home.component';
@@ -10,12 +10,17 @@ import { ProfilePageComponent } from './components/home/profile-page/profile-pag
 import { SettingsPageComponent } from './components/home/settings-page/settings-page.component';
 import { ProductsPageComponent } from './components/home/products-page/products-page.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { PaymentGuard } from './guards/payment.guard';
+import { PaymentValidationComponent } from './components/signin/payment-validation/payment-validation.component';
+import { RecoverAccountComponent } from './components/from-mail/recover-account/recover-account.component';
+import { ChangePasswordComponent } from './components/from-mail/change-password/change-password.component';
+import { ConfirmAccountComponent } from './components/from-mail/confirm-account/confirm-account.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AuthGuard, PaymentGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardPageComponent },
@@ -25,9 +30,26 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'payment-validation',
+    component: PaymentValidationComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'account-confirm',
+    component: ConfirmAccountComponent,
+  },
+  {
+    path: 'recover',
+    component: RecoverAccountComponent,
+  },
+  {
+    path: 'change-pass',
+    component: ChangePasswordComponent,
+  },
+  {
     path: 'logout',
     component: LogoutComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuard]
   },
   { path: 'signin', component: SigninComponent },
   { path: 'signup', component: SignupComponent },

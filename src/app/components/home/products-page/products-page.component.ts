@@ -4,6 +4,7 @@ import { SorService } from 'src/app/services/sor.service';
 import { AccountService } from 'src/app/services/account.service';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { Account } from 'src/app/models/Account';
+import { CachingService } from 'src/app/services/caching.service';
 
 export class Card {
   public constructor(public img, public title, public text, public link) {}
@@ -24,7 +25,8 @@ export class ProductsPageComponent implements OnInit {
   cards = new Array<Card>();
   constructor(
     private sorService: SorService,
-    private accountService: AccountService) {
+    private accountService: AccountService,
+    private cachingService: CachingService) {
     this.cards.push(
       new Card(
         ENV.imgHotel,
@@ -66,7 +68,7 @@ export class ProductsPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.account = this.accountService.getSession();
+    this.account = this.cachingService.getSession();
   }
 
   navigateTo(cardLink: string) {

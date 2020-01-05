@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment as ENV } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Login } from '../models/Login';
@@ -15,15 +15,37 @@ export class AccountService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  public login(login: Login): Observable<any> {
+  public login(login: Login): Observable<Account | any> {
     return this.http.post<Login>(`${ENV.accountServiceURL}/login`, login);
   }
 
-  public signup(account: Account): Observable<any> {
+  public listAll(): Observable<Array<Account> | any> {
+    return this.http.get<Array<Account>>(`${ENV.accountServiceURL}`);
+  }
+
+  public signup(account: Account): Observable<Account | any> {
     return this.http.post<Account>(`${ENV.accountServiceURL}`, {
       account: account,
-      link: ENV.inviteTokenLink
+      link: ENV.confirmAccountLink
     });
+  }
+
+  public exists(account: Account): Observable<any> {
+    return this.http.post<any>(`${ENV.accountServiceURL}`, account);
+  }
+
+  public verifyInviteToken(token: string): Promise<string> {
+    return this.http
+      .post(
+        `${ENV.accountServiceURL}/invite/verify-token`,
+        {
+          inviteToken: token
+        },
+        {
+          responseType: 'text'
+        }
+      )
+      .toPromise();
   }
 
   public forgot(email: string) {
@@ -34,32 +56,33 @@ export class AccountService {
       responseType: 'text'
     };
     return this.http.post<string>(
-      `${ENV.accountServiceURL}/forgot`,
+      `${ENV.accountServiceURL}/pass/forgot`,
       changepass,
       requestOptions
     );
   }
 
-  // CACHE
-  saveSession(account: Account): void {
-    localStorage.setItem('session', JSON.stringify(account));
+  public mailForgot(token: string): Observable<Account> {
+    return this.http.get<Account>(`${ENV.accountServiceURL}/mail/recover`, {
+      params: {
+        token: token
+      }
+    });
   }
 
-  getSession(): Account {
-    const account: string = localStorage.getItem('session');
-    if (!account) return null;
-    return JSON.parse(account);
+  public mailConfirm(id: string): Observable<Account> {
+    const requestOptions: Object = {
+      responseType: 'text'
+    };
+    return this.http.get<Account>(`${ENV.accountServiceURL}/mail/confirm`, {
+      params: {
+        id: id
+      }
+    });
   }
 
-  logout() {
-    localStorage.removeItem('session');
-  }
-
-  saveRegisterStep(step: number, data: any) {
-    localStorage.saveItem('register-step-' + step, data);
-  }
-
-  getRegisterStep(step: number) {
-    return localStorage.getItem('register-step-' + step);
+  public changePass(newPass: string, account: Account): Observable<any> {
+    account.password = newPass;
+    return this.http.put<any>(`${ENV.accountServiceURL}/pass/update`, account);
   }
 }

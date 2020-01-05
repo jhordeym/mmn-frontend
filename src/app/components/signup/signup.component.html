@@ -23,11 +23,12 @@
         <div class="tab-pane fade  show active" id="pills-lookup" role="tabpanel" aria-labelledby="pills-lookup-tab">
           <form [formGroup]="inviteForm">
             <!-- Logo -->
-            <div class="fadeIn-first">
-              <img [src]="logo" class="Signup-logo" alt="logo" />
-            </div>
+            <app-logo size="45vh"></app-logo>
 
             <!-- Token -->
+            <span class="Inline-error" *ngIf="invalidTokenMSG">
+              {{ 'errors.invalidToken' | translate }}
+            </span>
             <span>
               <h3>{{ 'signup.invitePageTitle' | translate }}</h3>
               <p>{{ 'signup.invitePageText' | translate }}</p>
@@ -35,7 +36,7 @@
                 formControlName="invite">
             </span>
 
-            <input type="button" class="fadeIn-fourth" [disabled]="!inviteForm.valid" (click)="goTo(1)"
+            <input type="button" class="fadeIn-fourth" [disabled]="!inviteForm.valid" (click)="this.verifyToken()"
               value="{{ 'signup.nextButton' | translate }}">
           </form>
         </div>
@@ -46,7 +47,7 @@
           <!-- Signup Form -->
           <form [formGroup]="signupForm">
             <span class="Inline-error" *ngIf="unoutorizedMessage">
-              Invaid Input
+              {{ 'errors.invalidInput' | translate }}
             </span>
 
             <span>
@@ -59,9 +60,18 @@
                 placeholder="{{ 'signup.lastName' | translate }}">
 
               <div class="birthday-group">
-                <input type="date" formControlName="birthday" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()"
-                [minDate]="{year: 1920, month: 1, day: 1}"/>
+                <input type="text" class="datepicker" formControlName="birthday" data-toggle="tooltip"
+                  ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" [minDate]="{year: 1920, month: 1, day: 1}"
+                  maxlength="10"
+                  placeholder="{{ 'signup.birthday' | translate }}" />
               </div>
+              <!--
+              <div class="birthday-group">
+                <input type="text" class="datepicker" onfocus="(this.type='date')" formControlName="birthday"
+                  placeholder="{{ 'singup.birthday' | translate }}" />
+              </div>
+              -->
+
 
               <!-- <label>{{ 'signup.email' | translate }}</label> -->
               <input type="email" class="fadeIn-first" formControlName="email"
@@ -79,7 +89,7 @@
               <input type="password" class="fadeIn-third" formControlName="confirmPassword"
                 placeholder="{{ 'signup.confirmPass' | translate }}">
 
-              <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid" (click)="goTo(2)"
+              <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid" (click)="verifyAccount()"
                 value="{{ 'signup.nextButton' | translate }}">
             </span>
           </form>
@@ -108,7 +118,7 @@
                 placeholder="{{ 'signup.zip' | translate }}">
 
               <div class="form-group">
-                <select class="form-control text-center" id="country" formControlName="country">
+                <select class="form-control form-selector" id="country" formControlName="country">
                   <option disabled selected>{{ 'signup.country' | translate }}</option>
                   <option *ngFor="let c of countries_list" [value]="c"> {{ c }}</option>
                 </select>
@@ -119,34 +129,36 @@
               -->
 
               <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid || !signupAddressForm.valid"
-                (click)="goTo(3)" value="{{ 'signup.nextButton' | translate }}">
+                (click)="verifyAccountAddress()" value="{{ 'signup.nextButton' | translate }}">
             </span>
           </form>
 
-        </div>
-
-        <!-- Tab 4 -->
-        <div class="tab-pane fade" id="pills-billing" role="tabpanel" aria-labelledby="pills-billing-tab">
-
-          <!-- Payment -->
-          <span>
-            <div class="row align-items-center justify-content-center">
-              <app-subscription-payment [useSubscription]=false (completedSubscription)="receiveConfirmation($event)">
-              </app-subscription-payment>
-            </div>
-          </span>
-
-          <input type="button" class="fadeIn-fourth" [disabled]="!continueAfterPayment" (click)="goTo(4)"
-            value="{{ 'signup.nextButton' | translate }}">
         </div>
 
         <!-- Tab 5-->
         <div class="tab-pane fade" id="pills-confirmation" role="tabpanel" aria-labelledby="pills-confirmation-tab">
 
           <div [formGroup]="signupConfirmForm">
+            <!-- ERROR -->
+            <span class="Inline-error" *ngIf="accountAlreadyExistsMSG">
+              {{ 'errors.alreadyExists' | translate }}
+            </span>
+
+            <span class="Inline-error" *ngIf="sorErrorMSG">
+              {{ 'errors.sorErrorMsg' | translate }}
+            </span>
+
             <div class="terms">
-              <input type="checkbox" id="termsCheck" formControlName="acceptedTerms">
-              <label class="form-check-label" for="termsCheck">{{ 'signup.acceptTerms' | translate }}</label>
+              <app-terms-and-conditions></app-terms-and-conditions>
+
+              <input type="checkbox" class="termsCheckBox" id="termsCheck" formControlName="acceptedTerms">
+              <label class="form-check-label" class="termsLabel"
+                for="termsCheck">{{ 'signup.acceptTerms' | translate }}</label>
+
+              <br>
+              <input type="checkbox" class="termsCheckBox" id="termsCheck" formControlName="subscribeNewsletter">
+              <label class="form-check-label" class="termsLabel"
+                for="termsCheck">{{ 'signup.subscribeNewsletter' | translate }}</label>
             </div>
 
             <input type="button" class="fadeIn-fourth"
@@ -158,6 +170,7 @@
 
         <!-- Footer -->
         <div class="formFooter">
+
           <a class="underlineHover" [routerLink]="['/signin']">{{ 'signin.loginMsg' | translate }}</a>
         </div>
       </div>
