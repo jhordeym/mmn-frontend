@@ -1,3 +1,4 @@
 export enum PaypalTransactionStatus {
-  Successful = "Successful"
+  Successful = "Successful",
+  Failed = "Failed"
 }

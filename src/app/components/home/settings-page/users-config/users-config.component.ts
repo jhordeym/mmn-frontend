@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Account } from 'src/app/models/Account';
+import { AccountModel } from 'src/app/models/AccountModel';
 import { AccountService } from 'src/app/services/backend/account.service';
 
 @Component({
@@ -12,14 +12,14 @@ export class UsersConfigComponent implements OnInit {
 
   error = null;
 
-  USERS = new Array<Account>();
+  USERS = new Array<AccountModel>();
 
   showError() {
     return this.error;
   }
 
   ngOnInit() {
-    this.accountService.listAll().subscribe((data: Array<Account>) => {
+    this.accountService.listAll().subscribe((data: Array<AccountModel>) => {
       if (data) {
         this.USERS = data;
       }

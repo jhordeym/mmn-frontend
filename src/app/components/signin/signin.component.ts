@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Account } from 'src/app/models/Account';
+import { Subscription } from 'rxjs';
+import { AccountModel } from 'src/app/models/AccountModel';
 import { Login } from 'src/app/models/Login';
 import { AccountService } from 'src/app/services/backend/account.service';
 import { CachingService } from 'src/app/services/caching.service';
@@ -12,11 +13,13 @@ import { environment as ENV } from 'src/environments/environment';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit, OnDestroy {
   logo = ENV.imageLogoBig;
 
   loginForm: any;
-  unoutorizedMessage = false;
+  invalidLoginMSG = false;
+  serviceDownMSG = false;
+  $sub1: Subscription;
 
   get login() {
     return this.loginForm.get('login');
@@ -38,36 +41,57 @@ export class SigninComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.$sub1.unsubscribe();
+  }
   ngOnInit() {}
 
-  validateBeforeSubmit() {
+  public validateBeforeSubmit() {
     if (this.loginForm.valid) {
       const login = new Login();
       login.login = this.login.value;
       login.password = this.password.value;
+      this.invalidateERROS();
       this.doLogin(login);
     }
   }
 
-  doLogin(login: Login) {
-    this.accountService.login(login).subscribe(
-      (data : Account) => {
-        if(data){
-          this.unoutorizedMessage = false;
-          this.cachingService.saveSession(data);
+  private doLogin(login: Login) {
+    this.$sub1 = this.accountService.login(login).subscribe(
+      (logginResponse: AccountModel) => {
+        console.log(
+          'TCL: SigninComponent -> doLogin -> logginResponse',
+          logginResponse
+        );
+        if (logginResponse) {
+          this.cachingService.saveSession(logginResponse);
           this.cachingService.saveSecret(login.password);
-
-          // redirect to home page
-          this.router.navigate(['payment-validation']);
-        } else {
-          this.unoutorizedMessage = true;
+          this.navigate();
         }
-        console.log(data);
       },
-      error => {
-        this.unoutorizedMessage = true;
-        console.log(error);
+      loginError => {
+        console.log(
+          'TCL: SigninComponent -> doLogin -> loginError',
+          loginError
+        );
+        if (
+          loginError.error['message'] === 'Service is down. Please try later'
+        ) {
+          this.serviceDownMSG = true;
+        } else {
+          this.invalidLoginMSG = true;
+        }
       }
     );
+  }
+
+  private navigate() {
+    // redirect to home page
+    this.router.navigate(['payment-validation']);
+  }
+
+  private invalidateERROS() {
+    this.invalidLoginMSG = false;
+    this.serviceDownMSG = false;
   }
 }

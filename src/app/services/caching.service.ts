@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Account } from '../models/Account';
+import { AccountModel } from '../models/AccountModel';
 import { Payment } from '../models/payment/Payment';
-import { Subscription } from '../models/payment/Subscription';
+import { SubscriptionModel } from '../models/payment/SubscriptionModel';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +14,11 @@ export class CachingService {
     localStorage.setItem('xxxxx', secret);
   }
 
-  saveSession(account: Account): void {
+  saveSession(account: AccountModel): void {
     localStorage.setItem('session', JSON.stringify(account));
   }
 
-  saveRecover(account: Account): void {
+  saveRecover(account: AccountModel): void {
     localStorage.setItem('accountRecover', JSON.stringify(account));
   }
 
@@ -30,13 +30,13 @@ export class CachingService {
     return localStorage.getItem('xxxxx');
   }
 
-  getSession(): Account {
+  getSession(): AccountModel {
     const account: string = localStorage.getItem('session');
     if (!account) return null;
     return JSON.parse(account);
   }
 
-  getAccountRecover(): Account {
+  getAccountRecover(): AccountModel {
     const account: string = localStorage.getItem('accountRecover');
     if (!account) return null;
     return JSON.parse(account);
@@ -63,27 +63,23 @@ export class CachingService {
 
   // PAYMENT
   // CACHE
-  savePaymentCache(payment: Payment | Subscription): void {
-    localStorage.setItem('subscription', JSON.stringify(payment));
+  savePaymentCache(payment: Payment): void {
+    localStorage.setItem('payment', JSON.stringify(payment));
   }
 
-  getPaymentCache(): Payment | Subscription {
-    const token: string = localStorage.getItem('subscription');
+  getPaymentCache(): Payment {
+    const token: string = localStorage.getItem('payment');
     if (!token) return null;
     return JSON.parse(token);
   }
 
-  _getMonthlyPayment() {
-    const monthlyPayment: string = localStorage.getItem('monthlyPayment');
-    if (!monthlyPayment) return null;
-    return JSON.parse(monthlyPayment);
+  saveSubscriptionCache(payment: SubscriptionModel): void {
+    localStorage.setItem('subscription', JSON.stringify(payment));
   }
 
-  _saveMonthlyPayment(paymentStatus) {
-    const monthlyPayment = {
-      date: new Date(),
-      paymentStatus: paymentStatus
-    };
-    localStorage.setItem('monthlyPayment', JSON.stringify(monthlyPayment));
+  getSubscriptionCache(): SubscriptionModel {
+    const token: string = localStorage.getItem('subscription');
+    if (!token) return null;
+    return JSON.parse(token);
   }
 }

@@ -11,6 +11,7 @@
   "errors.invalidInput": "Input inválido",
   "errors.invalidToken": "Token inválido",
   "errors.loadingProducts": "Erro ao carregar produtos de assinatura do servidor.\nSaia e tente novamente mais tarde.",
+  "errors.serviceDown": "O serviço está inactivo. Tente novamente mais tarde!",
   "errors.sorErrorMsg": "Erro ao criar a sua conta na plataforma de reservas, tente novamente",
   "errors.translationNotLoaded": "Não foi possível carregar as traduções do back-end",
   "errors.usersNotLoaded": "Não foi possível carregar os usuários do back-end",

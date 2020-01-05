@@ -55,20 +55,26 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePass(changePass: string) {
-    const recoverAccount =  this.cachingService.getAccountRecover();
+    const recoverAccount = this.cachingService.getAccountRecover();
     this.accountService.changePass(changePass, recoverAccount).subscribe(
-      (data: string) => {
-        if (data) {
+      (changePassResponse: number) => {
+        console.log(
+          'TCL: ChangePasswordComponent -> changePass -> changePassResponse',
+          changePassResponse
+        );
+        if (changePassResponse) {
           this.successful = true;
         }
-        console.log(data);
       },
-      error => {
-        if (error.status === 409) {
+      changePassError => {
+        console.log(
+          'TCL: ChangePasswordComponent -> changePass -> changePassError',
+          changePassError
+        );
+        if (changePassError.error.status === 409) {
           this.accountDoesntExistMSG = true;
         }
         this.successful = false;
-        console.log(error);
       }
     );
   }

@@ -1,4 +1,4 @@
-<div *ngIf="!paidFor">
+<div>
   <h2>{{ 'signup.subTitle' | translate}}</h2>
 
   <div class="card-deck">
@@ -21,8 +21,4 @@
   </div>
 
   <div #paypal></div>
-</div>
-<div *ngIf="paidFor">
-  <app-logo size="50vh"></app-logo>
-  <h1>{{ 'signup.initialSubSucessful' | translate }}</h1>
 </div>

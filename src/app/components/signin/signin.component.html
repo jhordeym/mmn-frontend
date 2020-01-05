@@ -13,7 +13,12 @@
 
       <!-- Login Form -->
       <form [formGroup]="loginForm">
-        <span class="Inline-error" *ngIf="unoutorizedMessage">
+
+        <span class="Inline-error" *ngIf="serviceDownMSG">
+          {{ 'errors.serviceDown' | translate }}
+        </span>
+
+        <span class="Inline-error" *ngIf="invalidLoginMSG">
           {{ 'signin.invalidLogin' | translate }}
         </span>
 

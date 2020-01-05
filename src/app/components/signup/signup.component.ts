@@ -4,13 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, timer } from 'rxjs';
 import { delayWhen, map, retryWhen, tap } from 'rxjs/operators';
 import { AccountStatus } from 'src/app/enum/AccountStatus';
-import { Account } from 'src/app/models/Account';
+import { AccountModel } from 'src/app/models/AccountModel';
 import { Address } from 'src/app/models/Address';
 import { SorResponse } from 'src/app/models/sor/SorResponse';
 import { AccountService } from 'src/app/services/backend/account.service';
 import { SorService } from 'src/app/services/backend/sor.service';
-import { environment as ENV } from 'src/environments/environment';
 import { CachingService } from 'src/app/services/caching.service';
+import { environment as ENV } from 'src/environments/environment';
 
 @Component({
   selector: 'app-signup',
@@ -144,11 +144,8 @@ export class SignupComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.signupForm.valueChanges.subscribe(console.log);
-    // this.signupAddressForm.valueChanges.subscribe(console.log);
-
-    const localized = this.sorService.getCountriesList();
-    this.countries_list = Object.values(localized);
+    const countriesList = this.sorService.getCountriesList();
+    this.countries_list = Object.values(countriesList);
 
     this.route.queryParams.subscribe(params => {
       // tslint:disable-next-line: no-string-literal
@@ -180,7 +177,7 @@ export class SignupComponent implements OnInit {
     );
 
     /** DEBUG */
-    this.signupForm.valueChanges.subscribe(data => console.info(data));
+    this.signupForm.valueChanges.subscribe((data: any) => console.debug(data));
 
     this.signupAddressForm = this.fb.group({
       street: ['', [Validators.required]],
@@ -227,54 +224,58 @@ export class SignupComponent implements OnInit {
       address.state = this.state.value;
       address.country = this.country.value;
       address.zip = this.zip.value;
-      const account = new Account();
+      const account = new AccountModel();
       account.name = this.name.value;
       account.lastName = this.lastName.value;
       account.email = this.email.value;
       account.phone = this.phone.value;
       account.password = this.password.value;
       const birthDate = new Date(this.birthday.value);
-      console.log(
-        'BIRTHDAY FORM -> ',
-        this.birthday.value,
-        '... DATE -> ',
-        birthDate
-      );
       account.birthDate = birthDate;
       account.address = address;
       account.accountStatus = AccountStatus.New;
-      console.log(account);
+      console.log(
+        'TCL: SignupComponent -> validateBeforeSubmit -> account',
+        account
+      );
       this.doSignup(account);
     }
   }
 
   // step 1
   verifyToken() {
-    this.accountService
-      .verifyInviteToken(this.invite.value)
-      .then((data: string) => {
-        if (data) {
-          this.referId = data;
-          console.log(data);
-          this.saveStep(1, data);
+    this.accountService.verifyInviteToken(this.invite.value).subscribe(
+      (parentId: string) => {
+        console.log(
+          'TCL: SignupComponent -> verifyToken -> parentId',
+          parentId
+        );
+        if (parentId) {
+          this.referId = parentId;
+          this.saveStep(1, parentId);
           this.goTo(1);
         } else {
           this.invalidTokenMSG = true;
         }
-      })
-      .catch(error => {
+      },
+      verifyTokenError => {
+        console.log(
+          'TCL: SignupComponent -> verifyToken -> verifyTokenError',
+          verifyTokenError
+        );
         this.invalidTokenMSG = true;
-        console.log(error);
-      });
+      }
+    );
   }
 
   // step 2
   verifyAccount() {
-    const account = new Account(this.signupForm.values);
+    const account = new AccountModel(this.signupForm.values);
     console.log('TCL: SignupComponent -> verifyAccount -> account', account);
     this.goTo(2);
   }
 
+  // step 3
   verifyAccountAddress() {
     const address = new Address(this.signupAddressForm.values);
     console.log(
@@ -288,7 +289,7 @@ export class SignupComponent implements OnInit {
     return this.cachingService.getRegisterStep(step);
   }
 
-  saveStep(step: number, data) {
+  saveStep(step: number, data: any) {
     return this.cachingService.saveRegisterStep(step, data);
   }
 
@@ -299,9 +300,9 @@ export class SignupComponent implements OnInit {
     element.click();
   }
 
-  private doSignup(account: Account): void {
+  private doSignup(account: AccountModel): void {
     this.accountService.signup(account).subscribe(
-      (accountData: Account) => {
+      (accountData: AccountModel) => {
         console.log(
           'TCL: SignupComponent -> doSignup -> accountData',
           accountData
@@ -322,24 +323,33 @@ export class SignupComponent implements OnInit {
     );
   }
 
-  private sorCreateFlow(accountData) {
+  private sorCreateFlow(accountData: AccountModel) {
     this.sorService
       .sorCreate('0', accountData, this.password.value)
       .pipe(
-        map((val: SorResponse) => {
-          console.log('SOR RESPONSE', val);
-          if (val && this.sorService.createErrorMsgs != val['Message']) {
-            return val;
+        map((sorResponse: SorResponse) => {
+          console.log(
+            'TCL: SignupComponent -> sorCreateFlow -> map -> sorResponse',
+            sorResponse
+          );
+          if (
+            sorResponse &&
+            this.sorService.createErrorMsgs != sorResponse['Message']
+          ) {
+            return sorResponse;
           } else {
-            throw val;
+            throw sorResponse;
           }
         }),
         retryWhen((errors: Observable<any>) =>
           errors.pipe(
             // log error
-            tap(val => {
+            tap(sorError => {
+              console.log(
+                'TCL: SignupComponent -> sorCreateFlow -> retryWhen -> sorError',
+                sorError
+              );
               this.sorErrorMSG = true;
-              console.log(val);
             }),
             // delay 1sec
             delayWhen(val => timer(5000))
@@ -347,13 +357,19 @@ export class SignupComponent implements OnInit {
         )
       )
       .subscribe(
-        (sorData: SorResponse) => {
-          console.log('TCL: SignupComponent -> doSignup -> sorData', sorData);
+        (sorResponse: SorResponse) => {
+          console.log(
+            'TCL: SignupComponent -> sorCreateFlow -> sorResponse',
+            sorResponse
+          );
           this.router.navigate(['payment-validation']);
         },
         sorError => {
+          console.log(
+            'TCL: SignupComponent -> sorCreateFlow -> sorError',
+            sorError
+          );
           this.sorErrorMSG = true;
-          console.log('TCL: SignupComponent -> doSignup -> sorError');
         }
       );
   }

@@ -3,18 +3,22 @@
     <div class="PaymentValidation-content">
       <!-- Payment -->
       <span>
-        <div class="alert alert-info" role="alert" *ngIf="isAdminOrInfluencer()">
+        <div class="alert alert-info" role="alert" *ngIf="isPrivilegedAccount()">
           {{ 'info.paymentAdmin' | translate }}
         </div>
 
         <div class="row align-items-center justify-content-center">
-          <app-subscription-payment [useSubscription]=false (completedSubscription)="receiveConfirmation($event)">
+          <app-subscription-payment (completedSubscription)="receiveConfirmation($event)" *ngIf="!paid">
           </app-subscription-payment>
+          <div *ngIf="paid">
+            <app-logo size="50vh"></app-logo>
+            <h1>{{ 'signup.initialSubSucessful' | translate }}</h1>
+          </div>
         </div>
       </span>
 
-      <input type="button" class="fadeIn-fourth" [disabled]="!continueAfterPayment && !isAdminOrInfluencer()" (click)="goToHome()"
-        value="{{ 'signup.nextButton' | translate }}">
+      <input type="button" class="fadeIn-fourth" [disabled]="!paid && !isPrivilegedAccount()"
+        (click)="goToHome()" value="{{ 'signup.nextButton' | translate }}">
     </div>
   </div>
 </div>

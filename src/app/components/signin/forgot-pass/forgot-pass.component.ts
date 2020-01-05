@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services/backend/account.service';
 import { environment as ENV } from 'src/environments/environment';
 
@@ -23,7 +22,6 @@ export class ForgotPassComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private fb: FormBuilder,
-    private route: Router
   ) {
     this.forgotForm = this.fb.group({
       email: ['', [Validators.required, Validators.minLength(6)]]
@@ -40,18 +38,18 @@ export class ForgotPassComponent implements OnInit {
 
   changePass(changePass: string) {
     this.accountService.forgot(changePass).subscribe(
-      (data: string) => {
-        if (data) {
+      (forgotPassResponse: string) => {
+      console.log("TCL: ForgotPassComponent -> changePass -> forgotPassResponse", forgotPassResponse)
+        if (forgotPassResponse) {
           this.successful = true;
-          console.log(data);
         }
       },
-      error => {
-        if (error.status === 409) {
+      forgotPassError => {
+      console.log("TCL: ForgotPassComponent -> changePass -> forgotPassError", forgotPassError)
+        if (forgotPassError.error.status === 409) {
           this.accountDoesntExistMSG = true;
         }
         this.successful = false;
-        console.log(error);
       }
     );
   }

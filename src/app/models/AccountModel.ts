@@ -2,8 +2,8 @@ import { Address } from './Address';
 import { AccountStatus } from '../enum/AccountStatus';
 
 // tslint:disable-next-line: class-name
-export class Account {
-  public constructor(init?: Partial<Account>) {
+export class AccountModel {
+  public constructor(init?: Partial<AccountModel>) {
     Object.assign(this, init);
   }
 
@@ -18,4 +18,12 @@ export class Account {
   password?: string;
   accountStatus: AccountStatus;
   creationDate?: string;
+
+  public static isPrivilegedAccount(role: string): boolean {
+    return ['ADMIN', 'INVESTOR', 'AMBASSADOR'].indexOf(role) != -1;
+  }
+
+  public static isAdmin(role: string): boolean {
+    return ['ADMIN'].indexOf(role) != -1;
+  }
 }

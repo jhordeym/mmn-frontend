@@ -3,7 +3,7 @@ import { CanActivate } from '@angular/router';
 import { Router } from '@angular/router';
 import { PaymentService } from '../services/backend/payment.service';
 import { CachingService } from '../services/caching.service';
-import { Account } from '../models/Account';
+import { AccountModel } from '../models/AccountModel';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class PaymentGuard implements CanActivate {
   ) {}
 
   canActivate(): boolean {
-    const accountCache : Account = this.cachingService.getSession();
+    const accountCache : AccountModel = this.cachingService.getSession();
     const paymentCache = this.cachingService.getPaymentCache();
     if (!this.paymentActive(accountCache, paymentCache)) {
       this.router.navigate(['signin']);
@@ -24,7 +24,7 @@ export class PaymentGuard implements CanActivate {
     return true;
   }
 
-  private paymentActive(account: Account, paymentCache: any) {
+  private paymentActive(account: AccountModel, paymentCache: any) {
     if (account) {
       if (['ADMIN', 'INVESTOR', 'AMBASSADOR'].indexOf(account.role) != -1) {
         return true;

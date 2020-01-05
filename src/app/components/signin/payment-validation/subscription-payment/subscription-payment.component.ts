@@ -1,15 +1,23 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { PaymentMethod } from 'src/app/enum/PaymentMethod';
-import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
 import { ShoppingCartStatus } from 'src/app/enum/ShoppingCartStatus';
 import { ShoppingType } from 'src/app/enum/ShoppingType';
-import { Account } from 'src/app/models/Account';
+import { AccountModel } from 'src/app/models/AccountModel';
 import { CartProduct } from 'src/app/models/payment/CartProduct';
 import { Payment } from 'src/app/models/payment/Payment';
 import { Product } from 'src/app/models/payment/Product';
 import { ShoppingCart } from 'src/app/models/payment/ShoppingCart';
+import { SubscriptionModel } from 'src/app/models/payment/SubscriptionModel';
 import { PaymentService } from 'src/app/services/backend/payment.service';
 import { CachingService } from 'src/app/services/caching.service';
+import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
 
 declare var paypal;
 
@@ -20,28 +28,37 @@ declare var paypal;
 })
 export class SubscriptionPaymentComponent implements OnInit {
   @Output() completedSubscription = new EventEmitter();
-  @Input() 'useSubscription'?: boolean;
   @ViewChild('paypal') paypalElement: ElementRef;
 
   products: Product[];
-  paidFor = false;
   shoppingCart: ShoppingCart;
-  account: Account;
+  account: AccountModel;
 
   constructor(
     private paymentService: PaymentService,
-    private cachingService: CachingService,
-    ) {}
+    private cachingService: CachingService
+  ) {}
 
   ngOnInit() {
-    this.paymentService.getAllSubscriptionProducts().then(prods => {
-      this.products = prods;
-    });
-
     this.account = this.cachingService.getSession();
+    this.paymentService.getAllSubscriptionProducts().subscribe(
+      (subscriptionProducts: Product[]) => {
+        console.log(
+          'TCL: SubscriptionPaymentComponent -> ngOnInit -> subscriptionProducts',
+          subscriptionProducts
+        );
+        this.products = subscriptionProducts;
+      },
+      subscriptionProductsError => {
+        console.log(
+          'TCL: SubscriptionPaymentComponent -> ngOnInit -> subscriptionProductsError',
+          subscriptionProductsError
+        );
+      }
+    );
   }
 
-  selectSubscription(item: Product) {
+  public selectSubscription(item: Product) {
     this.shoppingCart = new ShoppingCart();
     const cartProduct = new CartProduct();
     cartProduct.product = item;
@@ -49,126 +66,109 @@ export class SubscriptionPaymentComponent implements OnInit {
     cartProduct.price = item.price;
     const cartProducts = new Array<CartProduct>(cartProduct);
     this.shoppingCart.products = cartProducts;
-    // console.log(this.shoppingCart);
-
     this.addPaypalButton();
   }
 
-  addPaypalButton() {
-    if (this.paypalElement && this.paidFor == false) {
+  private addPaypalButton() {
+    if (this.paypalElement) {
       this.removePaypalButton();
     }
     paypal
-      .Buttons(
-        this.useSubscription
-          ? this._createSub()
-          : this._createOrder(this.shoppingCart)
-      )
+      .Buttons(this.createPaypalOrder(this.shoppingCart))
       .render(this.paypalElement.nativeElement);
   }
 
-  removePaypalButton() {
+  private removePaypalButton() {
     this.paypalElement.nativeElement.innerHTML = null;
   }
 
-  // SUBSCRIPTION
-  _createSub(): any {
-    return {
-      createSubscription: (data, actions) => {
-        return actions.subscription.create({
-          plan_id: 'P-2UF78835G6983425GLSM44MA'
-        });
-      },
-
-      onApprove: (data, actions) => {
-        alert(
-          'You have successfully created subscription ' + data.subscriptionID
-        );
-      }
-    };
-  }
-
   // ORDER
-  _createOrder(shoppingCart: ShoppingCart) {
+  private createPaypalOrder(shoppingCart: ShoppingCart) {
     return {
-      createOrder: (data, actions) => {
-        return this._onCreateOrder(actions, shoppingCart);
+      createOrder: (data: any, actions: any) => {
+        return this.onCreateOrder(actions, shoppingCart);
       },
-      onApprove: async (data, actions) => {
-        this._onApproveOrder(data, actions);
+      onApprove: async (data: any, actions: any) => {
+        this.onApproveOrder(data, actions);
       },
-      onError: error => {
+      onError: async (error: any) => {
         console.log(error);
       }
     };
   }
 
-  private _onCreateOrder(actions, shoppingCart: ShoppingCart) {
-    const request = {
-      intent: 'CAPTURE',
+  private onCreateOrder(actions: any, shoppingCart: ShoppingCart) {
+    const intent = 'CAPTURE';
+    const currency_code = 'USD';
+    const description = shoppingCart.products
+      .map(CartProduct => CartProduct.product.name)
+      .reduce((acc, pilot) => acc + ', ' + pilot);
+    const value = shoppingCart.products
+      .map(p => p.price)
+      .reduce((acc, pilot) => acc + pilot, 0)
+      .toString();
+    const orderRequest = {
+      intent: intent,
       purchase_units: [
         {
           amount: {
-            currency_code: 'USD',
-            value: shoppingCart.products
-              .map(p => p.price)
-              .reduce((acc, pilot) => acc + pilot, 0)
-              .toString()
+            currency_code: currency_code,
+            value: value
           },
-          description: shoppingCart.products.map(
-            CartProduct => CartProduct.product.name
-          ).reduce
-          /*
-          items: shoppingCart.products.map(
-            cart_prod =>
-              new Object({
-                name: cart_prod.product.name,
-                quantity: cart_prod.quantity,
-                description: cart_prod.product.description,
-                category: 'DIGITAL_GOODS'
-              })
-          )
-          */
+          description: description
         }
       ]
     };
-    console.log(request);
-    return actions.order.create(request);
+    console.log(
+      'TCL: SubscriptionPaymentComponent -> onCreateOrder -> orderRequest',
+      orderRequest
+    );
+    return actions.order.create(orderRequest);
   }
 
-  private async _onApproveOrder(data, actions) {
-    const order = await actions.order.capture();
-    console.log(JSON.stringify(order));
+  private async onApproveOrder(data: any, actions: any) {
+    const orderResponse = await actions.order.capture();
+    console.log(
+      'TCL: SubscriptionPaymentComponent -> onApproveOrder -> orderResponse',
+      orderResponse
+    );
 
-    this.paidFor = true;
     // persistOrderInBD
-    const units = order.purchase_units[0];
+    const units = orderResponse.purchase_units[0];
 
     const payment = new Payment();
-    payment.id = order.id;
+    payment.id = orderResponse.id;
     payment.method = PaymentMethod.Paypal;
     payment.value = units.amount.value;
     payment.currency_code = units.amount.currency_code;
-    // caching payment
-    this.cachingService.savePaymentCache(payment);
+
     this.shoppingCart.shoppingCartStatus = ShoppingCartStatus.Confirmed;
     this.shoppingCart.shoppingType = ShoppingType.Subscription;
     this.shoppingCart.accountId = this.account.id;
     payment.shoppingCart = this.shoppingCart;
-    // console.log(this.shoppingCart);
+
+    // caching payment
+    this.cachingService.savePaymentCache(payment);
 
     this.paymentService.savePayment(payment).subscribe(
-      data => {
-        if (data) {
+      (subscriptionData: SubscriptionModel) => {
+        console.log(
+          'TCL: SubscriptionPaymentComponent -> onApproveOrder -> subscriptionData',
+          subscriptionData
+        );
+        if (subscriptionData) {
+          this.cachingService.saveSubscriptionCache(subscriptionData);
           // emit event to parent
           this.completedSubscription.emit({
             status: PaypalTransactionStatus.Successful
           });
         }
-        console.log(data);
       },
-      error => {
-        console.log(error);
+      subscriptionError => {
+        console.log(
+          'TCL: SubscriptionPaymentComponent -> onApproveOrder -> subscriptionError',
+          subscriptionError
+        );
       }
     );
   }

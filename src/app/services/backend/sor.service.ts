@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as i18nIsoCountries from 'i18n-iso-countries';
 import { Observable } from 'rxjs';
 import { environment as ENV } from 'src/environments/environment';
-import { Account } from '../../models/Account';
+import { AccountModel } from '../../models/AccountModel';
 import { SorAccount } from '../../models/sor/SorAccount';
 import { SorLoginToken } from '../../models/sor/SorLoginToken';
 import { SorResponse } from '../../models/sor/SorResponse';
@@ -26,7 +26,7 @@ export class SorService {
   }
 
   // BACKEND SERVICE
-  public sorCreate(subscriptionId: string, account: Account, password: string): Observable<SorResponse>{
+  public sorCreate(subscriptionId: string, account: AccountModel, password: string): Observable<SorResponse>{
     let headers = new HttpHeaders();
     headers = headers.set('subscriptionId', subscriptionId);
     const httpOptions = {
@@ -45,7 +45,7 @@ export class SorService {
     );
   }
 
-  public sorLoginToken(subscriptionId: string, account: Account): Observable<SorLoginToken> {
+  public sorLoginToken(subscriptionId: string, account: AccountModel): Observable<SorLoginToken> {
     let headers = new HttpHeaders();
     headers = headers.set('subscriptionId', subscriptionId);
     const httpOptions = {
@@ -65,7 +65,7 @@ export class SorService {
   }
 
   //
-  public fetchTokenAndNavigate(subscriptionId: string, account: Account, cardLink: string): Promise<any> {
+  public fetchTokenAndNavigate(subscriptionId: string, account: AccountModel, cardLink: string): Promise<any> {
     let token: SorLoginToken = this.getCachedToken();
     return new Promise((resolve, reject) => {
       if (token && this.validateToken(token)) {

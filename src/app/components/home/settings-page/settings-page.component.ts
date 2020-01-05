@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Account } from 'src/app/models/Account';
+import { AccountModel } from 'src/app/models/AccountModel';
 import { CachingService } from 'src/app/services/caching.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { CachingService } from 'src/app/services/caching.service';
   styleUrls: ['./settings-page.component.scss']
 })
 export class SettingsPageComponent implements OnInit {
-  account: Account;
+  account: AccountModel;
   constructor(private cachingService: CachingService) {}
 
   ngOnInit() {

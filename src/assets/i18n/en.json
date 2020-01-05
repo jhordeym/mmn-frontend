@@ -11,6 +11,7 @@
   "errors.invalidInput": "Invalid Input",
   "errors.invalidToken": "Invaid Token",
   "errors.loadingProducts": "Error loading subscription products from server. Please logout and try again later.",
+  "errors.serviceDown": "Service is down, please try again later!",
   "errors.sorErrorMsg": "Error creating your account in reservation platform",
   "errors.translationNotLoaded": "Translations could not be loaded from backend",
   "errors.usersNotLoaded": "Users could not be loaded from backend",

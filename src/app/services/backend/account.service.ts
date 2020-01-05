@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment as ENV } from 'src/environments/environment';
-import { Account } from '../../models/Account';
+import { AccountModel } from '../../models/AccountModel';
 import { ChangePass } from '../../models/ChangePass';
 import { Login } from '../../models/Login';
 
@@ -13,39 +12,38 @@ import { Login } from '../../models/Login';
 export class AccountService {
   debug = 'true';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
-  public login(login: Login): Observable<Account | any> {
+  public login(login: Login): Observable<AccountModel | any> {
     return this.http.post<Login>(`${ENV.accountServiceURL}/login`, login);
   }
 
-  public listAll(): Observable<Array<Account> | any> {
-    return this.http.get<Array<Account>>(`${ENV.accountServiceURL}`);
+  public listAll(): Observable<Array<AccountModel> | any> {
+    return this.http.get<Array<AccountModel>>(`${ENV.accountServiceURL}`);
   }
 
-  public signup(account: Account): Observable<Account | any> {
-    return this.http.post<Account>(`${ENV.accountServiceURL}`, {
+  public signup(account: AccountModel): Observable<AccountModel | any> {
+    return this.http.post<AccountModel>(`${ENV.accountServiceURL}`, {
       account: account,
       link: ENV.confirmAccountLink
     });
   }
 
-  public exists(account: Account): Observable<any> {
+  public exists(account: AccountModel): Observable<any> {
     return this.http.post<any>(`${ENV.accountServiceURL}`, account);
   }
 
-  public verifyInviteToken(token: string): Promise<string> {
-    return this.http
-      .post(
-        `${ENV.accountServiceURL}/invite/verify-token`,
-        {
-          inviteToken: token
-        },
-        {
-          responseType: 'text'
-        }
-      )
-      .toPromise();
+  public verifyInviteToken(token: string): Observable<string> {
+    const body = {
+      inviteToken: token
+    };
+    return this.http.post(
+      `${ENV.accountServiceURL}/invite/verify-token`,
+      body,
+      {
+        responseType: 'text'
+      }
+    );
   }
 
   public forgot(email: string) {
@@ -62,27 +60,30 @@ export class AccountService {
     );
   }
 
-  public mailForgot(token: string): Observable<Account> {
-    return this.http.get<Account>(`${ENV.accountServiceURL}/mail/recover`, {
-      params: {
-        token: token
+  public mailForgot(token: string): Observable<AccountModel> {
+    return this.http.get<AccountModel>(
+      `${ENV.accountServiceURL}/mail/recover`,
+      {
+        params: {
+          token: token
+        }
       }
-    });
+    );
   }
 
-  public mailConfirm(id: string): Observable<Account> {
-    const requestOptions: Object = {
-      responseType: 'text'
-    };
-    return this.http.get<Account>(`${ENV.accountServiceURL}/mail/confirm`, {
-      params: {
-        id: id
+  public mailConfirm(id: string): Observable<AccountModel> {
+    return this.http.get<AccountModel>(
+      `${ENV.accountServiceURL}/mail/confirm`,
+      {
+        params: {
+          id: id
+        }
       }
-    });
+    );
   }
 
-  public changePass(newPass: string, account: Account): Observable<any> {
+  public changePass(newPass: string, account: AccountModel): Observable<number> {
     account.password = newPass;
-    return this.http.put<any>(`${ENV.accountServiceURL}/pass/update`, account);
+    return this.http.put<number>(`${ENV.accountServiceURL}/pass/update`, account);
   }
 }

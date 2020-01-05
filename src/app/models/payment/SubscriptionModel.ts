@@ -1,10 +1,8 @@
 // tslint:disable-next-line: class-name
-import { PaymentMethod } from 'src/app/enum/PaymentMethod';
-import { ShoppingCart } from './ShoppingCart';
 import { Product } from './Product';
 
-export class Subscription {
-  public constructor(init?: Partial<Subscription>) {
+export class SubscriptionModel {
+  public constructor(init?: Partial<SubscriptionModel>) {
     Object.assign(this, init);
   }
 

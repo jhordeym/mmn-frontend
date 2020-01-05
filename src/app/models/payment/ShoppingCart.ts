@@ -1,9 +1,8 @@
-import { Address } from '../Address';
-import { Product } from './Product';
-import { Payment } from './Payment';
-import { ShoppingType } from 'src/app/enum/ShoppingType';
 import { ShoppingCartStatus } from 'src/app/enum/ShoppingCartStatus';
+import { ShoppingType } from 'src/app/enum/ShoppingType';
+import { Address } from '../Address';
 import { CartProduct } from './CartProduct';
+import { Payment } from './Payment';
 
 // tslint:disable-next-line: class-name
 export class ShoppingCart {

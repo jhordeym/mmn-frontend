@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
+import { AccountModel } from 'src/app/models/AccountModel';
+import { SubscriptionModel } from 'src/app/models/payment/SubscriptionModel';
 import { PaymentService } from 'src/app/services/backend/payment.service';
-import { Account } from 'src/app/models/Account';
 import { CachingService } from 'src/app/services/caching.service';
-import { Subscription } from 'src/app/models/payment/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-payment-validation',
   templateUrl: './payment-validation.component.html',
   styleUrls: ['./payment-validation.component.scss']
 })
-export class PaymentValidationComponent implements OnInit {
-  continueAfterPayment = false;
-  account: Account;
+export class PaymentValidationComponent implements OnInit, OnDestroy {
+  account: AccountModel;
+  paid = false;
+
+  $sub1: Subscription;
 
   constructor(
     private cachingService: CachingService,
@@ -21,41 +24,60 @@ export class PaymentValidationComponent implements OnInit {
     private router: Router
   ) {}
 
+  ngOnDestroy(): void {
+    this.$sub1.unsubscribe();
+  }
+
   ngOnInit() {
     this.account = this.cachingService.getSession();
-    this.paymentService.findLatestSubscriptionBy(this.account.id).subscribe(
-      (res : Subscription) => {
-        if (res ) {
-          const currentDate = new Date();
-          const validateDate =
-            currentDate >= new Date(res['current']) &&
-            currentDate <= new Date(res['next']);
-          console.log("validate date", res['current'], validateDate);
-          if (validateDate) {
-            this.cachingService.savePaymentCache(res);
-            this.goToHome();
+    this.$sub1 = this.paymentService
+      .findLatestSubscriptionBy(this.account.id)
+      .subscribe(
+        (subscription: SubscriptionModel) => {
+          if (subscription) {
+            if (this.validateSubscriptionDate(subscription)) {
+              this.cachingService.saveSubscriptionCache(subscription);
+              this.goToHome();
+            }
           }
+        },
+        subscriptionError => {
+          console.log(
+            'TCL: PaymentValidationComponent -> ngOnInit -> subscriptionError',
+            subscriptionError
+          );
         }
-      },
-      err => { console.log(err); }
-    );
-    const monthlyPayment = this.cachingService._getMonthlyPayment();
-    if (monthlyPayment) {
+      );
+    const subscription: SubscriptionModel = this.cachingService.getSubscriptionCache();
+    if (subscription) {
       this.goToHome();
     }
   }
 
-  receiveConfirmation(event) {
-    this.continueAfterPayment =
-      event.status === PaypalTransactionStatus.Successful;
-    this.cachingService._saveMonthlyPayment(this.continueAfterPayment);
+  private validateSubscriptionDate(subscription: SubscriptionModel): boolean {
+    const loginDate = new Date();
+    const currSubDate = new Date(subscription['current']);
+    const nextSubDate = new Date(subscription['next']);
+    const result = loginDate >= currSubDate && loginDate <= nextSubDate;
+    console.log(
+      'TCL: PaymentValidationComponent -> validateSubscriptionDate -> currSubDate < loginDate < nextSubDate == result',
+      currSubDate,
+      loginDate,
+      nextSubDate,
+      result
+    );
+    return;
+  }
+
+  receiveConfirmation(event: any) {
+    this.paid = event.status === PaypalTransactionStatus.Successful;
   }
 
   goToHome() {
     this.router.navigate(['']);
   }
 
-  isAdminOrInfluencer() {
-    return this.account.role ===  'ADMIN' || this.account.role === 'INFLUENCER';
+  isPrivilegedAccount() {
+    return AccountModel.isPrivilegedAccount(this.account.role);
   }
 }
