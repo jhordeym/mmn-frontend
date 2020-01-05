@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { I18nData } from 'src/app/models/translation/i18nData';
-import { I18nService } from 'src/app/services/i18n.service';
+import { I18nService } from 'src/app/services/backend/i18n.service';
 
 @Component({
   selector: 'app-language-config',

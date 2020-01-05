@@ -1,9 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment as ENV } from 'src/environments/environment';
 import { Product } from '../models/payment/Product';
-import { ShoppingCart } from '../models/payment/ShoppingCart';
-import { Payment } from '../models/payment/Payment';
 
 @Injectable({
   providedIn: 'root'

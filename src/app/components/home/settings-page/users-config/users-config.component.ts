@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Account } from 'src/app/models/Account';
-import { AccountService } from 'src/app/services/account.service';
+import { AccountService } from 'src/app/services/backend/account.service';
 
 @Component({
   selector: 'app-users-config',

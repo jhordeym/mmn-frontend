@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { I18NServiceProvider } from './providers/i18n-service.provider';
 import { environment as ENV } from 'src/environments/environment';
-import { AccountService } from './services/account.service';
+import { I18NServiceProvider } from './providers/i18n-service.provider';
 import { CachingService } from './services/caching.service';
 
 @Component({

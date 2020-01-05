@@ -1,23 +1,14 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { PaymentMethod } from 'src/app/enum/PaymentMethod';
 import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
+import { ShoppingCartStatus } from 'src/app/enum/ShoppingCartStatus';
+import { ShoppingType } from 'src/app/enum/ShoppingType';
+import { Account } from 'src/app/models/Account';
 import { CartProduct } from 'src/app/models/payment/CartProduct';
 import { Payment } from 'src/app/models/payment/Payment';
 import { Product } from 'src/app/models/payment/Product';
 import { ShoppingCart } from 'src/app/models/payment/ShoppingCart';
-import { PaymentService } from 'src/app/services/payment.service';
-import { ShoppingCartStatus } from 'src/app/enum/ShoppingCartStatus';
-import { ShoppingType } from 'src/app/enum/ShoppingType';
-import { AccountService } from 'src/app/services/account.service';
-import { Account } from 'src/app/models/Account';
+import { PaymentService } from 'src/app/services/backend/payment.service';
 import { CachingService } from 'src/app/services/caching.service';
 
 declare var paypal;
@@ -159,7 +150,7 @@ export class SubscriptionPaymentComponent implements OnInit {
     payment.value = units.amount.value;
     payment.currency_code = units.amount.currency_code;
     // caching payment
-    this.paymentService.savePaymentCache(payment);
+    this.cachingService.savePaymentCache(payment);
     this.shoppingCart.shoppingCartStatus = ShoppingCartStatus.Confirmed;
     this.shoppingCart.shoppingType = ShoppingType.Subscription;
     this.shoppingCart.accountId = this.account.id;

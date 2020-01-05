@@ -7,8 +7,8 @@ import { AccountStatus } from 'src/app/enum/AccountStatus';
 import { Account } from 'src/app/models/Account';
 import { Address } from 'src/app/models/Address';
 import { SorResponse } from 'src/app/models/sor/SorResponse';
-import { AccountService } from 'src/app/services/account.service';
-import { SorService } from 'src/app/services/sor.service';
+import { AccountService } from 'src/app/services/backend/account.service';
+import { SorService } from 'src/app/services/backend/sor.service';
 import { environment as ENV } from 'src/environments/environment';
 import { CachingService } from 'src/app/services/caching.service';
 

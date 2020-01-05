@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from 'src/app/services/account.service';
-import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { environment as ENV } from 'src/environments/environment';
+import { AccountService } from 'src/app/services/backend/account.service';
 import { CachingService } from 'src/app/services/caching.service';
+import { environment as ENV } from 'src/environments/environment';
 
 @Component({
   selector: 'app-change-password',

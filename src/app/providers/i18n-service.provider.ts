@@ -1,11 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { environment as ENV } from 'src/environments/environment';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { I18nData } from '../models/translation/i18nData';
-import { I18nService } from '../services/i18n.service';
-import { I18nDto } from '../models/translation/i18nDto';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { I18nService } from '../services/backend/i18n.service';
 
 @Injectable()
 export class I18NServiceProvider {

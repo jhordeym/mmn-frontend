@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Login } from 'src/app/models/Login';
-import { AccountService } from 'src/app/services/account.service';
+import { AccountService } from 'src/app/services/backend/account.service';
 import { environment as ENV } from 'src/environments/environment';
-import { ChangePass } from 'src/app/models/ChangePass';
 
 @Component({
   selector: 'app-forgot-pass',

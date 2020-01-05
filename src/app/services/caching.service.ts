@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Account } from '../models/Account';
+import { Payment } from '../models/payment/Payment';
+import { Subscription } from '../models/payment/Subscription';
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +59,31 @@ export class CachingService {
   logout() {
     this.deleteSecret();
     this.deleteSession();
+  }
+
+  // PAYMENT
+  // CACHE
+  savePaymentCache(payment: Payment | Subscription): void {
+    localStorage.setItem('subscription', JSON.stringify(payment));
+  }
+
+  getPaymentCache(): Payment | Subscription {
+    const token: string = localStorage.getItem('subscription');
+    if (!token) return null;
+    return JSON.parse(token);
+  }
+
+  _getMonthlyPayment() {
+    const monthlyPayment: string = localStorage.getItem('monthlyPayment');
+    if (!monthlyPayment) return null;
+    return JSON.parse(monthlyPayment);
+  }
+
+  _saveMonthlyPayment(paymentStatus) {
+    const monthlyPayment = {
+      date: new Date(),
+      paymentStatus: paymentStatus
+    };
+    localStorage.setItem('monthlyPayment', JSON.stringify(monthlyPayment));
   }
 }

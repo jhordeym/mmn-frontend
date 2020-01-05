@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from 'src/app/services/account.service';
+import { AccountService } from 'src/app/services/backend/account.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CachingService } from 'src/app/services/caching.service';
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment as ENV } from 'src/environments/environment';
-import { SorService } from 'src/app/services/sor.service';
-import { AccountService } from 'src/app/services/account.service';
+import { SorService } from 'src/app/services/backend/sor.service';
+import { AccountService } from 'src/app/services/backend/account.service';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { Account } from 'src/app/models/Account';
 import { CachingService } from 'src/app/services/caching.service';

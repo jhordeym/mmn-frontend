@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
 import { Router } from '@angular/router';
-import { PaymentService } from 'src/app/services/payment.service';
+import { PaymentService } from 'src/app/services/backend/payment.service';
 import { Account } from 'src/app/models/Account';
 import { CachingService } from 'src/app/services/caching.service';
 import { Subscription } from 'src/app/models/payment/Subscription';
@@ -32,14 +32,14 @@ export class PaymentValidationComponent implements OnInit {
             currentDate <= new Date(res['next']);
           console.log("validate date", res['current'], validateDate);
           if (validateDate) {
-            this.paymentService.savePaymentCache(res);
+            this.cachingService.savePaymentCache(res);
             this.goToHome();
           }
         }
       },
       err => { console.log(err); }
     );
-    const monthlyPayment = this.paymentService._getMonthlyPayment();
+    const monthlyPayment = this.cachingService._getMonthlyPayment();
     if (monthlyPayment) {
       this.goToHome();
     }
@@ -48,7 +48,7 @@ export class PaymentValidationComponent implements OnInit {
   receiveConfirmation(event) {
     this.continueAfterPayment =
       event.status === PaypalTransactionStatus.Successful;
-    this.paymentService._saveMonthlyPayment(this.continueAfterPayment);
+    this.cachingService._saveMonthlyPayment(this.continueAfterPayment);
   }
 
   goToHome() {
