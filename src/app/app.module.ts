@@ -36,6 +36,8 @@ import { NgbDateCustomParserFormatter } from './NgbDateCustomParserFormatter';
 import { I18NServiceProvider } from './providers/i18n-service.provider';
 import { ModalComponent } from './shared/components/modal/modal.component';
 import { BasicAuthInterceptor } from './providers/basic-auth-interceptor.provider';
+import { CookieLawModule } from 'angular2-cookie-law';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -68,6 +70,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     RecoverAccountComponent
   ],
   imports: [
+    BrowserAnimationsModule,
+    CookieLawModule,
     PdfViewerModule,
     FormsModule,
     NgbModule,
