@@ -1,4 +1,8 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpClientModule,
+  HTTP_INTERCEPTORS
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -31,6 +35,7 @@ import { UnderConstructionComponent } from './components/under-construction/unde
 import { NgbDateCustomParserFormatter } from './NgbDateCustomParserFormatter';
 import { I18NServiceProvider } from './providers/i18n-service.provider';
 import { ModalComponent } from './shared/components/modal/modal.component';
+import { BasicAuthInterceptor } from './providers/basic-auth-interceptor.provider';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -80,6 +85,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   ],
   providers: [
     I18NServiceProvider,
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
     {
       provide: NgbDateParserFormatter,
       useFactory: () => {

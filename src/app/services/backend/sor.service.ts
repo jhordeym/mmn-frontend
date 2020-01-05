@@ -12,21 +12,33 @@ import { SorResponse } from '../../models/sor/SorResponse';
   providedIn: 'root'
 })
 export class SorService {
-
-  alreadyExistMsg = ["A user with email admin@travined.com is already a member of this club."];
-  createErrorMsgs = "An error has occurred.";
+  alreadyExistMsg = [
+    'A user with email admin@travined.com is already a member of this club.'
+  ];
+  createErrorMsgs = 'An error has occurred.';
   headers = new HttpHeaders();
 
   constructor(private http: HttpClient) {
-    i18nIsoCountries.registerLocale(require("i18n-iso-countries/langs/en.json"));
+    i18nIsoCountries.registerLocale(
+      require('i18n-iso-countries/langs/en.json')
+    );
   }
 
   getCountriesList() {
-    return i18nIsoCountries.getNames("en");
+    return i18nIsoCountries.getNames('en');
+  }
+
+  get2LetterCountryCode(countryName: string) {
+    return i18nIsoCountries.getAlpha2Code(countryName, 'en');
   }
 
   // BACKEND SERVICE
-  public sorCreate(subscriptionId: string, account: AccountModel, password: string): Observable<SorResponse>{
+  public sorCreate(
+    subscriptionId: string,
+    account: AccountModel,
+    password: string,
+    accountTypeId: string
+  ): Observable<SorResponse> {
     let headers = new HttpHeaders();
     headers = headers.set('subscriptionId', subscriptionId);
     const httpOptions = {
@@ -34,9 +46,18 @@ export class SorService {
     };
 
     const body = new SorAccount(
-      account.email, account.id, password, account.name, account.lastName,
-      account.address.street, account.address.city, 'PT', account.phone, '9', null
-    )
+      account.email,
+      account.id,
+      password,
+      account.name,
+      account.lastName,
+      account.address.street,
+      account.address.city,
+      this.get2LetterCountryCode(account.address.country),
+      account.phone,
+      accountTypeId,
+      null
+    );
     console.log(body, httpOptions);
     return this.http.post<SorResponse>(
       ENV.reservationServiceURL + '/create',
@@ -45,7 +66,10 @@ export class SorService {
     );
   }
 
-  public sorLoginToken(subscriptionId: string, account: AccountModel): Observable<SorLoginToken> {
+  public sorLoginToken(
+    subscriptionId: string,
+    account: AccountModel
+  ): Observable<SorLoginToken> {
     let headers = new HttpHeaders();
     headers = headers.set('subscriptionId', subscriptionId);
     const httpOptions = {
@@ -65,7 +89,11 @@ export class SorService {
   }
 
   //
-  public fetchTokenAndNavigate(subscriptionId: string, account: AccountModel, cardLink: string): Promise<any> {
+  public fetchTokenAndNavigate(
+    subscriptionId: string,
+    account: AccountModel,
+    cardLink: string
+  ): Promise<any> {
     let token: SorLoginToken = this.getCachedToken();
     return new Promise((resolve, reject) => {
       if (token && this.validateToken(token)) {
@@ -83,7 +111,7 @@ export class SorService {
           },
           error => {
             reject(error);
-            console.log(error)
+            console.log(error);
           }
         );
       }

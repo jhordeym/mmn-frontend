@@ -9,7 +9,10 @@ const PAYMENT_BASE_URL = 'http://localhost:8182/';
 const MAIL_BASE_URL = '...';
 const SOR_BASE_URL = 'http://localhost:8190/';
 
-const FRONTENDBASE_URL = 'http://localhost:4200/#/'
+const FRONTENDBASE_URL = 'http://localhost:4200/#/';
+
+const BASIC_AUTH_TOKEN =
+  'dHJhdmluZWRHYXRld2F5QWRtaW46dHJhdjIwMjBpbmVkQWRtaW4hIzEyMzQ=';
 
 const SOR_REDIRECT_URL =
   'http://memberstravined.saveonuat.com/vacationclub/logincheck.aspx?Token=';
@@ -18,6 +21,9 @@ export const environment = {
   mode: 'Dev',
   production: false,
   useMock: false,
+
+  basicToken: BASIC_AUTH_TOKEN,
+  appBaseUrl: APP_BASE_URL,
 
   sorRedirectUrl: SOR_REDIRECT_URL,
 
@@ -31,7 +37,6 @@ export const environment = {
   mailServiceURL: (USE_MICROSERVICE ? MAIL_BASE_URL : APP_BASE_URL) + 'mail/',
   reservationServiceURL:
     (USE_MICROSERVICE ? SOR_BASE_URL : APP_BASE_URL) + 'reservation/sor',
-
 
   // EMAIL
   confirmAccountLink: FRONTENDBASE_URL + 'account-confirm?token=',

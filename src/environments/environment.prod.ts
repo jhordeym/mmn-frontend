@@ -9,10 +9,12 @@ const PAYMENT_BASE_URL = 'http://localhost:8182/';
 const MAIL_BASE_URL = '...';
 const SOR_BASE_URL = 'http://localhost:8190/';
 
+const BASIC_AUTH_TOKEN = 'dHJhdmluZWRHYXRld2F5QWRtaW46dHJhdjIwMjBpbmVkQWRtaW4hIzEyMzQ=';
+
 // http
-const FRONTENDBASE_URL = 'https://login.travined.com:8080/#/'
+const FRONTENDBASE_URL = 'https://login.travined.com:8080/#/';
 // https
-//const FRONTENDBASE_URL = 'https://login.travined.com/#/'
+//const FRONTENDBASE_URL = 'https://login.travined.com/#/';
 
 const SOR_REDIRECT_URL =
   'http://members.travined.com/vacationclub/logincheck.aspx?Token=';
@@ -21,6 +23,9 @@ export const environment = {
   mode: 'Production',
   production: false,
   useMock: false,
+
+  basicToken: BASIC_AUTH_TOKEN,
+  appBaseUrl: APP_BASE_URL,
 
   sorRedirectUrl: SOR_REDIRECT_URL,
 

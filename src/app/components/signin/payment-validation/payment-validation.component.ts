@@ -25,7 +25,9 @@ export class PaymentValidationComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
-    this.$sub1.unsubscribe();
+    if (this.$sub1) {
+      this.$sub1.unsubscribe();
+    }
   }
 
   ngOnInit() {

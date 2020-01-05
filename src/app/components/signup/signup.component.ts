@@ -294,10 +294,15 @@ export class SignupComponent implements OnInit {
   }
 
   goTo(step: number) {
+    this.invalidateErrorMsgs();
     const tab = this.tabs[step];
     const element = document.getElementById(tab.id);
     element.classList.remove('disabled');
     element.click();
+  }
+
+  private invalidateErrorMsgs() {
+    this.accountAlreadyExistsMSG = false;
   }
 
   private doSignup(account: AccountModel): void {
@@ -309,23 +314,29 @@ export class SignupComponent implements OnInit {
         );
         if (accountData) {
           this.cachingService.saveSession(accountData);
-          this.accountAlreadyExistsMSG = false;
           this.sorCreateFlow(accountData);
         }
       },
       accountError => {
-        this.accountAlreadyExistsMSG = true;
         console.log(
           'TCL: SignupComponent -> doSignup -> accountError',
           accountError
         );
+        this.accountAlreadyExistsMSG = true;
       }
     );
   }
 
   private sorCreateFlow(accountData: AccountModel) {
+    const subscriptionId = '0';
+    const accountTypeId = '9';
     this.sorService
-      .sorCreate('0', accountData, this.password.value)
+      .sorCreate(
+        subscriptionId,
+        accountData,
+        this.password.value,
+        accountTypeId
+      )
       .pipe(
         map((sorResponse: SorResponse) => {
           console.log(
