@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
 import { Router } from '@angular/router';
 import { PaymentService } from 'src/app/services/payment.service';
-import { AccountService } from 'src/app/services/account.service';
 import { Account } from 'src/app/models/Account';
+import { CachingService } from 'src/app/services/caching.service';
+import { Subscription } from 'src/app/models/payment/Subscription';
 
 @Component({
   selector: 'app-payment-validation',
@@ -15,28 +16,28 @@ export class PaymentValidationComponent implements OnInit {
   account: Account;
 
   constructor(
-    private accountService: AccountService,
+    private cachingService: CachingService,
     private paymentService: PaymentService,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.account = this.accountService.getSession();
+    this.account = this.cachingService.getSession();
     this.paymentService.findLatestSubscriptionBy(this.account.id).subscribe(
-      res => {
-        if (res) {
+      (res : Subscription) => {
+        if (res ) {
           const currentDate = new Date();
           const validateDate =
             currentDate >= new Date(res['current']) &&
             currentDate <= new Date(res['next']);
-          console.log(validateDate);
+          console.log("validate date", res['current'], validateDate);
           if (validateDate) {
             this.paymentService.savePaymentCache(res);
             this.goToHome();
           }
         }
       },
-      err => {}
+      err => { console.log(err); }
     );
     const monthlyPayment = this.paymentService._getMonthlyPayment();
     if (monthlyPayment) {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CachingService } from 'src/app/services/caching.service';
 
 @Component({
   selector: 'app-recover-account',
@@ -15,6 +16,7 @@ export class RecoverAccountComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private accountService: AccountService,
+    private cachingService: CachingService,
     private router: Router
   ) {}
 
@@ -27,7 +29,7 @@ export class RecoverAccountComponent implements OnInit {
         this.accountService.mailForgot(this.recoverToken).subscribe(
           account => {
             if (account) {
-              this.accountService.saveRecover(account);
+              this.cachingService.saveRecover(account);
               this.router.navigate(['change-pass']);
             }
             console.log(account);

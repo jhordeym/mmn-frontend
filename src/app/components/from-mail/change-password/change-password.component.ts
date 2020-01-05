@@ -3,6 +3,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment as ENV } from 'src/environments/environment';
+import { CachingService } from 'src/app/services/caching.service';
 
 @Component({
   selector: 'app-change-password',
@@ -32,6 +33,7 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
+    private cachingService: CachingService,
     private fb: FormBuilder,
     private route: Router
   ) {
@@ -53,7 +55,8 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePass(changePass: string) {
-    this.accountService.changePass(changePass).subscribe(
+    const recoverAccount =  this.cachingService.getAccountRecover();
+    this.accountService.changePass(changePass, recoverAccount).subscribe(
       (data: string) => {
         if (data) {
           this.successful = true;

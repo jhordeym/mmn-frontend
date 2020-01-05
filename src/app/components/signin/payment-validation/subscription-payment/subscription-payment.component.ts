@@ -18,6 +18,7 @@ import { ShoppingCartStatus } from 'src/app/enum/ShoppingCartStatus';
 import { ShoppingType } from 'src/app/enum/ShoppingType';
 import { AccountService } from 'src/app/services/account.service';
 import { Account } from 'src/app/models/Account';
+import { CachingService } from 'src/app/services/caching.service';
 
 declare var paypal;
 
@@ -36,14 +37,17 @@ export class SubscriptionPaymentComponent implements OnInit {
   shoppingCart: ShoppingCart;
   account: Account;
 
-  constructor(private paymentService: PaymentService, private accountService: AccountService) {}
+  constructor(
+    private paymentService: PaymentService,
+    private cachingService: CachingService,
+    ) {}
 
   ngOnInit() {
     this.paymentService.getAllSubscriptionProducts().then(prods => {
       this.products = prods;
     });
 
-    this.account = this.accountService.getSession();
+    this.account = this.cachingService.getSession();
   }
 
   selectSubscription(item: Product) {

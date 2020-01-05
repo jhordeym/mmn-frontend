@@ -10,6 +10,7 @@ import { SorResponse } from 'src/app/models/sor/SorResponse';
 import { AccountService } from 'src/app/services/account.service';
 import { SorService } from 'src/app/services/sor.service';
 import { environment as ENV } from 'src/environments/environment';
+import { CachingService } from 'src/app/services/caching.service';
 
 @Component({
   selector: 'app-signup',
@@ -137,6 +138,7 @@ export class SignupComponent implements OnInit {
     private route: ActivatedRoute,
     private accountService: AccountService,
     private sorService: SorService,
+    private cachingService: CachingService,
     private fb: FormBuilder,
     private router: Router
   ) {}
@@ -283,11 +285,11 @@ export class SignupComponent implements OnInit {
   }
 
   getStep(step: number) {
-    return this.accountService.getRegisterStep(step);
+    return this.cachingService.getRegisterStep(step);
   }
 
   saveStep(step: number, data) {
-    return this.accountService.saveRegisterStep(step, data);
+    return this.cachingService.saveRegisterStep(step, data);
   }
 
   goTo(step: number) {
@@ -305,47 +307,9 @@ export class SignupComponent implements OnInit {
           accountData
         );
         if (accountData) {
-          this.accountService.saveSession(accountData);
+          this.cachingService.saveSession(accountData);
           this.accountAlreadyExistsMSG = false;
-          this.sorService
-            .sorCreate('0', accountData, this.password.value)
-            .pipe(
-              map((val: SorResponse) => {
-                console.log('SOR RESPONSE', val);
-                if (
-                  val && this.sorService.createErrorMsgs != val['Message']
-                ) {
-                  return val;
-                } else {
-                  throw val;
-                }
-              }),
-              retryWhen((errors: Observable<any>) =>
-                errors.pipe(
-                  // log error
-                  tap(val => {
-                    this.sorErrorMSG = true;
-                    console.log(val)}),
-                  // delay 1sec
-                  delayWhen(val => timer(5000))
-                )
-              )
-            )
-            .subscribe(
-              (sorData: SorResponse) => {
-                console.log(
-                  'TCL: SignupComponent -> doSignup -> sorData',
-                  sorData
-                );
-                this.router.navigate(['payment-validation']);
-              },
-              sorError => {
-                this.sorErrorMSG = true;
-                console.log(
-                  'TCL: SignupComponent -> doSignup -> sorError',
-                );
-              }
-            );
+          this.sorCreateFlow(accountData);
         }
       },
       accountError => {
@@ -356,5 +320,41 @@ export class SignupComponent implements OnInit {
         );
       }
     );
+  }
+
+  private sorCreateFlow(accountData) {
+    this.sorService
+      .sorCreate('0', accountData, this.password.value)
+      .pipe(
+        map((val: SorResponse) => {
+          console.log('SOR RESPONSE', val);
+          if (val && this.sorService.createErrorMsgs != val['Message']) {
+            return val;
+          } else {
+            throw val;
+          }
+        }),
+        retryWhen((errors: Observable<any>) =>
+          errors.pipe(
+            // log error
+            tap(val => {
+              this.sorErrorMSG = true;
+              console.log(val);
+            }),
+            // delay 1sec
+            delayWhen(val => timer(5000))
+          )
+        )
+      )
+      .subscribe(
+        (sorData: SorResponse) => {
+          console.log('TCL: SignupComponent -> doSignup -> sorData', sorData);
+          this.router.navigate(['payment-validation']);
+        },
+        sorError => {
+          this.sorErrorMSG = true;
+          console.log('TCL: SignupComponent -> doSignup -> sorError');
+        }
+      );
   }
 }

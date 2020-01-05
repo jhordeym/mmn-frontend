@@ -60,10 +60,9 @@ export class PaymentService {
   }
 
   // GUARD
-  paymentActive() {
-    const account: Account = this.getSession();
-    if(account) {
-      if(account.role ===  'ADMIN' || account.role === 'INFLUENCER') {
+  paymentActive(account: Account) {
+    if (account) {
+      if (['ADMIN', 'INVESTOR', 'AMBASSADOR'].indexOf(account.role) != -1) {
         return true;
       }
     }
@@ -71,7 +70,7 @@ export class PaymentService {
   }
 
   // CACHE
-  savePaymentCache(payment: (Payment | Subscription)): void {
+  savePaymentCache(payment: Payment | Subscription): void {
     localStorage.setItem('subscription', JSON.stringify(payment));
   }
 

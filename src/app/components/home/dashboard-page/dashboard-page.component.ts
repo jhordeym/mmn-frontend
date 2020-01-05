@@ -4,6 +4,7 @@ import { Account } from 'src/app/models/Account';
 import { AccountStatus } from 'src/app/enum/AccountStatus';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CachingService } from 'src/app/services/caching.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -25,6 +26,7 @@ export class DashboardPageComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
+    private cachingService: CachingService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {
@@ -61,7 +63,7 @@ export class DashboardPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.account = this.accountService.getSession();
+    this.account = this.cachingService.getSession();
     this.dashboardForm.patchValue(this.account);
     // console.log(this.account);
   }

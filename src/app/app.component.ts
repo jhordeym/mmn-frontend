@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { I18NServiceProvider } from './providers/i18n-service.provider';
 import { environment as ENV } from 'src/environments/environment';
 import { AccountService } from './services/account.service';
+import { CachingService } from './services/caching.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,7 @@ export class AppComponent {
 
   constructor(
     private translateService: TranslateService,
-    private accountService: AccountService,
+    private cachingService: CachingService,
     private i18NServiceProvider: I18NServiceProvider
   ) {
     this.setDefaultLang();
@@ -62,7 +63,7 @@ export class AppComponent {
   }
 
   onChangeOfRoutes(event) {
-    if (this.accountService.getSession()) {
+    if (this.cachingService.getSession()) {
       this.loggedIn = true;
     } else {
       this.loggedIn = false;

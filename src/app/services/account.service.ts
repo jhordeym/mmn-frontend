@@ -81,44 +81,8 @@ export class AccountService {
     });
   }
 
-  public changePass(newPass: string): Observable<any> {
-    const account: Account = this.getAccountRecover();
+  public changePass(newPass: string, account: Account): Observable<any> {
     account.password = newPass;
     return this.http.put<any>(`${ENV.accountServiceURL}/pass/update`, account);
-  }
-
-  // CACHE
-  saveSession(account: Account): void {
-    localStorage.setItem('session', JSON.stringify(account));
-  }
-
-  saveRecover(account: Account): void {
-    localStorage.setItem('accountRecover', JSON.stringify(account));
-  }
-
-  getSession(): Account {
-    const account: string = localStorage.getItem('session');
-    if (!account) return null;
-    return JSON.parse(account);
-  }
-
-  getAccountRecover(): Account {
-    const account: string = localStorage.getItem('accountRecover');
-    if (!account) return null;
-    return JSON.parse(account);
-  }
-
-  logout() {
-    localStorage.removeItem('session');
-  }
-
-  saveRegisterStep(step: number, data: any) {
-    localStorage.setItem(`register-step-${step}`, JSON.stringify(data));
-  }
-
-  getRegisterStep(step: number) {
-    const data = localStorage.getItem(`register-step-${step}`);
-    if (!data) return null;
-    return JSON.parse(data);
   }
 }

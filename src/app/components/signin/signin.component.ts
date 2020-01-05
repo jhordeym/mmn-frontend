@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { Account } from 'src/app/models/Account';
+import { CachingService } from 'src/app/services/caching.service';
 
 @Component({
   selector: 'app-signin',
@@ -32,6 +33,7 @@ export class SigninComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
+    private cachingService: CachingService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {
@@ -57,7 +59,9 @@ export class SigninComponent implements OnInit {
       (data : Account) => {
         if(data){
           this.unoutorizedMessage = false;
-          this.accountService.saveSession(data);
+          this.cachingService.saveSession(data);
+          this.cachingService.saveSecret(login.password);
+
           // redirect to home page
           this.router.navigate(['payment-validation']);
         } else {
