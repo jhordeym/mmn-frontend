@@ -35,20 +35,17 @@
     }
   }
 
-  span {
-    background: $very-light-primary;
-    display: block;
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid $medium-primary;
-  }
-
   .termsCheckBox {
     margin: 2rem 0.5rem;
   }
 
   .termsLabel {
     font: 1.2rem;
+  }
+
+  .error-container {
+    display: flex;
+    flex-direction: column;
   }
 
 }

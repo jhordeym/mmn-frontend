@@ -148,16 +148,16 @@ export class SubscriptionPaymentComponent implements OnInit {
     payment.shoppingCart = this.shoppingCart;
 
     // caching payment
-    this.cachingService.savePaymentCache(payment);
+    this.cachingService.savePaypalPayment(payment);
 
     this.paymentService.savePayment(payment).subscribe(
-      (subscriptionData: SubscriptionModel) => {
+      (subscriptionData: Payment) => {
         console.log(
           'TCL: SubscriptionPaymentComponent -> onApproveOrder -> subscriptionData',
           subscriptionData
         );
         if (subscriptionData) {
-          this.cachingService.saveSubscriptionCache(subscriptionData);
+          this.cachingService.saveFirstPaymentCache(subscriptionData);
           // emit event to parent
           this.completedSubscription.emit({
             status: PaypalTransactionStatus.Successful

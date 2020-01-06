@@ -9,7 +9,7 @@
 
     <!-- Perfil Form -->
     <form [formGroup]="dashboardForm" class="text-center">
-      <span class="Inline-error" *ngIf="false">
+      <span class="alert alert-danger" role="alert" *ngIf="false">
         {{ 'signin.invalidLogin' | translate }}
       </span>
 

@@ -3,6 +3,7 @@ import { AccountModel } from '../models/AccountModel';
 import { Payment } from '../models/payment/Payment';
 import { SubscriptionModel } from '../models/payment/SubscriptionModel';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -63,12 +64,22 @@ export class CachingService {
 
   // PAYMENT
   // CACHE
-  savePaymentCache(payment: Payment): void {
-    localStorage.setItem('payment', JSON.stringify(payment));
+  savePaypalPayment(payment: Payment) {
+    localStorage.setItem('paypal-payment', JSON.stringify(payment));
   }
 
-  getPaymentCache(): Payment {
-    const token: string = localStorage.getItem('payment');
+  getPaypalPayment(): Payment {
+    const token: string = localStorage.getItem('paypal-payment');
+    if (!token) return null;
+    return JSON.parse(token);
+  }
+
+  saveFirstPaymentCache(payment: Payment): void {
+    localStorage.setItem('first-payment', JSON.stringify(payment));
+  }
+
+  getFirstPaymentCache(): Payment {
+    const token: string = localStorage.getItem('first-payment');
     if (!token) return null;
     return JSON.parse(token);
   }

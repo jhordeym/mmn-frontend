@@ -3,10 +3,12 @@ import { Injectable } from '@angular/core';
 import * as i18nIsoCountries from 'i18n-iso-countries';
 import { Observable } from 'rxjs';
 import { environment as ENV } from 'src/environments/environment';
+
 import { AccountModel } from '../../models/AccountModel';
 import { SorAccount } from '../../models/sor/SorAccount';
 import { SorLoginToken } from '../../models/sor/SorLoginToken';
 import { SorResponse } from '../../models/sor/SorResponse';
+
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +65,13 @@ export class SorService {
       ENV.reservationServiceURL + '/create',
       body,
       httpOptions
+    );
+  }
+
+  public sorMembers(payload: any): Observable<Array<any>> {
+    return this.http.post<Array<any>>(
+      ENV.reservationServiceURL + '/members',
+      payload
     );
   }
 
@@ -138,5 +147,15 @@ export class SorService {
     const token: string = localStorage.getItem('sor-token');
     if (!token) return null;
     return JSON.parse(token);
+  }
+
+  saveSorAccount(sorAccount: any): void {
+    localStorage.setItem('sor-account', JSON.stringify(sorAccount));
+  }
+
+  getSorAccount(): any {
+    const sorAccount: string = localStorage.getItem('sor-account');
+    if (!sorAccount) return null;
+    return JSON.parse(sorAccount);
   }
 }

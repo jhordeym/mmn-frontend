@@ -7,7 +7,7 @@
           {{ 'info.accountConfirming' | translate }}
         </span>
 
-        <span class="Inline-error" *ngIf="this.accountDoesntExistMsg">
+        <span class="alert alert-danger" role="alert" *ngIf="this.accountDoesntExistMsg">
           {{ 'errors.doesNotExist' | translate }}
         </span>
       </div>

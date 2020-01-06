@@ -26,14 +26,14 @@
             <app-logo size="45vh"></app-logo>
 
             <!-- Token -->
-            <span class="Inline-error" *ngIf="invalidTokenMSG">
+            <span class="alert alert-danger" role="alert" *ngIf="invalidTokenMSG">
               {{ 'errors.invalidToken' | translate }}
             </span>
-            <span>
+            <span class="BLUEMARKER">
               <h3>{{ 'signup.invitePageTitle' | translate }}</h3>
               <p>{{ 'signup.invitePageText' | translate }}</p>
-              <input type="text" class="fadeIn-first" placeholder="{{ 'signup.inviteToken' | translate }}"
-                formControlName="invite">
+              <input type="text" maxlength="48" class="fadeIn-first"
+                placeholder="{{ 'signup.inviteToken' | translate }}" formControlName="invite">
             </span>
 
             <input type="button" class="fadeIn-fourth" [disabled]="!inviteForm.valid" (click)="this.verifyToken()"
@@ -46,11 +46,20 @@
 
           <!-- Signup Form -->
           <form [formGroup]="signupForm">
-            <span class="Inline-error" *ngIf="unoutorizedMessage">
-              {{ 'errors.invalidInput' | translate }}
-            </span>
+            <div class="Errors">
+              <div *ngFor="let invalidControl of findInvalidControls(signupForm)">
+                <div class="error-container">
+                  <span class="alert alert-danger" role="alert">
+                    {{ 'signup.'+invalidControl | translate }}
+                    <span *ngIf="invalidControl === 'birthday'">> 18</span>
+                  </span>
+                </div>
 
-            <span>
+              </div>
+
+            </div>
+
+            <span class="BLUEMARKER">
               <!-- <label>{{ 'signup.name' | translate }}</label> -->
               <input type="text" class="fadeIn-first" formControlName="name"
                 placeholder="{{ 'signup.name' | translate }}">
@@ -60,18 +69,10 @@
                 placeholder="{{ 'signup.lastName' | translate }}">
 
               <div class="birthday-group">
-                <input type="text" class="datepicker" formControlName="birthday" data-toggle="tooltip"
-                  ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" [minDate]="{year: 1920, month: 1, day: 1}"
-                  maxlength="10"
+                <input type="text" class="datepicker" formControlName="birthday" data-toggle="tooltip" ngbDatepicker
+                  #d="ngbDatepicker" (click)="d.toggle()" [minDate]="{year: 1920, month: 1, day: 1}" maxlength="10"
                   placeholder="{{ 'signup.birthday' | translate }}" />
               </div>
-              <!--
-              <div class="birthday-group">
-                <input type="text" class="datepicker" onfocus="(this.type='date')" formControlName="birthday"
-                  placeholder="{{ 'singup.birthday' | translate }}" />
-              </div>
-              -->
-
 
               <!-- <label>{{ 'signup.email' | translate }}</label> -->
               <input type="email" class="fadeIn-first" formControlName="email"
@@ -87,7 +88,7 @@
 
               <!-- <label>{{ 'signup.confirmPass' | translate }}</label> -->
               <input type="password" class="fadeIn-third" formControlName="confirmPassword"
-                placeholder="{{ 'signup.confirmPass' | translate }}">
+                placeholder="{{ 'signup.confirmPassword' | translate }}">
 
               <input type="button" class="fadeIn-fourth" [disabled]="!signupForm.valid" (click)="verifyAccount()"
                 value="{{ 'signup.nextButton' | translate }}">
@@ -101,10 +102,7 @@
 
           <!-- Signup Address Form -->
           <form [formGroup]="signupAddressForm">
-            <span class="Inline-error" *ngIf="unoutorizedMessage">
-              Invaid Input
-            </span>
-            <span>
+            <span class="BLUEMARKER">
               <input type="text" class="fadeIn-first" formControlName="street"
                 placeholder="{{ 'signup.street' | translate }}">
 
@@ -140,12 +138,8 @@
 
           <div [formGroup]="signupConfirmForm">
             <!-- ERROR -->
-            <span class="Inline-error" *ngIf="accountAlreadyExistsMSG">
+            <span class="alert alert-danger" role="alert" *ngIf="accountAlreadyExistsMSG">
               {{ 'errors.alreadyExists' | translate }}
-            </span>
-
-            <span class="Inline-error" *ngIf="sorErrorMSG">
-              {{ 'errors.sorErrorMsg' | translate }}
             </span>
 
             <div class="terms">

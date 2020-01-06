@@ -1,16 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, timer } from 'rxjs';
-import { delayWhen, map, retryWhen, tap } from 'rxjs/operators';
 import { AccountStatus } from 'src/app/enum/AccountStatus';
 import { AccountModel } from 'src/app/models/AccountModel';
 import { Address } from 'src/app/models/Address';
-import { SorResponse } from 'src/app/models/sor/SorResponse';
 import { AccountService } from 'src/app/services/backend/account.service';
 import { SorService } from 'src/app/services/backend/sor.service';
 import { CachingService } from 'src/app/services/caching.service';
 import { environment as ENV } from 'src/environments/environment';
+
+export function validateDate(control: AbstractControl) {
+  if (control) {
+    const date = control.value;
+    const birthYear = date.year;
+    const currentYear = new Date().getFullYear();
+    const result = currentYear - birthYear > 18 ? null : { invalid: true };
+    console.log('TCL: SignupComponent -> validateDate -> result', result);
+    return result;
+  }
+  return null;
+}
 
 @Component({
   selector: 'app-signup',
@@ -67,7 +76,6 @@ export class SignupComponent implements OnInit {
   unoutorizedMessage = false;
   invalidTokenMSG = false;
   accountAlreadyExistsMSG = false;
-  sorErrorMSG = false;
 
   continueAfterPayment = false;
 
@@ -167,13 +175,13 @@ export class SignupComponent implements OnInit {
       {
         name: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
-        birthday: ['', Validators.required],
-        email: ['', [Validators.required, Validators.minLength(6)]],
+        birthday: ['', [Validators.required, validateDate]],
+        email: ['', [Validators.required, Validators.email]],
         phone: ['', [Validators.required, Validators.minLength(6)]],
         password: ['', [Validators.required, Validators.minLength(8)]],
-        confirmPassword: ['', [Validators.required]]
+        confirmPassword: ['', [Validators.required, Validators.minLength(8)]]
       },
-      { validators: [this.validatePasswords, this.validateDate] }
+      { validators: [this.validatePasswords] }
     );
 
     /** DEBUG */
@@ -196,13 +204,6 @@ export class SignupComponent implements OnInit {
     );
   }
 
-  validateDate(group: AbstractControl) {
-    const date = group.get('birthday').value;
-    const birthYear = date.year;
-    const currentYear = new Date().getFullYear();
-    return currentYear - birthYear > 18 ? null : { invalid: true };
-  }
-
   validateTerms(group: AbstractControl) {
     const pass = group.get('acceptedTerms').value;
     return pass === true ? null : { invalid: true };
@@ -215,6 +216,18 @@ export class SignupComponent implements OnInit {
   }
 
   /** ACTUAL METHODS */
+
+  public findInvalidControls(form: any) {
+    const invalid = [];
+    const controls = form.controls;
+    for (const name in controls) {
+      const cname = controls[name];
+      if (cname.invalid && (cname.dirty || cname.touched)) {
+        invalid.push(name);
+      }
+    }
+    return invalid;
+  }
 
   validateBeforeSubmit() {
     if (this.signupForm.valid && this.signupAddressForm.valid) {
@@ -314,7 +327,6 @@ export class SignupComponent implements OnInit {
         );
         if (accountData) {
           this.cachingService.saveSession(accountData);
-          this.sorCreateFlow(accountData);
         }
       },
       accountError => {
@@ -325,63 +337,5 @@ export class SignupComponent implements OnInit {
         this.accountAlreadyExistsMSG = true;
       }
     );
-  }
-
-  private sorCreateFlow(accountData: AccountModel) {
-    const subscriptionId = '0';
-    const accountTypeId = '9';
-    this.sorService
-      .sorCreate(
-        subscriptionId,
-        accountData,
-        this.password.value,
-        accountTypeId
-      )
-      .pipe(
-        map((sorResponse: SorResponse) => {
-          console.log(
-            'TCL: SignupComponent -> sorCreateFlow -> map -> sorResponse',
-            sorResponse
-          );
-          if (
-            sorResponse &&
-            this.sorService.createErrorMsgs != sorResponse['Message']
-          ) {
-            return sorResponse;
-          } else {
-            throw sorResponse;
-          }
-        }),
-        retryWhen((errors: Observable<any>) =>
-          errors.pipe(
-            // log error
-            tap(sorError => {
-              console.log(
-                'TCL: SignupComponent -> sorCreateFlow -> retryWhen -> sorError',
-                sorError
-              );
-              this.sorErrorMSG = true;
-            }),
-            // delay 1sec
-            delayWhen(val => timer(5000))
-          )
-        )
-      )
-      .subscribe(
-        (sorResponse: SorResponse) => {
-          console.log(
-            'TCL: SignupComponent -> sorCreateFlow -> sorResponse',
-            sorResponse
-          );
-          this.router.navigate(['payment-validation']);
-        },
-        sorError => {
-          console.log(
-            'TCL: SignupComponent -> sorCreateFlow -> sorError',
-            sorError
-          );
-          this.sorErrorMSG = true;
-        }
-      );
   }
 }

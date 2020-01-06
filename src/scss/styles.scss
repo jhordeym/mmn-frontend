@@ -53,6 +53,18 @@ h2.active {
   padding: 20px;
 }
 
+.Errors {
+  margin: 1rem;
+}
+
+.BLUEMARKER {
+  background: $very-light-primary;
+  display: block;
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid $medium-primary;
+}
+
 .Inline-error {
   color: $warn;
 }

@@ -14,13 +14,16 @@
       <!-- Login Form -->
       <form [formGroup]="loginForm">
 
-        <span class="Inline-error" *ngIf="serviceDownMSG">
-          {{ 'errors.serviceDown' | translate }}
-        </span>
+        <div class="Errors">
+          <span class="alert alert-danger" role="alert" *ngIf="serviceDownMSG">
+            {{ 'errors.serviceDown' | translate }}
+          </span>
 
-        <span class="Inline-error" *ngIf="invalidLoginMSG">
-          {{ 'signin.invalidLogin' | translate }}
-        </span>
+          <span class="alert alert-danger" role="alert" *ngIf="invalidLoginMSG">
+            {{ 'signin.invalidLogin' | translate }}
+          </span>
+        </div>
+
 
         <input type="text" id="login" class="fadeIn-second" formControlName="login"
           placeholder="{{ 'signin.email' | translate }}">

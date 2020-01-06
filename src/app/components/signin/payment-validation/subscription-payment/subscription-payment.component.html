@@ -1,9 +1,8 @@
 <div>
   <h2>{{ 'signup.subTitle' | translate}}</h2>
-
   <div class="card-deck">
     <div *ngIf="!products">
-      <span class="Inline-error">
+      <span class="alert alert-danger" role="alert">
         {{ 'errors.loadingProducts' | translate }}
       </span>
     </div>

@@ -15,12 +15,14 @@ import { PaymentValidationComponent } from './components/signin/payment-validati
 import { RecoverAccountComponent } from './components/from-mail/recover-account/recover-account.component';
 import { ChangePasswordComponent } from './components/from-mail/change-password/change-password.component';
 import { ConfirmAccountComponent } from './components/from-mail/confirm-account/confirm-account.component';
+import { SorGuard } from './guards/sor.guard';
+import { SorAccountValidationComponent } from './components/signin/sor-account-validation/sor-account-validation.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    canActivate: [AuthGuard, PaymentGuard],
+    canActivate: [AuthGuard, PaymentGuard, SorGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardPageComponent },
@@ -30,21 +32,26 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'sor-validation',
+    component: SorAccountValidationComponent,
+    canActivate: [AuthGuard, PaymentGuard]
+  },
+  {
     path: 'payment-validation',
     component: PaymentValidationComponent,
     canActivate: [AuthGuard]
   },
   {
     path: 'account-confirm',
-    component: ConfirmAccountComponent,
+    component: ConfirmAccountComponent
   },
   {
     path: 'recover',
-    component: RecoverAccountComponent,
+    component: RecoverAccountComponent
   },
   {
     path: 'change-pass',
-    component: ChangePasswordComponent,
+    component: ChangePasswordComponent
   },
   {
     path: 'logout',

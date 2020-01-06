@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { PaypalTransactionStatus } from 'src/app/enum/PaypalTransationStatus';
 import { AccountModel } from 'src/app/models/AccountModel';
 import { SubscriptionModel } from 'src/app/models/payment/SubscriptionModel';
 import { PaymentService } from 'src/app/services/backend/payment.service';
 import { CachingService } from 'src/app/services/caching.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-payment-validation',
@@ -39,7 +39,7 @@ export class PaymentValidationComponent implements OnInit, OnDestroy {
           if (subscription) {
             if (this.validateSubscriptionDate(subscription)) {
               this.cachingService.saveSubscriptionCache(subscription);
-              this.goToHome();
+              this.navigate();
             }
           }
         },
@@ -52,7 +52,7 @@ export class PaymentValidationComponent implements OnInit, OnDestroy {
       );
     const subscription: SubscriptionModel = this.cachingService.getSubscriptionCache();
     if (subscription) {
-      this.goToHome();
+      this.navigate();
     }
   }
 
@@ -71,12 +71,12 @@ export class PaymentValidationComponent implements OnInit, OnDestroy {
     return;
   }
 
-  receiveConfirmation(event: any) {
+  public receiveConfirmation(event: any) {
     this.paid = event.status === PaypalTransactionStatus.Successful;
   }
 
-  goToHome() {
-    this.router.navigate(['']);
+  navigate() {
+    this.router.navigate(['sor-validation']);
   }
 
   isPrivilegedAccount() {

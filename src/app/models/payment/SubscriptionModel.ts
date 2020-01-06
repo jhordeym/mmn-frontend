@@ -8,7 +8,7 @@ export class SubscriptionModel {
 
   id?: string;
   accountId?: string;
-  product: Product[];
+  product: Product;
   start?: Date;
   current?: Date;
   next?: Date;

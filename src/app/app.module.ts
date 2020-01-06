@@ -38,6 +38,7 @@ import { ModalComponent } from './shared/components/modal/modal.component';
 import { BasicAuthInterceptor } from './providers/basic-auth-interceptor.provider';
 import { CookieLawModule } from 'angular2-cookie-law';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SorAccountValidationComponent } from './components/signin/sor-account-validation/sor-account-validation.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -67,7 +68,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     PaymentValidationComponent,
     LogoComponent,
     UsersConfigComponent,
-    RecoverAccountComponent
+    RecoverAccountComponent,
+    SorAccountValidationComponent
   ],
   imports: [
     BrowserAnimationsModule,
