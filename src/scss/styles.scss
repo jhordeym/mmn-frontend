@@ -53,6 +53,13 @@ h2.active {
   padding: 20px;
 }
 
+@media only screen and (max-width: 768px) {
+
+  .alert {
+    display: block;
+  }
+}
+
 .Errors {
   margin: 1rem;
 }
@@ -161,6 +168,7 @@ input[type=reset]:enabled {
 
 select,
 input[type=text],
+input[type=tel],
 input[type=email],
 input[type=password],
 input[type=date] {
@@ -203,6 +211,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
 select:focus,
 input[type=text]:focus,
 input[type=email]:focus,
+input[type=tel]:focus,
 input[type=password]:focus,
 input[type=date]:focus {
   color: $light;
@@ -213,6 +222,7 @@ input[type=date]:focus {
 select::placeholder,
 input[type=text]:placeholder,
 input[type=email]:placeholder,
+input[type=tel]:placeholder,
 input[type=password]:placeholder,
 input[type=date]:placeholder {
   color: $dark;

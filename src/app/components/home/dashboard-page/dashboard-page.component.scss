@@ -8,7 +8,7 @@
     @include container(100vh);
   }
 
-  form {
+  .dashboard-form {
     // border: 1px solid red;
     display: flex;
     flex-direction: row;
@@ -24,6 +24,20 @@
 
   .form-group:last-child {
     flex-basis: 98%;
+  }
+
+  .subscription-form {
+    display: block;
+    width: 95%;
+  }
+
+  #subscription {
+    @include border-radius(0.5rem);
+    padding: 1rem;
+    color: white;
+    background-color: $other-primary;
+    font-size: xx-large;
+    width: 100%;
   }
 
   @media only screen and (max-width: 768px) {

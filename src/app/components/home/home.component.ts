@@ -12,6 +12,7 @@ export class HomeComponent {
   constructor(private cachingService: CachingService) {}
 
   ngOnInit() {
+    this.cachingService.deleteSecret();
     this.account = this.cachingService.getSession();
     // console.log(this.account);
   }

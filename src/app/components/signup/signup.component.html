@@ -51,7 +51,7 @@
                 <div class="error-container">
                   <span class="alert alert-danger" role="alert">
                     {{ 'signup.'+invalidControl | translate }}
-                    <span *ngIf="invalidControl === 'birthday'">> 18</span>
+                    <span *ngIf="invalidControl === 'birthday'">{{ '< 18' }}</span>
                   </span>
                 </div>
 
@@ -69,7 +69,7 @@
                 placeholder="{{ 'signup.lastName' | translate }}">
 
               <div class="birthday-group">
-                <input type="text" class="datepicker" formControlName="birthday" data-toggle="tooltip" ngbDatepicker
+                <input type="text" class="datepicker" id="bday" formControlName="birthday" data-toggle="tooltip" ngbDatepicker
                   #d="ngbDatepicker" (click)="d.toggle()" [minDate]="{year: 1920, month: 1, day: 1}" maxlength="10"
                   placeholder="{{ 'signup.birthday' | translate }}" />
               </div>
@@ -79,7 +79,7 @@
                 placeholder="{{ 'signup.email' | translate }}">
 
               <!-- <label>{{ 'signup.phone' | translate }}</label> -->
-              <input type="text" class="fadeIn-second" formControlName="phone"
+              <input type="tel" class="fadeIn-second" formControlName="phone"
                 placeholder="{{ 'signup.phone' | translate }}">
 
               <!-- <label>{{ 'signup.password' | translate }}</label> -->
@@ -103,20 +103,20 @@
           <!-- Signup Address Form -->
           <form [formGroup]="signupAddressForm">
             <span class="BLUEMARKER">
-              <input type="text" class="fadeIn-first" formControlName="street"
+              <input type="text" id="frmAddressS" class="fadeIn-first" formControlName="street"
                 placeholder="{{ 'signup.street' | translate }}">
 
-              <input type="text" class="fadeIn-first" formControlName="city"
+              <input type="text" id="frmCityS" class="fadeIn-first" formControlName="city"
                 placeholder="{{ 'signup.city' | translate }}">
 
-              <input type="text" class="fadeIn-first" formControlName="state"
+              <input type="text" id="frmStateS" class="fadeIn-first" formControlName="state"
                 placeholder="{{ 'signup.state' | translate }}">
 
-              <input type="text" class="fadeIn-second" formControlName="zip"
+              <input type="text" id="frmZipS" class="fadeIn-second" formControlName="zip"
                 placeholder="{{ 'signup.zip' | translate }}">
 
               <div class="form-group">
-                <select class="form-control form-selector" id="country" formControlName="country">
+                <select class="form-control form-selector" id="frmCountryS" formControlName="country">
                   <option disabled selected>{{ 'signup.country' | translate }}</option>
                   <option *ngFor="let c of countries_list" [value]="c"> {{ c }}</option>
                 </select>
@@ -137,12 +137,15 @@
         <div class="tab-pane fade" id="pills-confirmation" role="tabpanel" aria-labelledby="pills-confirmation-tab">
 
           <div [formGroup]="signupConfirmForm">
-            <!-- ERROR -->
-            <span class="alert alert-danger" role="alert" *ngIf="accountAlreadyExistsMSG">
-              {{ 'errors.alreadyExists' | translate }}
-            </span>
 
             <div class="terms">
+              <!-- ERROR -->
+              <div class="Errors">
+                <span class="alert alert-danger" role="alert" *ngIf="accountAlreadyExistsMSG">
+                  {{ 'errors.alreadyExists' | translate }}
+                </span>
+              </div>
+
               <app-terms-and-conditions></app-terms-and-conditions>
 
               <input type="checkbox" class="termsCheckBox" id="termsCheck" formControlName="acceptedTerms">

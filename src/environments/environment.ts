@@ -20,7 +20,7 @@ const SOR_REDIRECT_URL =
 export const environment = {
   mode: 'Dev',
   production: false,
-  useMock: true,
+  useMock: false,
 
   basicToken: BASIC_AUTH_TOKEN,
   appBaseUrl: APP_BASE_URL,

@@ -68,7 +68,7 @@ export class PaymentValidationComponent implements OnInit, OnDestroy {
       nextSubDate,
       result
     );
-    return;
+    return result;
   }
 
   public receiveConfirmation(event: any) {

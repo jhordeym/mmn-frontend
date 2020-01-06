@@ -5,6 +5,8 @@ import { AccountStatus } from 'src/app/enum/AccountStatus';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CachingService } from 'src/app/services/caching.service';
+import { SubscriptionModel } from 'src/app/models/payment/SubscriptionModel';
+import { Payment } from 'src/app/models/payment/Payment';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -15,13 +17,19 @@ export class DashboardPageComponent implements OnInit {
   account: AccountModel;
   dashboardForm: any;
   disable = true;
+  subscription: SubscriptionModel;
+  firstPayment: Payment;
 
   get inviteToken() {
     return this.dashboardForm.get('inviteToken');
   }
 
   get linkUrl() {
-    return 'https%3A%2F%2Flogin.travined.com%3A8080%2F%23%2Fsignup%3FinviteToken%3D' + this.inviteToken.value + '&title=Travined';
+    return (
+      'https%3A%2F%2Flogin.travined.com%3A8080%2F%23%2Fsignup%3FinviteToken%3D' +
+      this.inviteToken.value +
+      '&title=Travined'
+    );
   }
 
   constructor(
@@ -58,14 +66,27 @@ export class DashboardPageComponent implements OnInit {
       inviteToken: [
         { value: '', disabled: true },
         [Validators.required, Validators.minLength(1)]
+      ],
+      subscription: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(1)]
       ]
     });
   }
 
   ngOnInit() {
     this.account = this.cachingService.getSession();
-    this.dashboardForm.patchValue(this.account);
-    // console.log(this.account);
+    this.subscription = this.cachingService.getSubscriptionCache();
+    this.firstPayment = this.cachingService.getFirstPaymentCache();
+    this.dashboardForm.patchValue({ ...this.account });
+  }
+
+  public getSubscriptionName() {
+    if (this.subscription) {
+      return this.subscription.product.name;
+    } else if (this.firstPayment) {
+      return this.firstPayment.shoppingCart.products[0].product.name;
+    }
   }
 
   isNewAccount() {

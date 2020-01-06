@@ -15,7 +15,6 @@ export function validateDate(control: AbstractControl) {
     const birthYear = date.year;
     const currentYear = new Date().getFullYear();
     const result = currentYear - birthYear > 18 ? null : { invalid: true };
-    console.log('TCL: SignupComponent -> validateDate -> result', result);
     return result;
   }
   return null;
@@ -327,6 +326,7 @@ export class SignupComponent implements OnInit {
         );
         if (accountData) {
           this.cachingService.saveSession(accountData);
+          this.router.navigate(['payment-validation']);
         }
       },
       accountError => {
