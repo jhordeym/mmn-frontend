@@ -85,7 +85,7 @@ export class SorAccountValidationComponent implements OnInit, OnDestroy {
   }
 
   private navigate(): void {
-    // this.router.navigate(['']);
+    this.router.navigate(['']);
   }
 
   private sorCreateFlow(

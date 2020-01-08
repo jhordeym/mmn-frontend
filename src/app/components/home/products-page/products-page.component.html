@@ -6,10 +6,9 @@
 <div class="Productspage">
   <div class="Wrapper fadeInDown">
     <!-- Title -->
-    <h1>{{ 'home.productsTitle' | translate}}</h1>
     <!-- Logo -->
     <div class="fadeIn-first">
-      <img [src]="logo" class="Productspage-logo" alt="logo" />
+      <img [src]="logo" class="Productspage-logo" alt="{{ 'home.productsTitle' | translate}}" />
     </div>
     <!-- product cards -->
     <div class="card-deck">
