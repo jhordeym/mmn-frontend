@@ -12,7 +12,7 @@ export class CachingService {
 
   // ACCOUNT CACHE
   saveSecret(secret: string): void {
-    localStorage.setItem('xxxxx', secret);
+    localStorage.setItem('xxxxx', btoa(secret));
   }
 
   saveSession(account: AccountModel): void {
@@ -28,7 +28,7 @@ export class CachingService {
   }
 
   getSecret(): string {
-    return localStorage.getItem('xxxxx');
+    return atob(localStorage.getItem('xxxxx'));
   }
 
   getSession(): AccountModel {
