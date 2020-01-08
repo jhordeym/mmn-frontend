@@ -5,8 +5,7 @@ import { ProductIdsEnum } from 'src/app/enum/ProductIdsEnum';
 import { SorAccountTypeId } from 'src/app/enum/sor-enums/SorAccountTypeId';
 import { SorSubscriptionPlans } from 'src/app/enum/sor-enums/SorSubscriptionPlans';
 import { AccountModel } from 'src/app/models/AccountModel';
-import { Payment } from 'src/app/models/payment/Payment';
-import { SubscriptionModel } from 'src/app/models/payment/SubscriptionModel';
+import { Product } from 'src/app/models/payment/Product';
 import { SorResponse } from 'src/app/models/sor/SorResponse';
 import { SorService } from 'src/app/services/backend/sor.service';
 import { CachingService } from 'src/app/services/caching.service';
@@ -77,20 +76,16 @@ export class SorAccountValidationComponent implements OnInit, OnDestroy {
   }
 
   checkPlanBasedOnPayment(): string {
-    const subscription: SubscriptionModel = this.cachingService.getSubscriptionCache();
-    const payment: Payment = this.cachingService.getFirstPaymentCache();
-    if (subscription) {
-      return ProductIdsEnum.matchTranslationKey(subscription.product.description);
-    } else if (payment) {
-      return ProductIdsEnum.matchTranslationKey(
-        payment.shoppingCart.products[0].product.description
-      );
+    const product: Product = this.cachingService.getPaymentProduct();
+    console.log('TCL: SorAccountValidationComponent -> product', product);
+    if (product) {
+      return ProductIdsEnum.matchTranslationKey(product.description);
     }
     return SorSubscriptionPlans.Basic;
   }
 
   private navigate(): void {
-    this.router.navigate(['']);
+    // this.router.navigate(['']);
   }
 
   private sorCreateFlow(

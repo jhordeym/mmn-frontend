@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AccountModel } from '../models/AccountModel';
 import { Payment } from '../models/payment/Payment';
+import { Product } from '../models/payment/Product';
 import { SubscriptionModel } from '../models/payment/SubscriptionModel';
-
 
 @Injectable({
   providedIn: 'root'
@@ -62,8 +62,18 @@ export class CachingService {
     this.deleteSession();
   }
 
-  // PAYMENT
-  // CACHE
+  // PAYMENT CACHE
+  getPaymentProduct(): Product {
+    const subscription: SubscriptionModel = this.getSubscriptionCache();
+    const payment: Payment = this.getFirstPaymentCache();
+    if (subscription) {
+      return subscription.product;
+    } else if (payment) {
+      return payment.shoppingCart.products[0].product;
+    }
+    return null;
+  }
+
   savePaypalPayment(payment: Payment) {
     localStorage.setItem('paypal-payment', JSON.stringify(payment));
   }
@@ -90,6 +100,16 @@ export class CachingService {
 
   getSubscriptionCache(): SubscriptionModel {
     const token: string = localStorage.getItem('subscription');
+    if (!token) return null;
+    return JSON.parse(token);
+  }
+
+  saveSubscriptionProductList(list): void {
+    localStorage.setItem('sub-prod-list', JSON.stringify(list));
+  }
+
+  getSubscriptionProductList(): any {
+    const token: string = localStorage.getItem('sub-prod-list');
     if (!token) return null;
     return JSON.parse(token);
   }

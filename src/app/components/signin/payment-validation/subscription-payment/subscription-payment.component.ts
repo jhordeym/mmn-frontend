@@ -47,7 +47,10 @@ export class SubscriptionPaymentComponent implements OnInit {
           'TCL: SubscriptionPaymentComponent -> ngOnInit -> subscriptionProducts',
           subscriptionProducts
         );
-        this.products = subscriptionProducts;
+        if (subscriptionProducts) {
+          this.cachingService.saveSubscriptionProductList(subscriptionProducts);
+          this.products = subscriptionProducts;
+        }
       },
       subscriptionProductsError => {
         console.log(
