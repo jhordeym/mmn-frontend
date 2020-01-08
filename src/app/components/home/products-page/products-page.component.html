@@ -20,8 +20,8 @@
           <p class="card-text">{{ card.text | translate }} </p>
         </div>
         <div class="card-footer">
-          <input type="button" class="productButton underlineHover" (click)="navigateTo(card.link)"
-            value="{{ 'products.goToLink' | translate }}">
+          <input type="button" class="productButton underlineHover" [disabled]="checkIfDisabledForCard(card)"
+            (click)="navigateTo(card.link)" value="{{ 'products.goToLink' | translate }}">
         </div>
       </div>
     </div>
@@ -29,7 +29,15 @@
 </div>
 
 <!--  Translations
-        {{ 'products.flight.title' | translate }},
-        {{ 'products.flight.text' | translate }},
-        {{ 'products.goToLink' | translate }},
+  {{ 'products.flight.title' | translate }},
+  {{ 'products.flight.text' | translate }},
+  {{ 'products.goToLink' | translate }},
+
+  {{ 'sorModal.loadingTitle' | translate }}
+  {{ 'sorModal.loadingContent' | translate }}
+  {{ 'sorModal.redirectTitle' | translate }}
+  {{ 'sorModal.redirectContent' | translate }}
+  {{ 'sorModal.errorTitle' | translate }}
+  {{ 'sorModal.errorContent' | translate }}
+
 -->

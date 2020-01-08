@@ -93,4 +93,15 @@ export class CachingService {
     if (!token) return null;
     return JSON.parse(token);
   }
+
+  // SOR
+  saveSorAccount(sorAccount: any): void {
+    localStorage.setItem('sor-account', JSON.stringify(sorAccount));
+  }
+
+  getSorAccount(): any {
+    const sorAccount: string = localStorage.getItem('sor-account');
+    if (!sorAccount) return null;
+    return JSON.parse(sorAccount);
+  }
 }

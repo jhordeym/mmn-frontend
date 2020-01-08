@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from 'src/app/services/backend/account.service';
-import { AccountModel } from 'src/app/models/AccountModel';
-import { AccountStatus } from 'src/app/enum/AccountStatus';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CachingService } from 'src/app/services/caching.service';
-import { SubscriptionModel } from 'src/app/models/payment/SubscriptionModel';
+import { AccountStatus } from 'src/app/enum/AccountStatus';
+import { AccountModel } from 'src/app/models/AccountModel';
 import { Payment } from 'src/app/models/payment/Payment';
+import { SubscriptionModel } from 'src/app/models/payment/SubscriptionModel';
+import { CachingService } from 'src/app/services/caching.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -19,6 +18,7 @@ export class DashboardPageComponent implements OnInit {
   disable = true;
   subscription: SubscriptionModel;
   firstPayment: Payment;
+  sorAccount: any;
 
   get inviteToken() {
     return this.dashboardForm.get('inviteToken');
@@ -33,7 +33,6 @@ export class DashboardPageComponent implements OnInit {
   }
 
   constructor(
-    private accountService: AccountService,
     private cachingService: CachingService,
     private formBuilder: FormBuilder,
     private router: Router
@@ -76,6 +75,7 @@ export class DashboardPageComponent implements OnInit {
 
   ngOnInit() {
     this.account = this.cachingService.getSession();
+    this.sorAccount = this.cachingService.getSorAccount();
     this.subscription = this.cachingService.getSubscriptionCache();
     this.firstPayment = this.cachingService.getFirstPaymentCache();
     this.dashboardForm.patchValue({ ...this.account });
@@ -86,6 +86,9 @@ export class DashboardPageComponent implements OnInit {
       return this.subscription.product.name;
     } else if (this.firstPayment) {
       return this.firstPayment.shoppingCart.products[0].product.name;
+    } else {
+      // get based on the clubID
+      return "Travined Explorer<br>⭐⭐⭐⭐⭐<br>5 Stars (Special Access)"
     }
   }
 

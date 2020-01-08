@@ -1,17 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subscription, timer } from 'rxjs';
-import { delayWhen, map, retryWhen, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { ProductIdsEnum } from 'src/app/enum/ProductIdsEnum';
+import { SorAccountTypeId } from 'src/app/enum/sor-enums/SorAccountTypeId';
+import { SorSubscriptionPlans } from 'src/app/enum/sor-enums/SorSubscriptionPlans';
 import { AccountModel } from 'src/app/models/AccountModel';
+import { Payment } from 'src/app/models/payment/Payment';
+import { SubscriptionModel } from 'src/app/models/payment/SubscriptionModel';
 import { SorResponse } from 'src/app/models/sor/SorResponse';
 import { SorService } from 'src/app/services/backend/sor.service';
 import { CachingService } from 'src/app/services/caching.service';
-import { SorAccountTypeId } from 'src/app/enum/sor-enums/SorAccountTypeId';
-import { SorSubscriptionPlans } from 'src/app/enum/sor-enums/SorSubscriptionPlans';
-import { SubscriptionModel } from 'src/app/models/payment/SubscriptionModel';
-import { Payment } from 'src/app/models/payment/Payment';
-import { ProductIdsEnum } from 'src/app/enum/ProductIdsEnum';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-sor-account-validation',
@@ -55,7 +53,7 @@ export class SorAccountValidationComponent implements OnInit, OnDestroy {
         );
         // member exist in SOR
         if (sorMemberList && sorMemberList.length > 0) {
-          this.sorService.saveSorAccount(sorMemberList[0]);
+          this.cachingService.saveSorAccount(sorMemberList[0]);
           this.navigate();
         } else {
           this.sorCreateFlow(account, secret, subscriptionId, accountTypeId);
@@ -82,9 +80,9 @@ export class SorAccountValidationComponent implements OnInit, OnDestroy {
     const subscription: SubscriptionModel = this.cachingService.getSubscriptionCache();
     const payment: Payment = this.cachingService.getFirstPaymentCache();
     if (subscription) {
-      return ProductIdsEnum.match(subscription.product.description);
+      return ProductIdsEnum.matchTranslationKey(subscription.product.description);
     } else if (payment) {
-      return ProductIdsEnum.match(
+      return ProductIdsEnum.matchTranslationKey(
         payment.shoppingCart.products[0].product.description
       );
     }
@@ -110,7 +108,7 @@ export class SorAccountValidationComponent implements OnInit, OnDestroy {
             sorResponse
           );
           if (sorResponse && sorResponse.Account) {
-            this.sorService.saveSorAccount(sorResponse.Account);
+            this.cachingService.saveSorAccount(sorResponse.Account);
           }
           this.navigate();
         },

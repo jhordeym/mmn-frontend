@@ -9,7 +9,7 @@
 
     <!-- Subscription Form -->
     <form class="text-center subscription-form">
-      <div class="form-group subscription" *ngIf="this.subscription || this.firstPayment">
+      <div class="form-group subscription">
         <div id="subscription" [innerHtml]="getSubscriptionName()"></div>
       </div>
     </form>

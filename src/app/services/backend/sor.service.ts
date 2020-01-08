@@ -62,7 +62,7 @@ export class SorService {
     );
     console.log(body, httpOptions);
     return this.http.post<SorResponse>(
-      ENV.reservationServiceURL + '/create',
+      ENV.reservationServiceURL + '/create-user',
       body,
       httpOptions
     );
@@ -147,15 +147,5 @@ export class SorService {
     const token: string = localStorage.getItem('sor-token');
     if (!token) return null;
     return JSON.parse(token);
-  }
-
-  saveSorAccount(sorAccount: any): void {
-    localStorage.setItem('sor-account', JSON.stringify(sorAccount));
-  }
-
-  getSorAccount(): any {
-    const sorAccount: string = localStorage.getItem('sor-account');
-    if (!sorAccount) return null;
-    return JSON.parse(sorAccount);
   }
 }
