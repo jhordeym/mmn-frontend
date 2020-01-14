@@ -67,7 +67,7 @@ export class ProductsPageComponent implements OnInit {
         ENV.imgFlight,
         'products.flight.title',
         'products.flight.text',
-        '%2Ftours%2F',
+        '%2Fflights%2F',
         params ? params[1] : null
       ),
       new Card(

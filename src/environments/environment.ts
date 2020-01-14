@@ -15,7 +15,7 @@ const BASIC_AUTH_TOKEN =
   'dHJhdmluZWRHYXRld2F5QWRtaW46dHJhdjIwMjBpbmVkQWRtaW4hIzEyMzQ=';
 
 const SOR_REDIRECT_URL =
-  'http://memberstravined.saveonuat.com/vacationclub/logincheck.aspx?Token=';
+  'https://members.travined.com/vacationclub/logincheck.aspx?Token=';
 
 export const environment = {
   mode: 'Dev',

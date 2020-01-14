@@ -18,10 +18,17 @@ export class AccountModel {
   password?: string;
   accountStatus: AccountStatus;
   creationDate?: string;
+  inviteToken?: string;
 
   public static isPrivilegedAccount(role: string): boolean {
     return ['ADMIN', 'INVESTOR', 'AMBASSADOR'].indexOf(role) != -1;
   }
+
+  public static isInvestorOrAmbassador(role: string): boolean {
+    return ['INVESTOR', 'AMBASSADOR'].indexOf(role) != -1;
+  }
+
+
 
   public static isAdmin(role: string): boolean {
     return ['ADMIN'].indexOf(role) != -1;

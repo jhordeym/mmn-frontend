@@ -58,7 +58,8 @@ export class SorService {
       this.get2LetterCountryCode(account.address.country),
       account.phone,
       accountTypeId,
-      null
+      null,
+      account.inviteToken
     );
     console.log(body, httpOptions);
     return this.http.post<SorResponse>(

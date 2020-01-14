@@ -11,5 +11,6 @@ export class SorAccount {
     public Phone: string,
     public UserAccountTypeId: string,
     public ReferringUserId: string,
+    public OtherID: string
   ) {}
 }

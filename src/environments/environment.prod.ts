@@ -17,7 +17,7 @@ const FRONTENDBASE_URL = 'https://login.travined.com:8080/#/';
 //const FRONTENDBASE_URL = 'https://login.travined.com/#/';
 
 const SOR_REDIRECT_URL =
-  'http://members.travined.com/vacationclub/logincheck.aspx?Token=';
+  'https://members.travined.com/vacationclub/logincheck.aspx?Token=';
 
 export const environment = {
   mode: 'Production',

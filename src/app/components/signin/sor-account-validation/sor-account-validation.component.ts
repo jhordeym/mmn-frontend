@@ -40,9 +40,7 @@ export class SorAccountValidationComponent implements OnInit, OnDestroy {
     const subscriptionId = AccountModel.isPrivilegedAccount(account.role)
       ? SorSubscriptionPlans.FiveStars
       : this.checkPlanBasedOnPayment();
-    const accountTypeId = AccountModel.isPrivilegedAccount(account.role)
-      ? SorAccountTypeId.LifeTime
-      : SorAccountTypeId.OneMonth;
+    const accountTypeId = SorAccountTypeId.OneMonth; // AccountModel.isPrivilegedAccount(account.role) ? SorAccountTypeId.LifeTime : SorAccountTypeId.OneMonth;
     const checkSorMemberPayload = [{ Email: account.email }];
     this.$sub1 = this.sorService.sorMembers(checkSorMemberPayload).subscribe(
       (sorMemberList: Array<any>) => {

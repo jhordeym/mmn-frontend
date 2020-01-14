@@ -8,7 +8,7 @@
         </div>
 
         <div class="row align-items-center justify-content-center">
-          <app-subscription-payment (completedSubscription)="receiveConfirmation($event)" *ngIf="!paid">
+          <app-subscription-payment (completedSubscription)="receiveConfirmation($event)" *ngIf="!paid && !isInvestorOrAmbassador()">
           </app-subscription-payment>
           <div *ngIf="paid">
             <app-logo size="50vh"></app-logo>

@@ -32,6 +32,9 @@ export class PaymentValidationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.account = this.cachingService.getSession();
+    if(this.isInvestorOrAmbassador()) {
+      this.navigate();
+    }
     this.$sub1 = this.paymentService
       .findLatestSubscriptionBy(this.account.id)
       .subscribe(
@@ -81,5 +84,9 @@ export class PaymentValidationComponent implements OnInit, OnDestroy {
 
   isPrivilegedAccount() {
     return AccountModel.isPrivilegedAccount(this.account.role);
+  }
+
+  isInvestorOrAmbassador() {
+    return AccountModel.isInvestorOrAmbassador(this.account.role);
   }
 }
