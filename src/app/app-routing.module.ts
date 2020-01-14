@@ -17,6 +17,7 @@ import { ChangePasswordComponent } from './components/from-mail/change-password/
 import { ConfirmAccountComponent } from './components/from-mail/confirm-account/confirm-account.component';
 import { SorGuard } from './guards/sor.guard';
 import { SorAccountValidationComponent } from './components/signin/sor-account-validation/sor-account-validation.component';
+import { TreePageComponent } from './components/home/tree-page/tree-page.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardPageComponent },
+      { path: 'tree', component: TreePageComponent },
       { path: 'profile', component: ProfilePageComponent },
       { path: 'products', component: ProductsPageComponent },
       { path: 'settings', component: SettingsPageComponent }

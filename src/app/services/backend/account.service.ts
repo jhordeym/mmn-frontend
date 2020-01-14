@@ -86,4 +86,9 @@ export class AccountService {
     account.password = newPass;
     return this.http.put<number>(`${ENV.accountServiceURL}/pass/update`, account);
   }
+
+  /** TREE */
+  public showTree(accountId: string): Observable<any> {
+    return this.http.get<any>(`${ENV.accountServiceURL}/level/tree/${accountId}`);
+  }
 }

@@ -39,6 +39,7 @@ import { BasicAuthInterceptor } from './providers/basic-auth-interceptor.provide
 import { CookieLawModule } from 'angular2-cookie-law';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SorAccountValidationComponent } from './components/signin/sor-account-validation/sor-account-validation.component';
+import { TreePageComponent } from './components/home/tree-page/tree-page.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -69,7 +70,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     LogoComponent,
     UsersConfigComponent,
     RecoverAccountComponent,
-    SorAccountValidationComponent
+    SorAccountValidationComponent,
+    TreePageComponent,
   ],
   imports: [
     BrowserAnimationsModule,
