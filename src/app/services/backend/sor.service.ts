@@ -9,7 +9,6 @@ import { SorAccount } from '../../models/sor/SorAccount';
 import { SorLoginToken } from '../../models/sor/SorLoginToken';
 import { SorResponse } from '../../models/sor/SorResponse';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -104,27 +103,20 @@ export class SorService {
     account: AccountModel,
     cardLink: string
   ): Promise<any> {
-    let token: SorLoginToken = this.getCachedToken();
     return new Promise((resolve, reject) => {
-      if (token && this.validateToken(token)) {
-        this.navigate(token.token, cardLink);
-        resolve('success');
-      } else {
-        this.sorLoginToken(subscriptionId, account).subscribe(
-          (data: SorLoginToken) => {
-            if (data) {
-              console.log(data);
-              this.saveTokenOnCache(data);
-              resolve('success');
-              this.navigate(data.token, cardLink);
-            }
-          },
-          error => {
-            reject(error);
-            console.log(error);
+      this.sorLoginToken(subscriptionId, account).subscribe(
+        (data: SorLoginToken) => {
+          if (data) {
+            console.log(data);
+            resolve('success');
+            this.navigate(data.token, cardLink);
           }
-        );
-      }
+        },
+        error => {
+          reject(error);
+          console.log(error);
+        }
+      );
     });
   }
 
@@ -148,5 +140,9 @@ export class SorService {
     const token: string = localStorage.getItem('sor-token');
     if (!token) return null;
     return JSON.parse(token);
+  }
+
+  deleteToken(): void {
+    localStorage.removeItem('sor-token');
   }
 }

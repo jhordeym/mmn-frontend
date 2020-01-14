@@ -88,7 +88,7 @@ export class ProductsPageComponent implements OnInit {
         ENV.imgHome,
         'products.home.title',
         'products.home.text',
-        '%2Fsupplements%2F',
+        '%2Fhomes%2F',
         params ? params[4] : null
       ),
       new Card(

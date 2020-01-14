@@ -15,10 +15,10 @@
       <div class="card mb-4" *ngFor="let card of cards">
         <img [src]="card.img" class="card-img-top" alt="card.title">
         <div class="card-body">
-          <h5 class="card-title">{{ card.title | translate }}</h5>
+          <h5 class="card-title text-center">{{ card.title | translate }}</h5>
           <p class="card-text">{{ card.text | translate }} </p>
         </div>
-        <div class="card-footer">
+        <div class="card-footer mb-4">
           <input type="button" class="productButton underlineHover" [disabled]="checkIfDisabledForCard(card)"
             (click)="navigateTo(card.link)" value="{{ 'products.goToLink' | translate }}">
         </div>
@@ -28,7 +28,7 @@
 </div>
 
 <!--  Translations
-  {{ 'products.flight.title' | translate }},
+  {{ 'products.car.title' | translate }},
   {{ 'products.flight.text' | translate }},
   {{ 'products.goToLink' | translate }},
 
