@@ -9,7 +9,8 @@ const PAYMENT_BASE_URL = 'http://localhost:8182/';
 const MAIL_BASE_URL = '...';
 const SOR_BASE_URL = 'http://localhost:8190/';
 
-const BASIC_AUTH_TOKEN = 'dHJhdmluZWRHYXRld2F5QWRtaW46dHJhdjIwMjBpbmVkQWRtaW4hIzEyMzQ=';
+const BASIC_AUTH_TOKEN =
+  'dHJhdmluZWRHYXRld2F5QWRtaW46dHJhdjIwMjBpbmVkQWRtaW4hIzEyMzQ=';
 
 // http
 const FRONTENDBASE_URL = 'https://login.travined.com:8080/#/';
@@ -39,6 +40,8 @@ export const environment = {
   mailServiceURL: (USE_MICROSERVICE ? MAIL_BASE_URL : APP_BASE_URL) + 'mail/',
   reservationServiceURL:
     (USE_MICROSERVICE ? SOR_BASE_URL : APP_BASE_URL) + 'reservation/sor',
+  idecideServiceURL:
+    (USE_MICROSERVICE ? SOR_BASE_URL : APP_BASE_URL) + 'reservation/idecide',
 
   // EMAIL
   confirmAccountLink: FRONTENDBASE_URL + 'account-confirm?token=',

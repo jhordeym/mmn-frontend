@@ -37,6 +37,8 @@ export const environment = {
   mailServiceURL: (USE_MICROSERVICE ? MAIL_BASE_URL : APP_BASE_URL) + 'mail/',
   reservationServiceURL:
     (USE_MICROSERVICE ? SOR_BASE_URL : APP_BASE_URL) + 'reservation/sor',
+  idecideServiceURL:
+    (USE_MICROSERVICE ? SOR_BASE_URL : APP_BASE_URL) + 'reservation/idecide',
 
   // EMAIL
   confirmAccountLink: FRONTENDBASE_URL + 'account-confirm?token=',
