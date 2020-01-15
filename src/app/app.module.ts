@@ -40,6 +40,9 @@ import { CookieLawModule } from 'angular2-cookie-law';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SorAccountValidationComponent } from './components/signin/sor-account-validation/sor-account-validation.component';
 import { TreePageComponent } from './components/home/tree-page/tree-page.component';
+import { IdecidePageComponent } from './components/home/idecide-page/idecide-page.component';
+
+import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -72,6 +75,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     RecoverAccountComponent,
     SorAccountValidationComponent,
     TreePageComponent,
+    IdecidePageComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -83,6 +87,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    NgxYoutubePlayerModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

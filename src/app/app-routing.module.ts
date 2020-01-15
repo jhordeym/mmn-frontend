@@ -18,6 +18,7 @@ import { ConfirmAccountComponent } from './components/from-mail/confirm-account/
 import { SorGuard } from './guards/sor.guard';
 import { SorAccountValidationComponent } from './components/signin/sor-account-validation/sor-account-validation.component';
 import { TreePageComponent } from './components/home/tree-page/tree-page.component';
+import { IdecidePageComponent } from './components/home/idecide-page/idecide-page.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardPageComponent },
       { path: 'tree', component: TreePageComponent },
+      { path: 'idecide', component: IdecidePageComponent },
       { path: 'profile', component: ProfilePageComponent },
       { path: 'products', component: ProductsPageComponent },
       { path: 'settings', component: SettingsPageComponent }
